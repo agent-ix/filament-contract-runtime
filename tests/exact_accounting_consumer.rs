@@ -2,13 +2,13 @@
 //! RT consumer checks for the public exact meter contract.
 #![cfg(feature = "exact")]
 
-use ix_trace_rs::trace;
-use quire_exact::{
+use filament_exact::{
     evaluate_integer_arithmetic, modulo, Charge, ChargePoint, Incomplete, InjectedDenial, Integer,
     IntegerArithmetic, IntegerDomain, IntegerInterval, LimitKind, Meter, Outcome, Refusal,
     ScalarLimits,
 };
-use quire_specification::VALUE_ACCOUNTING_LIMIT_KIND_VECTORS;
+use filament_specification::VALUE_ACCOUNTING_LIMIT_KIND_VECTORS;
+use ix_trace_rs::trace;
 use std::num::NonZeroU64;
 
 #[trace("TC-016", "FR-006-AC-3")]

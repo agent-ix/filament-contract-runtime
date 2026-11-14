@@ -9,11 +9,11 @@ mod unions;
 use alloc::{boxed::Box, sync::Arc, vec::Vec};
 use core::cell::{Cell, RefCell};
 
-use quire_exact::{
+use filament_exact::{
     Cancel, CollectionValue, CompositeValue, FieldValue, Integer, IntegerArithmetic, Meter,
     OrderedOperands, Outcome, UnionValue, Value, ValueType,
 };
-use quire_semantic_value::{
+use filament_semantic_value::{
     declaration::{CompositeShape, StorageRequest, StorageUnit},
     supplied_membership::{
         InvalidMembershipCause, MembershipLocus, MembershipPart, MembershipPathArena,
@@ -1165,9 +1165,9 @@ impl Machine {
             return Err(broken(site, Broken::Projection));
         };
         // Native type facts or bounded membership checked every slot before materialization.
-        let value = quire_exact::from_admitted_slots(key.clone(), slots.into_boxed_slice());
+        let value = filament_exact::from_admitted_slots(key.clone(), slots.into_boxed_slice());
         self.values.truncate(base);
-        let outcome = quire_exact::retain_composite(value, &mut resources.scalar);
+        let outcome = filament_exact::retain_composite(value, &mut resources.scalar);
         self.computed_result(outcome, site, resources)
     }
 
@@ -1250,15 +1250,18 @@ impl Machine {
             _ => None,
         };
         let outcome = if let Some(operation) = arithmetic {
-            match quire_exact::evaluate_integer_arithmetic(operation, bound, &mut resources.scalar)
-            {
+            match filament_exact::evaluate_integer_arithmetic(
+                operation,
+                bound,
+                &mut resources.scalar,
+            ) {
                 Outcome::Completed(value) => Outcome::Completed(Value::Integer(value)),
                 Outcome::Incomplete(cause) => Outcome::Incomplete(cause),
                 Outcome::Refused(cause) => Outcome::Refused(cause),
                 Outcome::Undefined(cause) => Outcome::Undefined(cause),
             }
         } else if let Operation::IntegerOrder { operator, .. } = node.operation {
-            match quire_exact::order_numbers(
+            match filament_exact::order_numbers(
                 operator,
                 OrderedOperands::Integers(left, right),
                 &mut resources.scalar,
@@ -1452,7 +1455,7 @@ impl Machine {
         site: Site,
         resources: &mut Resources,
     ) -> Result<(), Failure> {
-        let outcome = match quire_exact::retain_boolean(value, &mut resources.scalar) {
+        let outcome = match filament_exact::retain_boolean(value, &mut resources.scalar) {
             Ok(value) => Outcome::Completed(Value::Boolean(value)),
             Err(cause) => Outcome::Incomplete(cause),
         };
@@ -1856,7 +1859,7 @@ fn resolve<'a>(
 }
 
 fn admit_value(
-    types: &quire_semantic_value::declaration::TypeEnvironment,
+    types: &filament_semantic_value::declaration::TypeEnvironment,
     value: &Value,
     expected: &ValueType,
     site: Site,
@@ -1919,15 +1922,15 @@ fn admit_value(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ix_trace_rs::trace;
-    use quire_semantic_value::declaration::{
+    use filament_semantic_value::declaration::{
         CompositeDeclaration, ObjectTypeDeclaration, TypeEnvironment,
     };
+    use ix_trace_rs::trace;
 
     fn resources() -> Resources {
         Resources::new(StepBudget {
             work: 100,
-            scalar: quire_exact::ScalarLimits {
+            scalar: filament_exact::ScalarLimits {
                 integer_bits: 100,
                 decimal_digits: 100,
                 scale_expansion: 100,
@@ -1953,7 +1956,7 @@ mod tests {
         .unwrap();
         admit_value(
             &types,
-            &quire_exact::OptionValue::from_admitted(
+            &filament_exact::OptionValue::from_admitted(
                 ValueType::Boolean,
                 Some(Value::Boolean(true)),
             ),

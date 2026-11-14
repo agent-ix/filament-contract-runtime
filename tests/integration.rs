@@ -1,9 +1,9 @@
-use ix_trace_rs::trace;
-use quire_contract_runtime::{
+use filament_contract_runtime::{
     CampaignReport, ClauseId, ClauseKind, ClauseOutcome, ContractIdentity, ExecutionPoint,
     FailureDetail, FailureKind, Observation, RequirementId, RevisionId, Verdict, VerdictContext,
     VerdictKind,
 };
+use ix_trace_rs::trace;
 
 fn fixture() -> (
     ContractIdentity<'static>,

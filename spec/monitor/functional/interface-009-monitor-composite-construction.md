@@ -3,11 +3,11 @@ id: interface_009
 title: "Canonical composite construction in monitor entries"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_008
+  - target: ix://agent-ix/filament-contract-runtime/interface_008
     type: references
 ---
 # [interface-009] Canonical composite construction in monitor entries
@@ -16,7 +16,7 @@ relationships:
 
 ```yaml
 name: MonitorCompositeConstruction
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Operation, ProgramParts, Program]
 operations:
@@ -35,7 +35,7 @@ invariants:
 
 ### construct_composite
 
-`Record { fields: Vec<(quire_exact::MemberId, ExpressionId)> }` constructs a
+`Record { fields: Vec<(filament_exact::MemberId, ExpressionId)> }` constructs a
 record whose required fields are all present. The result annotation identifies
 the original admitted record declaration. Every supplied member must be owned by
 that declaration and cover one declared required field exactly once. Missing,

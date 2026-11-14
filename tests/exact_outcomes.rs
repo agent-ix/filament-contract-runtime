@@ -1,7 +1,7 @@
 //! FR-006 typed outcomes and metering of the function call and lazy connective RT still defines.
 //!
 //! The kernel `Outcome`, `Refusal`, `Meter` and injected-denial tests left with the kernel to the
-//! `quire-exact` crate (FR-275; the matrix section "Evidence at the kernel move"). What stays
+//! `filament-exact` crate (FR-275; the matrix section "Evidence at the kernel move"). What stays
 //! here is `CheckedPackage` and the lazy Boolean connective.
 #![cfg(feature = "exact")]
 
@@ -12,17 +12,17 @@ use std::num::NonZeroU64;
 mod charge_points;
 use charge_points::ChargePoints;
 
-use ix_trace_rs::trace;
-use quire_contract_runtime::exact::{
+use filament_contract_runtime::exact::{
     BodyStep, CheckMode, CheckingLimits, Frame, FunctionDeclaration, PackageDeclarations,
 };
-use quire_contract_runtime::scalar::{evaluate_boolean_short_circuit, ShortCircuitConnective};
-use quire_exact::{
+use filament_contract_runtime::scalar::{evaluate_boolean_short_circuit, ShortCircuitConnective};
+use filament_exact::{
     ChargePoint, Incomplete, InjectedDenial, Integer, LimitKind, Meter, Outcome, ScalarLimits,
     Value, ValueType,
 };
-use quire_semantic_value::declaration::TypeEnvironment as SharedTypeEnvironment;
-use quire_semantic_value::object_closure::ObjectClosure;
+use filament_semantic_value::declaration::TypeEnvironment as SharedTypeEnvironment;
+use filament_semantic_value::object_closure::ObjectClosure;
+use ix_trace_rs::trace;
 
 const UNLIMITED: ScalarLimits = limits([u64::MAX; 10]);
 

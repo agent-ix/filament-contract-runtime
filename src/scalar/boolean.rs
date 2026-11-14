@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! The stop-carrying short-circuit Boolean connective.
 //!
-//! `quire-exact` exports the eager connectives (`evaluate_boolean`) and `retain_boolean`, but no
+//! `filament-exact` exports the eager connectives (`evaluate_boolean`) and `retain_boolean`, but no
 //! connective whose right operand is lazy and may itself stop. Generated oracles call this one
 //! (FR-014-AC-35 of the code generator), so it stays on the runtime-owned `scalar` surface.
 
-use quire_exact::{retain_boolean, Meter, Outcome};
+use filament_exact::{retain_boolean, Meter, Outcome};
 
-use quire_semantic_value::stop::{outcome_from_stop, outcome_into_stop, Stop};
+use filament_semantic_value::stop::{outcome_from_stop, outcome_into_stop, Stop};
 
 /// A short-circuiting Boolean connective kind: `and`, `or` or `implies`.
 ///
-/// Unlike `quire_exact::BooleanConnective`, the right operand is evaluated lazily and may
+/// Unlike `filament_exact::BooleanConnective`, the right operand is evaluated lazily and may
 /// itself stop; see [`evaluate_boolean_short_circuit`].
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum ShortCircuitConnective {

@@ -51,7 +51,8 @@ impl fmt::Display for GateError {
 
 fn included_object(name: &str) -> bool {
     name.split(['.', '-']).any(|component| {
-        component == "quire_contract_runtime" || component == "quire_contract_runtime_footprint"
+        component == "filament_contract_runtime"
+            || component == "filament_contract_runtime_footprint"
     }) && !name.contains(".core-")
 }
 
@@ -70,7 +71,7 @@ fn linked_section_bytes(report: &str) -> Result<u64, GateError> {
         if line.contains("(ex ")
             && line
                 .trim_end()
-                .ends_with("libquire_contract_runtime_footprint.a):")
+                .ends_with("libfilament_contract_runtime_footprint.a):")
         {
             include = line.split_whitespace().next().is_some_and(included_object);
             continue;
@@ -199,7 +200,7 @@ fn main() -> ExitCode {
     let artifact = env::args_os().nth(1).map_or_else(
         || {
             PathBuf::from(format!(
-                "target/footprint-msrv/{TARGET}/release/libquire_contract_runtime_footprint.a"
+                "target/footprint-msrv/{TARGET}/release/libfilament_contract_runtime_footprint.a"
             ))
         },
         PathBuf::from,
@@ -225,9 +226,9 @@ mod tests {
 
     use super::{evaluate_reports, GateError};
 
-    const SIZE_IN_BAND: &str = "quire_contract_runtime_footprint-abc.o (ex libquire_contract_runtime_footprint.a):\nsection size addr\n.text 600 0\n.rodata 100 0\n";
+    const SIZE_IN_BAND: &str = "filament_contract_runtime_footprint-abc.o (ex libfilament_contract_runtime_footprint.a):\nsection size addr\n.text 600 0\n.rodata 100 0\n";
     const RELOC_HEADER: &str =
-        "quire_contract_runtime_footprint-abc.o:     file format elf32-littlearm\n";
+        "filament_contract_runtime_footprint-abc.o:     file format elf32-littlearm\n";
 
     /// A retained panic relocation invalidates a linked footprint inside the size band.
     #[trace("TC-007", "NFR-001-AC-3")]
@@ -248,8 +249,8 @@ mod tests {
             "",
             "not an objdump relocation report\n",
             "foreign-abc.o:     file format elf32-littlearm\n",
-            "not_quire_contract_runtime-abc.o:     file format elf32-littlearm\n",
-            "quire_contract_runtime_footprint-abc.core-def.o:     file format elf32-littlearm\n",
+            "not_filament_contract_runtime-abc.o:     file format elf32-littlearm\n",
+            "filament_contract_runtime_footprint-abc.core-def.o:     file format elf32-littlearm\n",
         ] {
             let error = evaluate_reports(SIZE_IN_BAND, report)
                 .expect_err("a size report alone must not establish panic inspection");
@@ -266,7 +267,7 @@ mod tests {
     #[trace("TC-199")]
     #[test]
     fn foreign_panic_relocations_do_not_contaminate_runtime_objects() {
-        let foreign = "not_quire_contract_runtime-abc.o:     file format elf32-littlearm\n00000000 UNKNOWN rust_begin_unwind\n";
+        let foreign = "not_filament_contract_runtime-abc.o:     file format elf32-littlearm\n00000000 UNKNOWN rust_begin_unwind\n";
         for report in [
             format!("{foreign}{RELOC_HEADER}"),
             format!("{RELOC_HEADER}{foreign}"),
@@ -279,7 +280,7 @@ mod tests {
     #[trace("TC-199")]
     #[test]
     fn foreign_crate_name_does_not_contribute_linked_bytes() {
-        let foreign = "not_quire_contract_runtime-abc.o (ex libquire_contract_runtime_footprint.a):\n.text 9000 0\n";
+        let foreign = "not_filament_contract_runtime-abc.o (ex libfilament_contract_runtime_footprint.a):\n.text 9000 0\n";
         assert_eq!(
             evaluate_reports(&format!("{SIZE_IN_BAND}{foreign}"), RELOC_HEADER),
             Ok(700)

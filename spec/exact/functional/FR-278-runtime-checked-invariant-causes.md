@@ -3,14 +3,14 @@ id: FR-278
 title: "Emit typed checked-invariant causes at runtime producer sites"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-exact/FR-369
+  - target: ix://agent-ix/filament-exact/FR-369
     type: depends_on
 ---
 # FR-278: Emit typed checked-invariant causes at runtime producer sites
 
 ## Description
 
-Every runtime checked-invariant producer SHALL emit the precise shared quire-exact `CheckedInvariantCause` assigned to its condition, retaining nested `IllTypedCause` payloads.
+Every runtime checked-invariant producer SHALL emit the precise shared filament-exact `CheckedInvariantCause` assigned to its condition, retaining nested `IllTypedCause` payloads.
 
 ## Inputs
 
@@ -22,7 +22,7 @@ Every runtime checked-invariant producer SHALL emit the precise shared quire-exa
 
 ## Behavior
 
-The runtime SHALL use the quire-exact FR-369 cause table for the producer sites it owns. No producer SHALL flatten a typed nested cause to a message. Fuel exhaustion SHALL remain an `Incomplete` outcome. FR-278-AC-1 covers the RT function producer controls and carrier shape; the explicit frame and fuel behavior is owned by RT FR-273.
+The runtime SHALL use the filament-exact FR-369 cause table for the producer sites it owns. No producer SHALL flatten a typed nested cause to a message. Fuel exhaustion SHALL remain an `Incomplete` outcome. FR-278-AC-1 covers the RT function producer controls and carrier shape; the explicit frame and fuel behavior is owned by RT FR-273.
 
 ## Acceptance Criteria
 
@@ -32,8 +32,8 @@ The runtime SHALL use the quire-exact FR-369 cause table for the producer sites 
 
 ## Dependencies
 
-- [quire-exact FR-369](ix://agent-ix/quire-exact/FR-369) owns the shared cause vocabulary.
-- [quire-semantic-value FR-122](ix://agent-ix/quire-semantic-value/FR-122) owns checked equality producer causes under AC-1 and AC-4.
+- [filament-exact FR-369](ix://agent-ix/filament-exact/FR-369) owns the shared cause vocabulary.
+- [filament-semantic-value FR-122](ix://agent-ix/filament-semantic-value/FR-122) owns checked equality producer causes under AC-1 and AC-4.
 - [IR-878](https://linear.app/agent-ix/issue/IR-878) tracks the owner allocation.
 
 ## Status

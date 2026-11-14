@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! The I13 negotiation disposition of a finite integer-division consumer.
 //!
-//! Runtime-owned (FR-009, FR-275, interface-001-AC-8): QSL deleted its negotiators on purpose,
+//! Runtime-owned (FR-009, FR-275, interface-001-AC-8): FSL deleted its negotiators on purpose,
 //! so this is the runtime's own code, not a port. The `div`/`rem`/`mod` laws themselves
-//! (`DivisionProfile`, `divide`, `modulo`) are the `quire-exact` kernel's.
+//! (`DivisionProfile`, `divide`, `modulo`) are the `filament-exact` kernel's.
 
 use alloc::vec::Vec;
 
-use quire_exact::IntegerInterval;
+use filament_exact::IntegerInterval;
 
 /// The declared bounds a finite I13 consumer offers for one `div`/`rem` or
 /// `mod` item. An absent member is a missing bound.

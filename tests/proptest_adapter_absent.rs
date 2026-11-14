@@ -19,7 +19,7 @@ fn tc_004_adapter_import_fails_without_proptest_feature() {
         source.join("Cargo.toml"),
         format!(
             "[package]\nname = \"rt-feature-off-probe\"\nversion = \"0.0.0\"\nedition = \"2021\"\n\
-             [dependencies]\nquire-contract-runtime = {{ path = {:?}, default-features = false }}\n\
+             [dependencies]\nfilament-contract-runtime = {{ path = {:?}, default-features = false }}\n\
              [workspace]\n",
             root
         ),
@@ -27,12 +27,12 @@ fn tc_004_adapter_import_fails_without_proptest_feature() {
     .expect("write probe manifest");
     fs::write(
         binaries.join("control.rs"),
-        "use quire_contract_runtime::RequirementId;\nfn main() { let _ = RequirementId::new(\"x\"); }\n",
+        "use filament_contract_runtime::RequirementId;\nfn main() { let _ = RequirementId::new(\"x\"); }\n",
     )
     .expect("write public-import control");
     fs::write(
         binaries.join("missing.rs"),
-        "use quire_contract_runtime::proptest_adapter;\nfn main() {}\n",
+        "use filament_contract_runtime::proptest_adapter;\nfn main() {}\n",
     )
     .expect("write absent-adapter probe");
 

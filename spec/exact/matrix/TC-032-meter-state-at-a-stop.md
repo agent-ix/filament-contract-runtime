@@ -3,7 +3,7 @@ id: TC-032
 title: "Read a determinate meter state at every stop"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-011
+  - target: ix://agent-ix/filament-contract-runtime/FR-011
     type: verifies
 ---
 # TC-032: Read a determinate meter state at every stop
@@ -13,8 +13,8 @@ relationships:
 Check what the meter holds at `Undefined`, `Refused` and `Incomplete` stops, charge atomicity, the
 field-order scan, the bounded log, exact over-`u64` charge requests and the exposed deterministic orders. RT evidence:
 `tests/exact_meter_state.rs` (`--features exact`). The moved quantity and unit
-graph controls run in `quire-integration` TC-096's `producer_origin_identity`
-and `producer_origin_quantity_residual` tests; kernel and QSV owner evidence
+graph controls run in `filament-integration` TC-096's `producer_origin_identity`
+and `producer_origin_quantity_residual` tests; kernel and FSV owner evidence
 supplies the removed implementation's remaining controls.
 
 ## Ownership and evidence
@@ -25,14 +25,14 @@ retaining a completed connective result exactly once. Current evidence is
 `tc_032_ac3_ac8_short_circuit_propagates_a_stop_and_retains_exactly_once` in the file above
 (FR-011-AC-3 and FR-011-AC-8). Its future API home is `scalar`, as interface-001 requires.
 The already-decided truth-table test is kernel-owned under
-[quire-exact FR-362-AC-9](ix://agent-ix/quire-exact/FR-362), which does not test lazy closure invocation.
+[filament-exact FR-362-AC-9](ix://agent-ix/filament-exact/FR-362), which does not test lazy closure invocation.
 `FR-362-AC-11` covers scalar stop prefixes; `FR-359-AC-6` and `FR-359-AC-7` cover scan order
 and consumed readers; `FR-358-AC-8` through `FR-358-AC-11` cover post-cap accounting;
 `FR-359-AC-1` through `FR-359-AC-5` cover cumulative boundaries and atomicity; and
 `FR-364-AC-1` covers IEEE flag order. Steps 1–3 and 6–8 and the kernel part of step 9 left
-with the kernel copy. QSV owns quantity and unit graph behavior after the IR-882 cutover;
-TC-096's step-4 integration check uses QSV directly. The lazy connective remains RT-owned.
-QSL-358's QSL-side extraction is Done.
+with the kernel copy. FSV owns quantity and unit graph behavior after the IR-882 cutover;
+TC-096's step-4 integration check uses FSV directly. The lazy connective remains RT-owned.
+QSL-358's FSL-side extraction is Done.
 
 ## Test Procedure
 
@@ -53,8 +53,8 @@ QSL-358's QSL-side extraction is Done.
    the denied charge admitted nothing and changed no counter or log entry. QSpec TC-187 U13
    supplies the `36893488147419103232` quantity-power vector; kernel FR-359-AC-3/4 own exact
    over-`u64` refusal and atomicity.
-9. Read `consumed` for all ten `LimitKind` members; iterate IEEE flags and QSV dimension and
-   compound-unit terms built in several orders; drive QSV's checked-node constructors and
+9. Read `consumed` for all ten `LimitKind` members; iterate IEEE flags and FSV dimension and
+   compound-unit terms built in several orders; drive FSV's checked-node constructors and
    `UnitGraph::from_checked_nodes` into inputs that fail more than one check.
 
 ## Expected Results

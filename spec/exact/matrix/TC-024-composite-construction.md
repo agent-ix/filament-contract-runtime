@@ -3,20 +3,20 @@ id: TC-024
 title: "Construct composite values and their declaration environment"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-008
+  - target: ix://agent-ix/filament-contract-runtime/FR-008
     type: verifies
 ---
 # TC-024: Construct composite values and their declaration environment
 
 ## Description
 
-Check QSV `TypeEnvironment` admission, shared composite construction,
-`ValueGraph`/`build` containment over `quire_exact::Value`, and selected accounting
+Check FSV `TypeEnvironment` admission, shared composite construction,
+`ValueGraph`/`build` containment over `filament_exact::Value`, and selected accounting
 vocabulary. IR-882 removed RT's duplicate implementation and its former
-`tests/exact_composite.rs` controls. Quire-exact FR-368-AC-1/2 owns the full
+`tests/exact_composite.rs` controls. Filament-exact FR-368-AC-1/2 owns the full
 vocabulary census. The remaining procedures below require owner evidence and
 RT consumer controls to be mapped before they receive acceptance credit. Enum
-declaration admission belongs to the quire-spec-language checker and needs a
+declaration admission belongs to the filament-spec-language checker and needs a
 direct missing-enum type-form control there, not an RT `TypeEnvironment::check_type` test.
 
 ## Test Procedure
@@ -34,7 +34,7 @@ direct missing-enum type-form control there, not an RT `TypeEnvironment::check_t
    and a set/bag/ordered-set element type bearing an IEEE value as `operator-ineligible`, and
    `contains_ieee` finds a `Float32`/`Float64` at any depth through nested record and tuple
    declarations. Inspect the shared value environment's `check_type` to confirm its named-key
-   lookup covers composite and object-reference declarations. At the quire-spec-language checker,
+   lookup covers composite and object-reference declarations. At the filament-spec-language checker,
    resolve an authored enum type name absent from the admitted scope and assert a typed
    `MissingName`; inspect `Typer::check_declared_type` for the separate typed
    `IllTyped(TypeMismatch)` guard on an enum shape absent from its admitted bindings.

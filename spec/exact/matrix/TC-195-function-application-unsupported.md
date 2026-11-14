@@ -3,9 +3,9 @@ id: TC-195
 title: "Negotiate a function's undischargeable capability as unsupported"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-273
+  - target: ix://agent-ix/filament-contract-runtime/FR-273
     type: verifies
-  - target: ix://agent-ix/quire-contract-runtime/FR-009
+  - target: ix://agent-ix/filament-contract-runtime/FR-009
     type: verifies
 ---
 # TC-195: Negotiate a function's undischargeable capability as unsupported
@@ -16,7 +16,7 @@ Check that a function whose declared operator requirements no registered backend
 negotiates the `unsupported` provider disposition, naming the required capability, before any
 application, and that the disposition stays outside the evaluation path. Evidence:
 `tests/exact_function_application.rs` (`--features exact`), planned for
-agent-ix/quire-contract-runtime#34.
+agent-ix/filament-contract-runtime#34.
 
 ## Test Procedure
 

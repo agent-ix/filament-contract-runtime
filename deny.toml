@@ -16,16 +16,16 @@ allow = [
 ]
 confidence-threshold = 0.9
 # First-party agent-ix crates are AGPL-3.0-or-later (owner decision 2026-09-14,
-# agent-ix/quire-contract-runtime#14). Exceptions are scoped to this workspace's
+# agent-ix/filament-contract-runtime#14). Exceptions are scoped to this workspace's
 # crates so the third-party allow-list stays permissive-only.
 exceptions = [
-    { allow = ["AGPL-3.0-or-later"], crate = "quire-contract-runtime" },
-    { allow = ["AGPL-3.0-or-later"], crate = "quire-contract-runtime-footprint" },
-    { allow = ["AGPL-3.0-or-later"], crate = "quire-contract-runtime-exact-panic" },
-    { allow = ["AGPL-3.0-or-later"], crate = "quire-contract-runtime-kernel-api-check" },
-    { allow = ["AGPL-3.0-or-later"], crate = "quire-contract-runtime-gates" },
-    { allow = ["AGPL-3.0-or-later"], crate = "quire-exact" },
-    { allow = ["AGPL-3.0-or-later"], crate = "quire-semantic-value" },
+    { allow = ["AGPL-3.0-or-later"], crate = "filament-contract-runtime" },
+    { allow = ["AGPL-3.0-or-later"], crate = "filament-contract-runtime-footprint" },
+    { allow = ["AGPL-3.0-or-later"], crate = "filament-contract-runtime-exact-panic" },
+    { allow = ["AGPL-3.0-or-later"], crate = "filament-contract-runtime-kernel-api-check" },
+    { allow = ["AGPL-3.0-or-later"], crate = "filament-contract-runtime-gates" },
+    { allow = ["AGPL-3.0-or-later"], crate = "filament-exact" },
+    { allow = ["AGPL-3.0-or-later"], crate = "filament-semantic-value" },
     { allow = ["AGPL-3.0-or-later"], crate = "quire-canonical" },
     { allow = ["AGPL-3.0-or-later"], crate = "quire-canonical-derive" },
 ]
@@ -41,12 +41,12 @@ version = 2
 unknown-registry = "deny"
 unknown-git = "deny"
 # Only shared first-party repositories, the QSpec dev-only vocabulary source,
-# and dev-only ix-trace-rs tooling are admitted. QSL's monorepo source is denied.
+# and dev-only ix-trace-rs tooling are admitted. FSL's monorepo source is denied.
 # The license check excludes dev dependencies; the source guard still checks Git origins.
 allow-git = [
-    "https://github.com/agent-ix/quire-exact",
-    "https://github.com/agent-ix/quire-semantic-value",
+    "https://github.com/agent-ix/filament-exact",
+    "https://github.com/agent-ix/filament-semantic-value",
     "https://github.com/agent-ix/quire-canonical",
     "https://github.com/agent-ix/ix-trace-rs",
-    "https://github.com/agent-ix/quire-specification",
+    "https://github.com/agent-ix/filament-specification",
 ]

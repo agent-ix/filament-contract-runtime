@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! Operating limits, independent of the admitted plan's semantic capacities.
 
-use quire_exact::{Integer, LimitKind, ScalarLimits};
+use filament_exact::{Integer, LimitKind, ScalarLimits};
 
 /// Per-invocation operating limits supplied when building a monitor.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

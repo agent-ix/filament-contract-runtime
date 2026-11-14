@@ -1,6 +1,6 @@
 ---
 type: master-requirements
-name: quire-contract-runtime
+name: filament-contract-runtime
 org: agent-ix
 component_type: rust-library
 implementation_language: rust
@@ -26,7 +26,7 @@ without making a certification or accreditation claim.
 - Optional exact-oracle operators and typed outcome/accounting envelopes, under the `exact`
   feature, for the complete-V1 scalar, composite, collection, equality, containment-graph,
   reference, backend-negotiation and total-pure-function-application families.
-- The planned consumer of QSL-produced tick monitor plans: bounded counter steps, fixed buffers,
+- The planned consumer of FSL-produced tick monitor plans: bounded counter steps, fixed buffers,
   and typed temporal decision, limit and fault results.
 
 ### Out of Scope
@@ -37,11 +37,11 @@ without making a certification or accreditation claim.
 - Mutable state: `modifies`/`creates`/`deletes` frame-obligation semantics and any `negotiate_frame`
   predicate beside `negotiate_ieee` and `negotiate_integer_division`. That construct is negotiated
   at the code generator's arrow, not this runtime's, and is blocked on IR lowering the frame node
-  ([quire-contract-ir#109](https://github.com/agent-ix/quire-contract-ir/issues/109)).
+  ([filament-contract-ir#109](https://github.com/agent-ix/filament-contract-ir/issues/109)).
 - Defining temporal semantics, deriving tick monitor plans, protocol encodings admitted by a
-  backend profile, and replay. QSL defines and produces the monitor plan; this runtime only
+  backend profile, and replay. FSL defines and produces the monitor plan; this runtime only
   consumes it. QSL-685 now specifies the executable plan and one-argument build contract; the
-  QSL producer, driver/IR admission and lowering, and RT monitor implementation remain pending.
+  FSL producer, driver/IR admission and lowering, and RT monitor implementation remain pending.
 
 ## System Overview
 
@@ -60,30 +60,30 @@ runs.
 
 ### Subsystem Registry
 
-Layout follows `ix://agent-ix/quire-contract-ir/ADR-0056`. Each subsystem directory under `spec/`
+Layout follows `ix://agent-ix/filament-contract-ir/ADR-0056`. Each subsystem directory under `spec/`
 holds its requirements (`stakeholder/`, `functional/`, `non-functional/`) and, in `matrix/`, its one
 matrix and the test cases that matrix declares. Interface requirements live in `functional/`.
 `spec/tests.md` indexes the matrices; `spec/assurance/` holds the architecture descriptions.
 
 | Subsystem | Path | Role | Owning crates/modules | ADs | Owner |
 | --- | --- | --- | --- | --- | --- |
-| Core | `spec/core/` | Verdict, identity and observation types; panic-free operators; the runtime API contract; the `no_std` footprint and panic/license quality requirements | `quire-contract-runtime`: `verdict`, `identity`, `observation`, `operators`, `kani_proofs` (`verification/kani.rs`, `cfg(kani)`); `quire-contract-runtime-footprint` | AD-001, AD-003, AD-004 | runtime-maintainers |
-| Accounting | `spec/accounting/` | Complete campaign counters and the bounded immutable campaign snapshot transport | `quire-contract-runtime`: `accounting` (including its snapshot transport, `src/snapshot_json.rs`) | AD-001, AD-003, AD-004 | runtime-maintainers |
-| Proptest adapter | `spec/proptest_adapter/` | Adaptation of verdicts to the proptest framework | `quire-contract-runtime`: `proptest_adapter` | AD-001, AD-003, AD-004 | runtime-maintainers |
-| Exact | `spec/exact/` | The exact-oracle operators and typed outcome/accounting envelopes: scalar, text, composite, collection, equality, expression and function application, backend negotiation, the injected-denial seam and the carried compiler vocabulary | `quire-contract-runtime`: `scalar` owns the backend negotiators and lazy connective; `exact` retains unauthorized ported function-application residue for IR-1009 to replace or delete under AD-004 Q-1. The exact value kernel is specified by [quire-exact](https://github.com/agent-ix/quire-exact/tree/main/spec) and consumed with `quire-semantic-value` (FR-275), and the end state removes `exact` after the QSL evaluation leaf is ready | AD-001, AD-002, AD-003, AD-004 | runtime-maintainers |
-| Tick monitor | `spec/monitor/` | Consumer of QSL's admitted executable `TimedMonitorPlan`; bounded counter steps and typed results, without temporal-semantic ownership | `src/monitor/` (program construction, executor, entry dispatch); QSL produces the executable plan, driver/IR admit and lower it; complete FR-276 temporal acceptance (TC-200) is partial, see `spec/monitor/matrix/tests.md` | AD-004 | runtime-maintainers |
+| Core | `spec/core/` | Verdict, identity and observation types; panic-free operators; the runtime API contract; the `no_std` footprint and panic/license quality requirements | `filament-contract-runtime`: `verdict`, `identity`, `observation`, `operators`, `kani_proofs` (`verification/kani.rs`, `cfg(kani)`); `filament-contract-runtime-footprint` | AD-001, AD-003, AD-004 | runtime-maintainers |
+| Accounting | `spec/accounting/` | Complete campaign counters and the bounded immutable campaign snapshot transport | `filament-contract-runtime`: `accounting` (including its snapshot transport, `src/snapshot_json.rs`) | AD-001, AD-003, AD-004 | runtime-maintainers |
+| Proptest adapter | `spec/proptest_adapter/` | Adaptation of verdicts to the proptest framework | `filament-contract-runtime`: `proptest_adapter` | AD-001, AD-003, AD-004 | runtime-maintainers |
+| Exact | `spec/exact/` | The exact-oracle operators and typed outcome/accounting envelopes: scalar, text, composite, collection, equality, expression and function application, backend negotiation, the injected-denial seam and the carried compiler vocabulary | `filament-contract-runtime`: `scalar` owns the backend negotiators and lazy connective; `exact` retains unauthorized ported function-application residue for IR-1009 to replace or delete under AD-004 Q-1. The exact value kernel is specified by [filament-exact](https://github.com/agent-ix/filament-exact/tree/main/spec) and consumed with `filament-semantic-value` (FR-275), and the end state removes `exact` after the FSL evaluation leaf is ready | AD-001, AD-002, AD-003, AD-004 | runtime-maintainers |
+| Tick monitor | `spec/monitor/` | Consumer of FSL's admitted executable `TimedMonitorPlan`; bounded counter steps and typed results, without temporal-semantic ownership | `src/monitor/` (program construction, executor, entry dispatch); FSL produces the executable plan, driver/IR admit and lower it; complete FR-276 temporal acceptance (TC-200) is partial, see `spec/monitor/matrix/tests.md` | AD-004 | runtime-maintainers |
 
 ## Requirements Architecture
 
 Stakeholder requirement StR-001 is refined by functional requirements FR-001 through FR-004,
 FR-006 through FR-012, FR-273, FR-275, the planned monitor consumer FR-276, checked-evaluator owner FR-277, typed runtime producer FR-278, and quality requirements NFR-001 and NFR-002. `interface-001` defines the language-neutral
-runtime API contract implemented by those FRs. FR-275 states the end state of the exact kernel: QSL's
-kernel and the residue QSL-358 takes over, consumed and never copied, so the runtime holds no ported QSL code. Test cases TC-001 through TC-004, TC-006, TC-007, TC-015 through
+runtime API contract implemented by those FRs. FR-275 states the end state of the exact kernel: FSL's
+kernel and the residue QSL-358 takes over, consumed and never copied, so the runtime holds no ported FSL code. Test cases TC-001 through TC-004, TC-006, TC-007, TC-015 through
 TC-035 (TC-027–TC-029 unused), TC-194–TC-195, TC-197–TC-199, TC-203, TC-205, planned TC-200 provides the verification matrix.
 
 ## References
 
-- [Program umbrella](https://github.com/agent-ix/quire-contract-ir/issues/1).
-- [Runtime epic](https://github.com/agent-ix/quire-contract-runtime/issues/4).
+- [Program umbrella](https://github.com/agent-ix/filament-contract-ir/issues/1).
+- [Runtime epic](https://github.com/agent-ix/filament-contract-runtime/issues/4).
 - [Codegen to runtime seam](assurance/AD-003-codegen-runtime-seam.md).
 - [Runtime crate layout](assurance/AD-004-runtime-crate-layout.md).

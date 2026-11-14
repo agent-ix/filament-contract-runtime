@@ -4,9 +4,9 @@ title: Function application boundary
 type: ArchitectureDescription
 status: accepted
 owner: runtime-maintainers
-system: quire-contract-runtime v0.1
+system: filament-contract-runtime v0.1
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-273
+  - target: ix://agent-ix/filament-contract-runtime/FR-273
     type: realizes
 ---
 # Function application boundary
@@ -15,8 +15,8 @@ relationships:
 
 The optional `exact` feature retains the existing function-application implementation
 in `src/exact/expression.rs`, exposed by `src/exact/mod.rs`. Exact values, operations,
-outcomes and metering belong to `quire-exact`; type environments, object closures and
-stop conversion belong to `quire-semantic-value`. RT is not a second semantic authority
+outcomes and metering belong to `filament-exact`; type environments, object closures and
+stop conversion belong to `filament-semantic-value`. RT is not a second semantic authority
 for those shared values.
 
 The remaining expression implementation is a temporary staged exception under

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Agent-IX
 
-//! Verify that cargo-deny refuses injected QSL Git source dependencies.
+//! Verify that cargo-deny refuses injected FSL Git source dependencies.
 
 use std::{
     env, fmt, fs,
@@ -12,8 +12,8 @@ use std::{
     process::{Command, ExitCode},
 };
 
-const QSL_GIT: &str = "https://github.com/agent-ix/quire-spec-language";
-const QSL_SOURCE: &str = "git+https://github.com/agent-ix/quire-spec-language?branch=main";
+const FSL_GIT: &str = "https://github.com/agent-ix/filament-spec-language";
+const FSL_SOURCE: &str = "git+https://github.com/agent-ix/filament-spec-language?branch=main";
 const DEFAULT_CRATES: [&str; 4] = [
     "qsl-eval",
     "qsl-replay",
@@ -44,7 +44,7 @@ impl fmt::Display for GateError {
             Self::TrackedListFailed => formatter.write_str("git ls-files failed"),
             Self::BaselineDenied => formatter.write_str("unmodified tree: cargo deny failed"),
             Self::MutationsFailed(count) => {
-                write!(formatter, "{count} QSL Git source mutation controls failed")
+                write!(formatter, "{count} FSL Git source mutation controls failed")
             }
         }
     }
@@ -56,7 +56,7 @@ impl Scratch {
     fn new() -> io::Result<Self> {
         for attempt in 0..128 {
             let path = env::temp_dir().join(format!(
-                "quire-contract-runtime-deny-mutations-{}-{attempt}",
+                "filament-contract-runtime-deny-mutations-{}-{attempt}",
                 std::process::id()
             ));
             match DirBuilder::new().mode(0o700).create(&path) {
@@ -146,7 +146,7 @@ fn cargo_deny(directory: &Path) -> io::Result<std::process::Output> {
         .output()
 }
 
-fn rejects_qsl_source(exit_success: bool, output: &str) -> bool {
+fn rejects_fsl_source(exit_success: bool, output: &str) -> bool {
     if exit_success {
         return false;
     }
@@ -158,7 +158,7 @@ fn rejects_qsl_source(exit_success: bool, output: &str) -> bool {
         {
             source_error = line.starts_with("error[source-not-allowed]:");
         }
-        if source_error && line.split_whitespace().any(|field| field == QSL_SOURCE) {
+        if source_error && line.split_whitespace().any(|field| field == FSL_SOURCE) {
             return true;
         }
     }
@@ -214,7 +214,7 @@ fn run() -> Result<(), GateError> {
                 OpenOptions::new()
                     .append(true)
                     .open(candidate.join("Cargo.toml"))?,
-                "\n[{table}.{crate_name}]\ngit = \"{QSL_GIT}\"\nbranch = \"main\""
+                "\n[{table}.{crate_name}]\ngit = \"{FSL_GIT}\"\nbranch = \"main\""
             )?;
             let outcome = cargo_deny(&candidate)?;
             let combined = format!(
@@ -222,11 +222,11 @@ fn run() -> Result<(), GateError> {
                 String::from_utf8_lossy(&outcome.stdout),
                 String::from_utf8_lossy(&outcome.stderr)
             );
-            if rejects_qsl_source(outcome.status.success(), &combined) {
-                println!("ok: {crate_name} as {table} rejects the QSL Git source");
+            if rejects_fsl_source(outcome.status.success(), &combined) {
+                println!("ok: {crate_name} as {table} rejects the FSL Git source");
             } else {
                 eprintln!(
-                    "FAIL: {crate_name} as {table} (exit {}) did not reject the QSL Git source",
+                    "FAIL: {crate_name} as {table} (exit {}) did not reject the FSL Git source",
                     outcome.status
                 );
                 failures += 1;
@@ -254,7 +254,7 @@ fn main() -> ExitCode {
 mod tests {
     use ix_trace_rs::trace;
 
-    use super::rejects_qsl_source;
+    use super::rejects_fsl_source;
 
     /// Nearby diagnostics cannot supply the source for another rejection.
     #[trace("TC-198")]
@@ -262,10 +262,10 @@ mod tests {
     fn source_rejection_does_not_borrow_a_later_diagnostics_source() {
         let other = "error[source-not-allowed]: detected 'git' source not explicitly allowed\n1 │ other 0.1.0 git+https://github.com/agent-ix/other?branch=main\n";
         for severity in ["error[unlicensed]", "warning[source-not-allowed]"] {
-            let report = format!("{other}{severity}: another diagnostic\n2 │ qsl-eval 0.1.0 git+https://github.com/agent-ix/quire-spec-language?branch=main\n");
+            let report = format!("{other}{severity}: another diagnostic\n2 │ fsl-eval 0.1.0 git+https://github.com/agent-ix/filament-spec-language?branch=main\n");
             assert!(
-                !rejects_qsl_source(false, &report),
-                "the QSL source belongs to {severity}, not the preceding error"
+                !rejects_fsl_source(false, &report),
+                "the FSL source belongs to {severity}, not the preceding error"
             );
         }
     }
@@ -275,26 +275,26 @@ mod tests {
     #[test]
     fn source_rejection_requires_the_exact_injected_source() {
         for source in [
-            "git+https://github.com/agent-ix/quire-spec-language?branch=main-other",
-            "git+https://github.com/agent-ix/quire-spec-language?branch=main&other=value",
+            "git+https://github.com/agent-ix/filament-spec-language?branch=main-other",
+            "git+https://github.com/agent-ix/filament-spec-language?branch=main&other=value",
         ] {
-            let report = format!("error[source-not-allowed]: detected 'git' source not explicitly allowed\n1 │ qsl-eval 0.1.0 {source}\n");
-            assert!(!rejects_qsl_source(false, &report), "source: {source}");
+            let report = format!("error[source-not-allowed]: detected 'git' source not explicitly allowed\n1 │ fsl-eval 0.1.0 {source}\n");
+            assert!(!rejects_fsl_source(false, &report), "source: {source}");
         }
-        let actual_shape = "error[source-not-allowed]: detected 'git' source not explicitly allowed\n    ┌─ Cargo.lock:136:16\n    │\n136 │ qsl-eval 0.1.0 git+https://github.com/agent-ix/quire-spec-language?branch=main\n    │                ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ source\n";
-        assert!(rejects_qsl_source(false, actual_shape));
+        let actual_shape = "error[source-not-allowed]: detected 'git' source not explicitly allowed\n    ┌─ Cargo.lock:136:16\n    │\n136 │ fsl-eval 0.1.0 git+https://github.com/agent-ix/filament-spec-language?branch=main\n    │                ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ source\n";
+        assert!(rejects_fsl_source(false, actual_shape));
     }
 
-    /// A policy check passes only for cargo-deny's refusal of the QSL Git source.
+    /// A policy check passes only for cargo-deny's refusal of the FSL Git source.
     #[trace("TC-198", "FR-275-AC-8")]
     #[test]
-    fn tc_198_source_mutation_rejects_other_failures_and_accepts_only_qsl_refusal() {
-        let qsl = "error[source-not-allowed]: Git source not allowed\n  source: git+https://github.com/agent-ix/quire-spec-language?branch=main";
+    fn tc_198_source_mutation_rejects_other_failures_and_accepts_only_fsl_refusal() {
+        let fsl = "error[source-not-allowed]: Git source not allowed\n  source: git+https://github.com/agent-ix/filament-spec-language?branch=main";
         let other = "error[source-not-allowed]: Git source not allowed\n  source: git+https://github.com/agent-ix/other?branch=main";
         let licence = "error[unlicensed]: this crate is not allowed";
-        assert!(rejects_qsl_source(false, qsl));
-        assert!(!rejects_qsl_source(true, qsl));
-        assert!(!rejects_qsl_source(false, other));
-        assert!(!rejects_qsl_source(false, licence));
+        assert!(rejects_fsl_source(false, fsl));
+        assert!(!rejects_fsl_source(true, fsl));
+        assert!(!rejects_fsl_source(false, other));
+        assert!(!rejects_fsl_source(false, licence));
     }
 }

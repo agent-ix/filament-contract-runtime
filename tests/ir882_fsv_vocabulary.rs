@@ -238,7 +238,7 @@ fn inspect_sources(directory: &Path, definitions: &mut Vec<String>) {
 
 #[trace("TC-205", "FR-275-AC-22")]
 #[test]
-fn qsv_owns_semantic_node_vocabulary() {
+fn fsv_owns_semantic_node_vocabulary() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     let mut definitions = Vec::new();
     inspect_sources(&root.join("src"), &mut definitions);
@@ -249,8 +249,8 @@ fn qsv_owns_semantic_node_vocabulary() {
 #[test]
 fn inspection_rejects_renamed_semantic_node_copies() {
     let cases = [
-        "pub type GraphCause = quire_semantic_value::semantic_node::SemanticGraphCause;",
-        "pub use quire_semantic_value::semantic_node::InvalidSemanticGraph as Refusal;",
+        "pub type GraphCause = filament_semantic_value::semantic_node::SemanticGraphCause;",
+        "pub use filament_semantic_value::semantic_node::InvalidSemanticGraph as Refusal;",
         "pub enum GraphCause { NonCanonicalPreimage, UnsortedUnorderedMembers, OwnerNotSelected, StaleKey, ForeignDeclaration, UndeclaredCase, ZeroExponent, DuplicateTerm, UnsortedTerms, UnreducedRational, ZeroScale, NonIdentityRoot, DuplicateNode, UnknownDimension, NonBaseDimensionTerm, UnknownTarget, CrossDimensionTarget, MissingRoot, DuplicateRoot, TargetCycle }",
         "fn dimension_terms_ok(terms: &[(NodeKey, Integer)]) -> Result<(), SemanticGraphCause> { if terms.iter().any(|(_, exponent)| exponent.is_zero()) { return Err(SemanticGraphCause::ZeroExponent); } let distinct: BTreeSet<_> = terms.iter().map(|(key, _)| key).collect(); if distinct.len() != terms.len() { return Err(SemanticGraphCause::DuplicateTerm); } if !terms.is_sorted_by(|(left, _), (right, _)| left < right) { return Err(SemanticGraphCause::UnsortedTerms); } Ok(()) }",
     ];

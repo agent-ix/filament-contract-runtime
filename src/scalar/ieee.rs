@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! The I13 negotiation disposition of an IEEE backend.
 //!
-//! Runtime-owned (FR-009, FR-275, interface-001-AC-8): QSL deleted its negotiators on purpose,
+//! Runtime-owned (FR-009, FR-275, interface-001-AC-8): FSL deleted its negotiators on purpose,
 //! so this is the runtime's own code, not a port. The IEEE values, operations and conversions
-//! themselves are the `quire-exact` kernel's.
+//! themselves are the `filament-exact` kernel's.
 
 use alloc::collections::BTreeSet;
 use alloc::vec::Vec;
 
-use quire_exact::{IeeeOperationKind, IeeeWidth, RoundingMode};
+use filament_exact::{IeeeOperationKind, IeeeWidth, RoundingMode};
 
 /// A backend's IEEE capabilities offered during I13 negotiation.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -61,8 +61,8 @@ pub enum IeeeUnsupportedCause {
 /// compile error, not a runtime one.
 ///
 /// ```compile_fail
-/// use quire_contract_runtime::scalar::{IeeeDisposition, IeeeUnsupportedCause};
-/// use quire_exact::{IeeeWidth, Outcome, Value};
+/// use filament_contract_runtime::scalar::{IeeeDisposition, IeeeUnsupportedCause};
+/// use filament_exact::{IeeeWidth, Outcome, Value};
 /// let disposition = IeeeDisposition::Unsupported(IeeeUnsupportedCause::Width(IeeeWidth::Binary64));
 /// let _: Outcome<Value> = disposition.into();
 /// ```

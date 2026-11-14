@@ -8,7 +8,7 @@ use crate::ClauseId;
 // Implements: FR-001
 ///
 /// ```compile_fail
-/// use quire_contract_runtime::ClauseKind;
+/// use filament_contract_runtime::ClauseKind;
 ///
 /// fn classify(kind: ClauseKind) -> u8 {
 ///     match kind {
@@ -42,7 +42,7 @@ pub enum ClauseKind {
 // Implements: FR-001
 ///
 /// ```compile_fail
-/// use quire_contract_runtime::ClauseOutcome;
+/// use filament_contract_runtime::ClauseOutcome;
 ///
 /// fn classify(outcome: ClauseOutcome) -> u8 {
 ///     match outcome {
@@ -76,7 +76,7 @@ pub enum ClauseOutcome {
 // Implements: FR-001
 ///
 /// ```compile_fail
-/// use quire_contract_runtime::FailureKind;
+/// use filament_contract_runtime::FailureKind;
 ///
 /// fn classify(kind: FailureKind) -> u8 {
 ///     match kind {

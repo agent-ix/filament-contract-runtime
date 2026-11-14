@@ -8,11 +8,11 @@ use crate::{
     FailureKind, Observation, RequirementId, RevisionId, Verdict, VerdictContext, VerdictKind,
 };
 #[cfg(feature = "exact")]
-use quire_exact::{compare_ieee, IeeeComparison, IeeeValue, Meter, Outcome, ScalarLimits};
+use filament_exact::{compare_ieee, IeeeComparison, IeeeValue, Meter, Outcome, ScalarLimits};
 
-// `quire-contract-codegen`'s generated exact-scalar oracles call
-// `quire_contract_runtime::exact` operators directly (`quire-contract-codegen`
-// `src/exact_scalar.rs:1370` `use quire_contract_runtime::exact as rt;`), `compare_ieee` among
+// `filament-contract-codegen`'s generated exact-scalar oracles call
+// `filament_contract_runtime::exact` operators directly (`filament-contract-codegen`
+// `src/exact_scalar.rs:1370` `use filament_contract_runtime::exact as rt;`), `compare_ieee` among
 // them at `src/exact_scalar.rs:1677`. `exact::Integer` (the operand type behind
 // `evaluate_integer_arithmetic`, CG's other principal `rt::` call site) holds a value inline as
 // `i64` and promotes to a boxed `BigInt` only when it does not fit, so a symbolic operand narrowed
@@ -22,7 +22,7 @@ use quire_exact::{compare_ieee, IeeeComparison, IeeeValue, Meter, Outcome, Scala
 // (`Collection`, `Composite`, `Option`) read a pointer out of a merged,
 // not-fully-constant payload when the prover cannot
 // determine which variant it holds, which does not discharge, independent of `Integer`'s own
-// representation. `compare_ieee` is `quire-exact`'s (FR-275) and reaches its `ieee` module
+// representation. `compare_ieee` is `filament-exact`'s (FR-275) and reaches its `ieee` module
 // (`decode`, `Class`, `total_order_key`) without ever constructing a `BigInt` or a `Value`:
 // `IeeeValue` is a plain `(IeeeWidth, u64)` bit pattern, and every metering charge below it —
 // `Integer`-typed inside `Meter`/`Charge` (its `accounting` module) — is built from concrete,
@@ -264,11 +264,11 @@ fn tc_003_option_helpers_preserve_definedness() {
     assert_eq!(option_copied(option_ref(&value)), value);
 }
 
-// Reaches `crate::exact` (agent-ix/quire-contract-runtime#53): every declared harness before
+// Reaches `crate::exact` (agent-ix/filament-contract-runtime#53): every declared harness before
 // this one imports only `crate::operators` and top-level model types, so the prover compiled
 // `src/exact/` without discharging a single obligation over it. `compare_ieee` is one of the
-// operators `quire-contract-codegen`'s generated oracles call (`src/exact_scalar.rs:1677`), and
-// since FR-275 it is `quire-exact`'s code, which this harness proves from the runtime's side. The
+// operators `filament-contract-codegen`'s generated oracles call (`src/exact_scalar.rs:1677`), and
+// since FR-275 it is `filament-exact`'s code, which this harness proves from the runtime's side. The
 // proposition is IEEE 754's own definedness boundary for `numericEqual`: reflexive equality holds
 // for every bit pattern except NaN, which compares unequal to itself. `IeeeValue` is a bit
 // pattern, not a `BigInt`, so this stays cheap for the prover; see the wider module comment above
@@ -285,7 +285,7 @@ fn tc_003_exact_ieee_numeric_equal_matches_nan_unordered() {
     // The binary32 NaN encoding read straight off the bit pattern: exponent field all ones with a
     // nonzero trailing significand. The expectation is derived from `bits`, not from
     // `IeeeValue::is_nan` — `is_nan` is `matches!(decode(self), Class::Nan { .. })`
-    // (`quire-exact`'s `ieee` module) and `compare_ieee`'s `NumericEqual` arm dispatches on the
+    // (`filament-exact`'s `ieee` module) and `compare_ieee`'s `NumericEqual` arm dispatches on the
     // same `decode`, so an `is_nan`-based expectation moves with any
     // misclassification inside `decode` and holds vacuously. Measured: with `is_nan` on both
     // sides, a `decode` that classifies every NaN as `Class::Finite` still verifies SUCCESSFUL.

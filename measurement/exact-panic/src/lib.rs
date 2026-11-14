@@ -13,15 +13,15 @@ use core::{
     ptr,
 };
 
-use quire_contract_runtime::{
+use filament_contract_runtime::{
     exact::{BodyStep, CheckMode, CheckingLimits, Frame, PackageDeclarations},
     scalar::{
         evaluate_boolean_short_circuit, negotiate_ieee, negotiate_integer_division,
         IeeeBackendCapabilities, IntegerDivisionConsumer, ShortCircuitConnective,
     },
 };
-use quire_exact::{Meter, Outcome, ScalarLimits, Value};
-use quire_semantic_value::object_closure::ObjectClosure;
+use filament_exact::{Meter, Outcome, ScalarLimits, Value};
+use filament_semantic_value::object_closure::ObjectClosure;
 
 // The archive is inspected, never executed. A refusing allocator satisfies
 // alloc's staticlib link requirement without supplying a target heap.
@@ -64,10 +64,10 @@ fn panic(_info: &PanicInfo<'_>) -> ! {
 
 /// Retains the exact-profile call graph in the archive.
 #[used]
-pub static EXACT_PANIC_ENTRY: extern "C" fn(u32) -> u32 = quire_runtime_exact_panic;
+pub static EXACT_PANIC_ENTRY: extern "C" fn(u32) -> u32 = filament_runtime_exact_panic;
 
 /// Calls the runtime-owned scalar families and remaining expression surface.
-pub extern "C" fn quire_runtime_exact_panic(input: u32) -> u32 {
+pub extern "C" fn filament_runtime_exact_panic(input: u32) -> u32 {
     let division = black_box(negotiate_integer_division(black_box(&[
         IntegerDivisionConsumer::Mathematical,
     ])));
@@ -88,7 +88,7 @@ pub extern "C" fn quire_runtime_exact_panic(input: u32) -> u32 {
         let expression = package
             .check_expression(
                 vec![],
-                quire_exact::ValueType::Boolean,
+                filament_exact::ValueType::Boolean,
                 Box::new(|_| {
                     Box::new(|_: &Frame<'_, '_>, _: Option<Value>| {
                         BodyStep::Return(Outcome::Completed(Value::Boolean(true)))

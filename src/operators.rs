@@ -113,7 +113,7 @@ mod sealed {
 /// #[derive(Clone, Copy)]
 /// struct Custom;
 ///
-/// impl quire_contract_runtime::operators::CheckedInteger for Custom {
+/// impl filament_contract_runtime::operators::CheckedInteger for Custom {
 ///     fn checked_add(self, _right: Self) -> Option<Self> { None }
 ///     fn checked_sub(self, _right: Self) -> Option<Self> { None }
 ///     fn checked_mul(self, _right: Self) -> Option<Self> { None }

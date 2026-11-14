@@ -93,6 +93,95 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "da7c62ceae207dd37ea5b845da6a0696c799f85e97da1ab5b7910be3c1c80223"
 
 [[package]]
+name = "filament-contract-runtime"
+version = "0.1.0"
+dependencies = [
+ "filament-exact",
+ "filament-semantic-value",
+ "filament-specification-qualification",
+ "fsv-failing-allocator",
+ "ix-trace-rs",
+ "proc-macro2",
+ "proptest",
+ "serde",
+ "serde_json",
+ "syn 2.0.119",
+]
+
+[[package]]
+name = "filament-contract-runtime-exact-panic"
+version = "0.0.0"
+dependencies = [
+ "filament-contract-runtime",
+ "filament-exact",
+ "filament-semantic-value",
+]
+
+[[package]]
+name = "filament-contract-runtime-footprint"
+version = "0.0.0"
+dependencies = [
+ "filament-contract-runtime",
+ "ix-trace-rs",
+]
+
+[[package]]
+name = "filament-contract-runtime-gates"
+version = "0.1.0"
+dependencies = [
+ "ix-trace-rs",
+ "serde_json",
+ "tempfile",
+ "toml",
+ "uzers",
+]
+
+[[package]]
+name = "filament-contract-runtime-kernel-api-check"
+version = "0.0.0"
+dependencies = [
+ "filament-exact",
+ "ix-trace-rs",
+]
+
+[[package]]
+name = "filament-exact"
+version = "0.1.0"
+source = "git+https://github.com/agent-ix/filament-exact?branch=main#98a815d3e759ca8f95df3249138bfb03c6fcb116"
+dependencies = [
+ "allocator-api2",
+ "arrayvec",
+ "num-bigint",
+ "num-integer",
+ "num-traits",
+ "once_cell",
+ "spin",
+ "thiserror",
+ "triomphe",
+ "unicode-normalization",
+]
+
+[[package]]
+name = "filament-semantic-value"
+version = "0.1.0"
+source = "git+https://github.com/agent-ix/filament-semantic-value?branch=main#ad1c93f31f7e417aec27afbf06bfba6dfd7ba7c8"
+dependencies = [
+ "filament-exact",
+ "quire-canonical",
+ "thiserror",
+]
+
+[[package]]
+name = "filament-specification-qualification"
+version = "0.0.0"
+source = "git+https://github.com/agent-ix/filament-specification?branch=main#17d49a98a3ab9fedf4b5020689519ddfcdf0515b"
+
+[[package]]
+name = "fsv-failing-allocator"
+version = "0.0.0"
+source = "git+https://github.com/agent-ix/filament-semantic-value?branch=main#ad1c93f31f7e417aec27afbf06bfba6dfd7ba7c8"
+
+[[package]]
 name = "generic-array"
 version = "0.14.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -257,11 +346,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "qsv-failing-allocator"
-version = "0.0.0"
-source = "git+https://github.com/agent-ix/quire-semantic-value?branch=main#3c4616dafd4f739573c86af049661646f24dc293"
-
-[[package]]
 name = "quire-canonical"
 version = "0.3.0"
 source = "git+https://github.com/agent-ix/quire-canonical?branch=main#7d2f8389d01fcbf318e658746015b85a31526cc9"
@@ -282,90 +366,6 @@ dependencies = [
  "quote",
  "syn 3.0.6",
 ]
-
-[[package]]
-name = "quire-contract-runtime"
-version = "0.1.0"
-dependencies = [
- "ix-trace-rs",
- "proc-macro2",
- "proptest",
- "qsv-failing-allocator",
- "quire-exact",
- "quire-semantic-value",
- "quire-specification-qualification",
- "serde",
- "serde_json",
- "syn 2.0.119",
-]
-
-[[package]]
-name = "quire-contract-runtime-exact-panic"
-version = "0.0.0"
-dependencies = [
- "quire-contract-runtime",
- "quire-exact",
- "quire-semantic-value",
-]
-
-[[package]]
-name = "quire-contract-runtime-footprint"
-version = "0.0.0"
-dependencies = [
- "ix-trace-rs",
- "quire-contract-runtime",
-]
-
-[[package]]
-name = "quire-contract-runtime-gates"
-version = "0.1.0"
-dependencies = [
- "ix-trace-rs",
- "serde_json",
- "tempfile",
- "toml",
- "uzers",
-]
-
-[[package]]
-name = "quire-contract-runtime-kernel-api-check"
-version = "0.0.0"
-dependencies = [
- "ix-trace-rs",
- "quire-exact",
-]
-
-[[package]]
-name = "quire-exact"
-version = "0.1.0"
-source = "git+https://github.com/agent-ix/quire-exact?branch=main#5db2d5e32ebcdfb4332d846bb911cae087c83810"
-dependencies = [
- "allocator-api2",
- "arrayvec",
- "num-bigint",
- "num-integer",
- "num-traits",
- "once_cell",
- "spin",
- "thiserror",
- "triomphe",
- "unicode-normalization",
-]
-
-[[package]]
-name = "quire-semantic-value"
-version = "0.1.0"
-source = "git+https://github.com/agent-ix/quire-semantic-value?branch=main#3c4616dafd4f739573c86af049661646f24dc293"
-dependencies = [
- "quire-canonical",
- "quire-exact",
- "thiserror",
-]
-
-[[package]]
-name = "quire-specification-qualification"
-version = "0.0.0"
-source = "git+https://github.com/agent-ix/quire-specification?branch=main#dfcc85bc520d20df3888b2c05ef333e52acd7228"
 
 [[package]]
 name = "quote"

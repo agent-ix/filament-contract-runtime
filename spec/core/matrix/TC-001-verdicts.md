@@ -3,7 +3,7 @@ id: TC-001
 title: "Preserve tri-state verdict identity"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-001
+  - target: ix://agent-ix/filament-contract-runtime/FR-001
     type: verifies
 ---
 # TC-001: Preserve tri-state verdict identity

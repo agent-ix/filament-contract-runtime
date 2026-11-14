@@ -3,7 +3,7 @@ id: StR-001
 title: "Auditable generated-oracle runtime"
 type: StR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-001
+  - target: ix://agent-ix/filament-contract-runtime/FR-001
     type: satisfied_by
 ---
 # StR-001: Auditable generated-oracle runtime

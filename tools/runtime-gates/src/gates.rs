@@ -314,7 +314,7 @@ pub const FEATURE_SETS: &[FeatureSet] = &[
     },
     FeatureSet {
         name: "test-footprint",
-        selection: &["-p", "quire-contract-runtime-footprint"],
+        selection: &["-p", "filament-contract-runtime-footprint"],
         domain_targets: false,
         trace_ids: &["NFR-001"],
         two_phase: true,
@@ -868,7 +868,7 @@ mod tests {
         let home = tempfile::tempdir().expect("home");
         fs::write(
             root.path().join("Cargo.toml"),
-            "[package]\nname = \"quire-contract-runtime\"\nrust-version = \"1.70.0\"\n",
+            "[package]\nname = \"filament-contract-runtime\"\nrust-version = \"1.70.0\"\n",
         )
         .expect("root manifest");
         fs::create_dir_all(home.path().join(".cargo/bin")).expect("cargo bin");
@@ -918,7 +918,7 @@ mod tests {
 
         fs::write(
             root.path().join("Cargo.toml"),
-            "[package]\nname = \"quire-contract-runtime\"\nrust-version = \"1.71.0\"\n",
+            "[package]\nname = \"filament-contract-runtime\"\nrust-version = \"1.71.0\"\n",
         )
         .expect("changed root manifest");
         let mut changed_runner = RecordingRunner(Vec::new());
@@ -935,7 +935,7 @@ mod tests {
 
         fs::write(
             root.path().join("Cargo.toml"),
-            "[package]\nname = \"quire-contract-runtime\"\n",
+            "[package]\nname = \"filament-contract-runtime\"\n",
         )
         .expect("missing floor manifest");
         let mut missing_runner = RecordingRunner(Vec::new());
@@ -949,7 +949,7 @@ mod tests {
 
         fs::write(
             root.path().join("Cargo.toml"),
-            "[package]\nname = \"quire-contract-runtime\"\nrust-version = \"1.71.0\"\n",
+            "[package]\nname = \"filament-contract-runtime\"\nrust-version = \"1.71.0\"\n",
         )
         .expect("unavailable floor manifest");
         struct UnavailableRunner;

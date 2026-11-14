@@ -3,7 +3,7 @@ id: TC-033
 title: "Carry the compiler vocabulary byte-exactly"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-012
+  - target: ix://agent-ix/filament-contract-runtime/FR-012
     type: verifies
 ---
 # TC-033: Carry the compiler vocabulary byte-exactly
@@ -27,18 +27,18 @@ refusal spellings, and the remaining refusal spellings. RT evidence: `tests/exac
    unlisted spellings, and `PackageRefusalCode::as_str`.
 3. After the R-3 definition cutover, inspect RT library source for local definitions, aliases,
    re-exports or adapters of `PackageCause`, `PackageRefusal` and `PackageRefusalCode`; check that
-   RT's selection and package refusal callers import QSV's definition owner directly. Confirm the
+   RT's selection and package refusal callers import FSV's definition owner directly. Confirm the
    retired `RevisionMismatch`, `DigestDomainMismatch` and `ByteDigestMismatch` variants do not
-   occur on RT's `invalid_package` surface, and repeat step 2 through the QSV types.
+   occur on RT's `invalid_package` surface, and repeat step 2 through the FSV types.
 
 ## Expected Results
 
 RT has no local `NodeKey` type, alias, constructor, hex decoder or public re-export; its library
 source contains no `NodeKey` construction. The retired parser and round-trip tests are absent.
 The admitted-identity controls retain their foreign and cross-domain behavior. The remaining
-refusal vocabulary spellings are byte-exact. QSV owns the complete structural-cause
+refusal vocabulary spellings are byte-exact. FSV owns the complete structural-cause
 reachability and normalized unit ordering obligations; RT has no second unit graph.
-The R-3 step is implemented: RT has no local definition refusal vocabulary, its tests import QSV
+The R-3 step is implemented: RT has no local definition refusal vocabulary, its tests import FSV
 directly, and the three retired causes cannot be paired with `invalid_package`. The
-`quire-integration` producer-origin test obtains the same admitted identities QSL supplies and
-does not require RT to depend on QSL or IR.
+`filament-integration` producer-origin test obtains the same admitted identities FSL supplies and
+does not require RT to depend on FSL or IR.

@@ -1,5 +1,5 @@
+use filament_contract_runtime::{CampaignReport, ContractIdentity, RequirementId, RevisionId};
 use ix_trace_rs::trace;
-use quire_contract_runtime::{CampaignReport, ContractIdentity, RequirementId, RevisionId};
 
 fn report<'a>(requirement: &'a str, revision: &'a str) -> CampaignReport<'a> {
     CampaignReport::new(ContractIdentity::new(
@@ -24,11 +24,11 @@ fn tc_015_snapshot_is_a_complete_immutable_capture() {
 #[cfg(feature = "snapshot-json")]
 mod json {
     use super::report;
-    use ix_trace_rs::trace;
-    use quire_contract_runtime::{
+    use filament_contract_runtime::{
         decode_campaign_snapshot as decode, encode_campaign_snapshot as encode, ClauseId,
         ExecutionPoint, FailureDetail, FailureKind, SnapshotError, Verdict, VerdictContext,
     };
+    use ix_trace_rs::trace;
 
     const EMPTY: &str = concat!(
         r#"{"schemaVersion":"runtime.campaign-snapshot/v1","requirement":"","revision":"","#,
@@ -355,7 +355,7 @@ mod json {
     fn tc_015_memory_ceiling_is_process_failure_not_semantic_refusal() {
         use std::io::Write;
         use std::os::unix::process::ExitStatusExt;
-        const CHILD_ENV: &str = "QUIRE_SNAPSHOT_MEMORY_PROBE";
+        const CHILD_ENV: &str = "FILAMENT_SNAPSHOT_MEMORY_PROBE";
         if let Ok(mode) = std::env::var(CHILD_ENV) {
             let raw = EMPTY.replace(
                 "\"requirement\":\"\"",

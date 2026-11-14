@@ -14,12 +14,12 @@ pub use snapshot_json::{
 ///
 /// Fields cannot be supplied or changed by consumers:
 /// ~~~compile_fail
-/// use quire_contract_runtime::CampaignSnapshot;
+/// use filament_contract_runtime::CampaignSnapshot;
 /// fn overwrite(snapshot: &mut CampaignSnapshot<'_>) { snapshot.counts = Default::default(); }
 /// ~~~
 /// No unchecked counter constructor is exposed:
 /// ~~~compile_fail
-/// use quire_contract_runtime::CampaignSnapshot;
+/// use filament_contract_runtime::CampaignSnapshot;
 /// let snapshot = CampaignSnapshot::new(1, 2, 3, 4);
 /// ~~~
 // Implements: FR-004

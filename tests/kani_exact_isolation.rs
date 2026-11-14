@@ -1,4 +1,4 @@
-//! interface-001-AC-15: the `cfg(kani)` verification module names `quire_exact` only under `exact`.
+//! interface-001-AC-15: the `cfg(kani)` verification module names `filament_exact` only under `exact`.
 
 use ix_trace_rs::trace;
 use proc_macro2::{TokenStream, TokenTree};
@@ -8,7 +8,7 @@ use syn::{spanned::Spanned, Attribute, Expr, ExprLit, Item, Lit, Meta};
 /// Identifiers that tie an item to the optional crate: the crate itself, what the module
 /// imports from it, and the local const built from it.
 const IMPORTED: &[&str] = &[
-    "quire_exact",
+    "filament_exact",
     "compare_ieee",
     "IeeeComparison",
     "IeeeValue",
@@ -68,7 +68,7 @@ fn mentions(tokens: TokenStream) -> bool {
 
 #[trace("TC-208", "interface-001-AC-15")]
 #[test]
-fn kani_module_gates_every_quire_exact_reference_on_the_exact_feature() {
+fn kani_module_gates_every_filament_exact_reference_on_the_exact_feature() {
     let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("verification/kani.rs");
     let text = std::fs::read_to_string(path).unwrap();
     let file = syn::parse_file(&text).unwrap();
@@ -80,10 +80,10 @@ fn kani_module_gates_every_quire_exact_reference_on_the_exact_feature() {
             continue;
         }
         let attrs =
-            attrs_of(item).expect("an item kind this guard cannot inspect names quire_exact");
+            attrs_of(item).expect("an item kind this guard cannot inspect names filament_exact");
         assert!(
             gated_on_exact(attrs),
-            "ungated quire_exact reference under cfg(kani):\n{source}"
+            "ungated filament_exact reference under cfg(kani):\n{source}"
         );
         gated += 1;
     }

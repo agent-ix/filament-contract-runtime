@@ -25,8 +25,8 @@ fn runtime_defines_no_local_equality_or_value_owner() {
             "fn plan_pairs(",
             "fn planned_equality(",
             "pub type Value =",
-            "pub use quire_exact::Value",
-            "pub use quire_semantic_value::declaration::CheckedEquality",
+            "pub use filament_exact::Value",
+            "pub use filament_semantic_value::declaration::CheckedEquality",
         ] {
             assert!(
                 !source.contains(duplicate),

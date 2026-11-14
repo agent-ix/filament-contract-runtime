@@ -2,8 +2,8 @@
 //! Declaration-ordered operand addresses over the single retained program.
 
 use alloc::vec::Vec;
-use quire_exact::{CollectionKind, MemberOwner, Presence, ValueType};
-use quire_semantic_value::declaration::CompositeShape;
+use filament_exact::{CollectionKind, MemberOwner, Presence, ValueType};
+use filament_semantic_value::declaration::CompositeShape;
 
 use super::{
     ExpressionId, Operation, Program, ProgramParts, ProgramRefusal, ProgramRefusalCode as Code,

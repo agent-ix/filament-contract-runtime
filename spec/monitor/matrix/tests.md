@@ -10,20 +10,20 @@ type: TestMatrix
 
 | Functional Req | Acceptance Criteria | Test Cases | Status |
 | --- | --- | --- | --- |
-| FR-276 | FR-276-AC-1 | TC-200 | ✅ Implemented: quire-integration tests/monitor_tick_producer.rs (PR agent-ix/quire-integration#96, Refs IR-722), against the QSL TickMonitorReference oracle |
-| FR-276 | FR-276-AC-2 | TC-200 | ✅ Implemented: capacity 22 and the 23rd-event Incomplete in quire-integration tests/monitor_tick_producer.rs (IR-722 follow-up, branch code/ir722-tc200-gaps; Refs IR-722), against the QSL TickMonitorReference oracle; the sibling-live case by step_2_a_shorter_window_buffer_overflows_while_its_sibling_stays_live (a 2 ms and a 10 ms once get capacities 6 and 22; the short buffer reports Incomplete(6) while the sibling keeps its identity and own outcomes; limit/setting texts asserted); the activation limit by step_2_an_instance_beyond_the_activation_capacity_names_the_activation_limit (the 9th `on each` instance against max_activations 8 yields Incomplete(8) naming activation / monitor.max_activations) |
-| FR-276 | FR-276-AC-3 | TC-200 | ✅ Implemented: quire-integration tests/monitor_tick_producer.rs (PR agent-ix/quire-integration#96, Refs IR-722), against the QSL TickMonitorReference oracle |
-| FR-276 | FR-276-AC-4 | TC-200 | 🚧 Partial: counter identity/unit/width/profile/admitted-order changes are covered in quire-integration tests/monitor_tick_producer.rs; the equal-timestamp-without-admitted-order clause is Planned: the producer always supplies the admitted order and the runtime refuses any other, so a plan without one cannot be built (missing: a producer/plan option that omits the admitted order, accepted by the runtime). The test step_3_equal_tick_events_in_both_arrival_orders_under_the_admitted_order_agree_with_the_reference runs under the admitted order and is not a cell for this clause |
-| FR-276 | FR-276-AC-5 | TC-200 | ✅ Implemented: a limit on one obligation leaves its sibling's identity and state intact (step_2_a_shorter_window_buffer_overflows_while_its_sibling_stays_live) and the five outcome kinds (definite, Indeterminate, Pending, Incomplete, Failed), each with a known obligation identity, are asserted in one place against the oracle (step_5_the_step_api_carries_five_distinct_outcome_kinds_with_obligation_identities); the reading-gap fault test (step_7_..., tagged AC-9) is not cited for AC-5. In quire-integration tests/monitor_tick_producer.rs (IR-722 follow-up, branch code/ir722-tc200-gaps; Refs IR-722), against the QSL TickMonitorReference oracle |
+| FR-276 | FR-276-AC-1 | TC-200 | ✅ Implemented: filament-integration tests/monitor_tick_producer.rs (PR agent-ix/filament-integration#96, Refs IR-722), against the FSL TickMonitorReference oracle |
+| FR-276 | FR-276-AC-2 | TC-200 | ✅ Implemented: capacity 22 and the 23rd-event Incomplete in filament-integration tests/monitor_tick_producer.rs (IR-722 follow-up, branch code/ir722-tc200-gaps; Refs IR-722), against the FSL TickMonitorReference oracle; the sibling-live case by step_2_a_shorter_window_buffer_overflows_while_its_sibling_stays_live (a 2 ms and a 10 ms once get capacities 6 and 22; the short buffer reports Incomplete(6) while the sibling keeps its identity and own outcomes; limit/setting texts asserted); the activation limit by step_2_an_instance_beyond_the_activation_capacity_names_the_activation_limit (the 9th `on each` instance against max_activations 8 yields Incomplete(8) naming activation / monitor.max_activations) |
+| FR-276 | FR-276-AC-3 | TC-200 | ✅ Implemented: filament-integration tests/monitor_tick_producer.rs (PR agent-ix/filament-integration#96, Refs IR-722), against the FSL TickMonitorReference oracle |
+| FR-276 | FR-276-AC-4 | TC-200 | 🚧 Partial: counter identity/unit/width/profile/admitted-order changes are covered in filament-integration tests/monitor_tick_producer.rs; the equal-timestamp-without-admitted-order clause is Planned: the producer always supplies the admitted order and the runtime refuses any other, so a plan without one cannot be built (missing: a producer/plan option that omits the admitted order, accepted by the runtime). The test step_3_equal_tick_events_in_both_arrival_orders_under_the_admitted_order_agree_with_the_reference runs under the admitted order and is not a cell for this clause |
+| FR-276 | FR-276-AC-5 | TC-200 | ✅ Implemented: a limit on one obligation leaves its sibling's identity and state intact (step_2_a_shorter_window_buffer_overflows_while_its_sibling_stays_live) and the five outcome kinds (definite, Indeterminate, Pending, Incomplete, Failed), each with a known obligation identity, are asserted in one place against the oracle (step_5_the_step_api_carries_five_distinct_outcome_kinds_with_obligation_identities); the reading-gap fault test (step_7_..., tagged AC-9) is not cited for AC-5. In filament-integration tests/monitor_tick_producer.rs (IR-722 follow-up, branch code/ir722-tc200-gaps; Refs IR-722), against the FSL TickMonitorReference oracle |
 | FR-276 | FR-276-AC-6 | TC-200 | 🚧 Partial: independence of two monitors, no verdict from build, one shared plan, and retention after the producer root is dropped of the layout, the four entries, the State/Inputs/Scope types, one capture per atom and the buffer capacities (step_4_the_admitted_program_retains_its_layout_entries_and_declared_types) are covered in tests/monitor_tick_producer.rs; Planned: rebinding (RT exposes no rebind operation) and atom bodies as an object (the Program carries one capture field per atom; the observation owner evaluates the bodies, no accessor exists) |
-| FR-276 | FR-276-AC-7 | TC-200 | 🚧 Partial: foreign source selection and starved build are covered in tests/monitor_tick_producer.rs; target-premise refusals in quire-driver monitor_refusal.rs and monitor_closure.rs; Unsupported in quire-driver monitor_lowering.rs. Planned: altered atom/transition/initializer/interval/buffer/activation bindings and equal subformula ids under two subjects, because prepare_monitor takes only the producer's own PlanRoot (missing: a driver entry taking a re-read package together with the original selection to compare; IR strict admission alone accepts a changed counter_width_bits, max_reading_gap, max_event_rate, counter or activation_capacity literal and refuses a changed uncertainty) |
+| FR-276 | FR-276-AC-7 | TC-200 | 🚧 Partial: foreign source selection and starved build are covered in tests/monitor_tick_producer.rs; target-premise refusals in filament-driver monitor_refusal.rs and monitor_closure.rs; Unsupported in filament-driver monitor_lowering.rs. Planned: altered atom/transition/initializer/interval/buffer/activation bindings and equal subformula ids under two subjects, because prepare_monitor takes only the producer's own PlanRoot (missing: a driver entry taking a re-read package together with the original selection to compare; IR strict admission alone accepts a changed counter_width_bits, max_reading_gap, max_event_rate, counter or activation_capacity literal and refuses a changed uncertainty) |
 | FR-276 | FR-276-AC-8 | TC-200 | 🚧 Partial: covered in tests/monitor_tick_producer.rs including false activation (step_6_a_false_activation_guard_starts_no_root_instance, an `on each ... when` clause); Planned: a producer-plan executor-invariant failure (no public injection point; the controlled-arena equivalent is AC-12) |
-| FR-276 | FR-276-AC-9 | TC-200 | ✅ Implemented: quire-integration tests/monitor_tick_producer.rs (PR agent-ix/quire-integration#96, Refs IR-722), against the QSL TickMonitorReference oracle |
-| FR-276 | FR-276-AC-10 | TC-200 | ✅ Implemented: quire-integration tests/monitor_tick_producer.rs (PR agent-ix/quire-integration#96, Refs IR-722), against the QSL TickMonitorReference oracle |
-| FR-276 | FR-276-AC-11 | TC-200 | ✅ Implemented: quire-integration tests/monitor_tick_producer.rs (PR agent-ix/quire-integration#96, Refs IR-722), against the QSL TickMonitorReference oracle |
-| FR-276 | FR-276-AC-12 | TC-200 | ✅ Implemented: quire-integration tests/monitor_program.rs state_bound_violations_fail_at_the_entry_site_commit_nothing_and_terminate over a controlled arena (the real producer never emits an over-bound entry) |
-| FR-276 | FR-276-AC-13 | TC-200 | 🚧 Partial: each StepBudget field one below its measured use, for build and one event, returns the stated StepResource with exact limit and spent+requested and commits nothing (step_11_each_step_budget_field_one_below_its_use_reports_the_exact_stop in tests/monitor_tick_producer.rs; the exact set of fields drawn on is asserted per phase; decimal_digits, scale_expansion, text_input_bytes, text_scalars, normalized_scalars and unit_edges are never drawn on by this clause; the event phase samples only the first event); allocator denials over a controlled arena are in quire-integration tests/monitor_program.rs tests tagged TC-098 / IT-018-SC-16 / interface-002-AC-3. Planned: allocator denials with producer-admitted ProgramParts (missing: a driver entry returning ProgramParts, since prepare_monitor returns only Rc<Program>) and PathArenaCapacity surfaced in path_capacity (no public input exhausts the path arena) |
-| FR-276 | FR-276-AC-14 | TC-200 | 🚧 Partial: executor_operating_stops_and_budget_replacement_are_typed_and_atomic and the other TC-098 / IT-018-SC-16 / interface-002-AC-3 tests in quire-integration tests/monitor_program.rs cover denials over a controlled arena. Planned: allocator denials inside Layout, function parameter/result and expression type checks with producer-admitted identities, and their allocation-enabled retries (missing: a driver entry returning ProgramParts) |
+| FR-276 | FR-276-AC-9 | TC-200 | ✅ Implemented: filament-integration tests/monitor_tick_producer.rs (PR agent-ix/filament-integration#96, Refs IR-722), against the FSL TickMonitorReference oracle |
+| FR-276 | FR-276-AC-10 | TC-200 | ✅ Implemented: filament-integration tests/monitor_tick_producer.rs (PR agent-ix/filament-integration#96, Refs IR-722), against the FSL TickMonitorReference oracle |
+| FR-276 | FR-276-AC-11 | TC-200 | ✅ Implemented: filament-integration tests/monitor_tick_producer.rs (PR agent-ix/filament-integration#96, Refs IR-722), against the FSL TickMonitorReference oracle |
+| FR-276 | FR-276-AC-12 | TC-200 | ✅ Implemented: filament-integration tests/monitor_program.rs state_bound_violations_fail_at_the_entry_site_commit_nothing_and_terminate over a controlled arena (the real producer never emits an over-bound entry) |
+| FR-276 | FR-276-AC-13 | TC-200 | 🚧 Partial: each StepBudget field one below its measured use, for build and one event, returns the stated StepResource with exact limit and spent+requested and commits nothing (step_11_each_step_budget_field_one_below_its_use_reports_the_exact_stop in tests/monitor_tick_producer.rs; the exact set of fields drawn on is asserted per phase; decimal_digits, scale_expansion, text_input_bytes, text_scalars, normalized_scalars and unit_edges are never drawn on by this clause; the event phase samples only the first event); allocator denials over a controlled arena are in filament-integration tests/monitor_program.rs tests tagged TC-098 / IT-018-SC-16 / interface-002-AC-3. Planned: allocator denials with producer-admitted ProgramParts (missing: a driver entry returning ProgramParts, since prepare_monitor returns only Rc<Program>) and PathArenaCapacity surfaced in path_capacity (no public input exhausts the path arena) |
+| FR-276 | FR-276-AC-14 | TC-200 | 🚧 Partial: executor_operating_stops_and_budget_replacement_are_typed_and_atomic and the other TC-098 / IT-018-SC-16 / interface-002-AC-3 tests in filament-integration tests/monitor_program.rs cover denials over a controlled arena. Planned: allocator denials inside Layout, function parameter/result and expression type checks with producer-admitted identities, and their allocation-enabled retries (missing: a driver entry returning ProgramParts) |
 
 ## Test Case Summary
 
@@ -34,9 +34,9 @@ type: TestMatrix
 ## Component Execution Evidence
 
 **Executed owner controls, now published on integration main:** the retained complete
-`monitor_program` run in [quire-integration PR #41](https://github.com/agent-ix/quire-integration/pull/41)
+`monitor_program` run in [filament-integration PR #41](https://github.com/agent-ix/filament-integration/pull/41)
 reports 86 passed, zero failed and zero ignored against the coherent
-producer/reader/runtime cohort (quire-contract-runtime 0.1.0). Inspection of the
+producer/reader/runtime cohort (filament-contract-runtime 0.1.0). Inspection of the
 named passing controls backs these complete construction or ordinary-executor criteria:
 
 - interface-002-AC-2 through AC-4;
@@ -57,7 +57,7 @@ but interface-002-AC-5 and AC-6 remain Planned, so the complete TC-209 case
 remains Planned. The observed 86/0 harness result does not
 establish every stated test intention or accept the whole IT-018/TC-098 contract.
 
-**Implemented: backed by tests in `quire-integration` `tests/monitor_program.rs`:**
+**Implemented: backed by tests in `filament-integration` `tests/monitor_program.rs`:**
 each criterion below is exercised by the named test, tagged `TC-098` or
 `IT-018-SC-14`, in the owner repository. A reviewer read each test against its
 criterion text.
@@ -115,8 +115,8 @@ criterion text.
   that reason.
 
 **Partial: complete temporal acceptance:** TC-200 is partially covered by
-quire-integration `tests/monitor_tick_producer.rs` (IR-722 and its follow-up, Refs IR-722)
-and `tests/monitor_program.rs`, against the QSL `TickMonitorReference` oracle. Steps 1,
+filament-integration `tests/monitor_tick_producer.rs` (IR-722 and its follow-up, Refs IR-722)
+and `tests/monitor_program.rs`, against the FSL `TickMonitorReference` oracle. Steps 1,
 2 (capacity 22, the sibling-live case and the activation limit), 3, 5's five outcome kinds, 7, 8, 9 and 10 are covered; step 4 (retention and
 independence), 5 and 6 (including false activation) are partial; step 11 is partial (every
 `StepBudget` field one below its use is covered for build and an event, with the exact set of fields drawn on asserted per phase; six fields are never drawn on by this clause and the event phase samples only the first event) and step 12 is partial
@@ -139,7 +139,7 @@ exist.
 ## Map and Filter Evidence
 
 interface-010-AC-4 and AC-5 (`SequenceMap`, `SequenceFilter`; TC-098, IT-018-SC-12)
-coverage has moved to the `quire-integration` `tests/monitor_program.rs` owner file,
+coverage has moved to the `filament-integration` `tests/monitor_program.rs` owner file,
 because RT's TC-033 guard (FR-012-AC-8) forbids this repository from minting NodeKeys.
 
 ## Published Reference Qualification
@@ -156,7 +156,7 @@ remaining Planned criterion.
 
 ## Evidence Locations
 
-- `quire-integration` owns the authoritative `tests/monitor_program.rs` controls.
+- `filament-integration` owns the authoritative `tests/monitor_program.rs` controls.
   The runtime references the owner's source on main; it does not copy the tests.
 - TC-209 describes retained-program construction controls. TC-200 independently
   owns complete producer/build/event/watermark/gap acceptance; construction and

@@ -3,9 +3,9 @@ id: FR-011
 title: "Expose a determinate meter state at every stop"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: depends_on
-  - target: ix://agent-ix/quire-specification/FR-044
+  - target: ix://agent-ix/filament-specification/FR-044
     type: implements
 ---
 # FR-011: Expose a determinate meter state at every stop
@@ -86,28 +86,28 @@ and what the meter holds at all is what this requirement fixes.
 
 ## Kernel ownership
 
-The behaviour above that `quire-exact` implements (interface-001, "Exact kernel surface") is the
+The behaviour above that `filament-exact` implements (interface-001, "Exact kernel surface") is the
 behaviour of that one kernel, which the runtime consumes and does not copy ([FR-275](./FR-275-single-exact-kernel.md)).
 This requirement stays in force and binds the `exact` feature as a whole; where its evidence
 moves to the kernel's repository the matrix says so and keeps the row, without deleting any
 acceptance criterion.
 
-[quire-exact FR-362-AC-11](ix://agent-ix/quire-exact/FR-362) covers scalar stop prefixes;
+[filament-exact FR-362-AC-11](ix://agent-ix/filament-exact/FR-362) covers scalar stop prefixes;
 `FR-359-AC-6` and `FR-359-AC-7` cover meter scan order and consumed readers;
 `FR-358-AC-8` through `FR-358-AC-11` cover the bounded test-support log after its cap;
 `FR-359-AC-1` through `FR-359-AC-5` cover cumulative boundaries, exact over-`u64` charge
 requests and atomicity; and
-`FR-364-AC-1` covers IEEE flag order. QSV quantity evaluation supplies AC-2 and the
+`FR-364-AC-1` covers IEEE flag order. FSV quantity evaluation supplies AC-2 and the
 dimension, compound-unit and graph behavior in AC-7; RT exercises the consumed AC-2 stop in
 `tests/exact_quantity_conversion.rs`. The lazy invocation and stop propagation in AC-3/AC-8
 remain runtime-owned and retain their evidence in TC-032.
 In particular, kernel `FR-359-AC-3`/`FR-359-AC-4` require exact over-`u64` `next_charge`
 values and `FR-359-AC-7` covers `consumed` over `LimitKind::ALL`. QSpec
-`ix://agent-ix/quire-specification/TC-187` vector U13 requires the exact
-`next_charge = 36893488147419103232` for quantity power before computation. QSV now owns
+`ix://agent-ix/filament-specification/TC-187` vector U13 requires the exact
+`next_charge = 36893488147419103232` for quantity power before computation. FSV now owns
 the quantity request; RT retains no duplicate implementation of that charge.
 
 ## Dependencies
 
 - **Upstream**: [FR-006](./FR-006-exact-outcomes-and-accounting.md);
-  `ix://agent-ix/quire-specification`.
+  `ix://agent-ix/filament-specification`.

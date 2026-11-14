@@ -3,9 +3,9 @@ id: FR-001
 title: "Represent verdicts and clause observations"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/StR-001
+  - target: ix://agent-ix/filament-contract-runtime/StR-001
     type: satisfies
-  - target: ix://agent-ix/quire-contract-runtime/interface-001
+  - target: ix://agent-ix/filament-contract-runtime/interface-001
     type: implements
 ---
 # FR-001: Represent verdicts and clause observations

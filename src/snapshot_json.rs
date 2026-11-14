@@ -42,12 +42,12 @@ impl fmt::Display for SnapshotError {
 ///
 /// There is no conversion back to a mutable report:
 /// ~~~compile_fail
-/// use quire_contract_runtime::{CampaignReport, DecodedCampaignSnapshot};
+/// use filament_contract_runtime::{CampaignReport, DecodedCampaignSnapshot};
 /// fn resume(value: DecodedCampaignSnapshot) -> CampaignReport<'static> { value.into() }
 /// ~~~
 /// Imported identity cannot be replaced through public fields:
 /// ~~~compile_fail
-/// use quire_contract_runtime::DecodedCampaignSnapshot;
+/// use filament_contract_runtime::DecodedCampaignSnapshot;
 /// fn rewrite(value: &mut DecodedCampaignSnapshot) { value.requirement = "foreign".into(); }
 /// ~~~
 // Implements: FR-004

@@ -2,8 +2,8 @@
 //! Resolve only requested record declarations, retaining private slot addresses.
 
 use alloc::vec::Vec;
-use quire_exact::{MemberOwner, Presence};
-use quire_semantic_value::declaration::CompositeShape;
+use filament_exact::{MemberOwner, Presence};
+use filament_semantic_value::declaration::CompositeShape;
 
 use super::{ExpressionId, Operation, ProgramParts, ProgramRefusal, ProgramRefusalCode as Code};
 

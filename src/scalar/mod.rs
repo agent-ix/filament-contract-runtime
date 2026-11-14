@@ -3,7 +3,7 @@
 //!
 //! Implements: FR-006, FR-009, FR-275, interface-001-AC-8.
 //!
-//! The exact value and operation kernel lives in `quire-exact`. This module owns
+//! The exact value and operation kernel lives in `filament-exact`. This module owns
 //! the I13 backend negotiators and the lazy, stop-carrying Boolean connective.
 
 mod boolean;

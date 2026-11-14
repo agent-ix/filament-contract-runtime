@@ -3,11 +3,11 @@ id: interface_004
 title: "Lexical bindings in the retained monitor program"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/FR-276
+  - target: ix://agent-ix/filament-contract-runtime/FR-276
     type: references
 ---
 # [interface-004] Lexical bindings in the retained monitor program
@@ -16,7 +16,7 @@ relationships:
 
 ```yaml
 name: MonitorLexicalBindings
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types:
   - LocalId
@@ -73,7 +73,7 @@ field or semantic capacity is introduced.
 The program keeps the same ProgramParts, Layout, Function and Expression fields.
 There is no synthetic helper declaration, new source identity, callback, closure
 DTO or source parser. This is the lexical portion of the ordinary operations
-emitted by QSL FR-251; it does not qualify temporal entry semantics or implement
+emitted by FSL FR-251; it does not qualify temporal entry semantics or implement
 a temporal operator. The remaining constructor, arithmetic, sequence and fold
 capabilities and the gap path retain their separate Phase 2 work.
 

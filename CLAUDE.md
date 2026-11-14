@@ -1,4 +1,4 @@
-# quire-contract-runtime
+# filament-contract-runtime
 
 Small no_std runtime support for generated contract oracles and harness verdicts.
 
@@ -17,7 +17,7 @@ make spec             # Quire validation and coverage
 make build            # release build
 make clean            # cargo clean
 make deny             # cargo deny licenses and one-copy bans
-make deny-mutations   # QSL Git dependencies in scratch copies must fail cargo-deny with a source rejection
+make deny-mutations   # FSL Git dependencies in scratch copies must fail cargo-deny with a source rejection
 make use-local        # patch first-party git deps to sibling checkouts via a gitignored .cargo/config.toml (none today); snapshots Cargo.lock to .cargo/Cargo.lock.pre-local; fails if cargo metadata fails or a patch is unused
 make use-remote       # delete the patch config and restore Cargo.lock from that snapshot (no snapshot: lock untouched)
 make kani             # the proofs; an absent toolchain fails
@@ -28,7 +28,7 @@ make ci               # all mandatory local gates; never dispatches hosted CI
 ## Safety scaffolding
 
 - `clippy.toml` caps cognitive complexity / arg count
-- `deny.toml` allow-lists licenses, the three shared Git repositories and the dev-only first-party `ix-trace-rs` tooling source; it denies unknown registries/git sources (including the QSL repository), and `make deny` fails if any agent-ix git crate resolves more than once in a Cargo.lock (`quire check-lock`) (FR-275)
+- `deny.toml` allow-lists licenses, the three shared Git repositories and the dev-only first-party `ix-trace-rs` tooling source; it denies unknown registries/git sources (including the FSL repository), and `make deny` fails if any agent-ix git crate resolves more than once in a Cargo.lock (`quire check-lock`) (FR-275)
 - `rustfmt.toml` uses stable rustfmt settings with a 100-char width. CI fails on drift.
 - `verification/kani.rs` is compiled under `cfg(kani)`. Stable Clippy does not type-check that
   configuration; rustfmt and `make kani` are the controls for this boundary.
@@ -56,11 +56,11 @@ older or missing executable fails the gate; no local checker fallback exists.
 ## Cross-repository coverage inputs
 
 `make spec` reads the authoritative monitor controls from the sibling
-`quire-integration` checkout on `main`. It resolves the sibling from Git's common
+`filament-integration` checkout on `main`. It resolves the sibling from Git's common
 repository directory, so the same command works in an isolated RT worktree.
 `INTEGRATION_DIR` may select another checkout; it must still be on `main`, with
 `tests/monitor_program.rs` a regular file matching both committed main and fetched
-origin/main bytes. The origin must identify `agent-ix/quire-integration`; index
+origin/main bytes. The origin must identify `agent-ix/filament-integration`; index
 flags cannot hide changed content. Missing or divergent inputs fail the gate.
 
 The scan scope contains file references to RT's spec/tracked sources and that

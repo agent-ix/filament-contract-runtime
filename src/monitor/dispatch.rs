@@ -2,7 +2,7 @@
 //! Atomic entry execution over the retained canonical state.
 
 use alloc::rc::Rc;
-use quire_exact::{FieldValue, Value};
+use filament_exact::{FieldValue, Value};
 
 use super::{
     executor::{build_failure, state_defect},
@@ -81,7 +81,7 @@ impl Monitor {
                 }
             }
         };
-        let delta_value = Value::Integer(quire_exact::Integer::from(delta));
+        let delta_value = Value::Integer(filament_exact::Integer::from(delta));
         let gap = self.baseline.is_some() && delta > layout.max_reading_gap;
         let function = if gap {
             layout.entries.on_gap

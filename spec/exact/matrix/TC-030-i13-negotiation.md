@@ -3,7 +3,7 @@ id: TC-030
 title: "Dispose negotiation items independently and in input order"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-009
+  - target: ix://agent-ix/filament-contract-runtime/FR-009
     type: verifies
 ---
 # TC-030: Dispose negotiation items independently and in input order

@@ -43,7 +43,7 @@ impl<'a> VerdictContext<'a> {
 /// treated as success:
 ///
 /// ```compile_fail
-/// use quire_contract_runtime::VerdictKind;
+/// use filament_contract_runtime::VerdictKind;
 ///
 /// fn classify(kind: VerdictKind) -> u8 {
 ///     match kind {
@@ -76,7 +76,7 @@ pub enum VerdictKind {
 /// Downstream exhaustive matching is rejected:
 ///
 /// ```compile_fail
-/// use quire_contract_runtime::Verdict;
+/// use filament_contract_runtime::Verdict;
 ///
 /// fn classify(verdict: Verdict<'_>) -> u8 {
 ///     match verdict {

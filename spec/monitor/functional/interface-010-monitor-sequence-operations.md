@@ -3,11 +3,11 @@ id: interface_010
 title: "Canonical sequence operations and scoped folds"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_004
+  - target: ix://agent-ix/filament-contract-runtime/interface_004
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_008
+  - target: ix://agent-ix/filament-contract-runtime/interface_008
     type: references
 ---
 # [interface-010] Canonical sequence operations and scoped folds
@@ -16,7 +16,7 @@ relationships:
 
 ```yaml
 name: MonitorSequenceOperations
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Operation, LocalId, Program]
 operations:
@@ -67,8 +67,8 @@ declared identity. These are the sequence semantics and charge schedules of
 QSpec FR-145; no set/bag commutativity rule is guessed.
 
 `SequenceMap { sequence, item, body }` and `SequenceFilter { sequence, item,
-predicate }` are the scoped, order-preserving element operations that the QSL
-`quire.op.collection.map` and `quire.op.collection.filter` lowerings use. Each
+predicate }` are the scoped, order-preserving element operations that the FSL
+`filament.op.collection.map` and `filament.op.collection.filter` lowerings use. Each
 carries the sequence ExpressionId, one current-function item LocalId and one
 scoped ExpressionId (`body` or `predicate`). The sequence expression evaluates
 once, before any visit. The item slot has the sequence's admitted element type,

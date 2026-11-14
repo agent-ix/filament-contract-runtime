@@ -4,7 +4,7 @@ title: "Allocation-free no_std core"
 type: NFR
 quality_attribute: performance_efficiency
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-001
+  - target: ix://agent-ix/filament-contract-runtime/FR-001
     type: constrains
 ---
 # NFR-001: Allocation-free no_std core

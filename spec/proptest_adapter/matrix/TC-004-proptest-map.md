@@ -3,7 +3,7 @@ id: TC-004
 title: "Verify the optional proptest adapter"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-003
+  - target: ix://agent-ix/filament-contract-runtime/FR-003
     type: verifies
 ---
 # TC-004: Verify the optional proptest adapter

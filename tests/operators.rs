@@ -1,12 +1,12 @@
 use core::cell::Cell;
 
-use ix_trace_rs::trace;
-use proptest::prelude::*;
-use quire_contract_runtime::operators::{
+use filament_contract_runtime::operators::{
     and_short_circuit, and_total, checked_add, checked_div, checked_mul, checked_rem, checked_sub,
     implies_short_circuit, implies_total, index, option_copied, option_ref, or_short_circuit,
     or_total,
 };
+use ix_trace_rs::trace;
+use proptest::prelude::*;
 
 /// Exercises every `CheckedInteger` member for `$ty` against the primitive's own `checked_*`,
 /// over the pairwise cross product of `$candidate`s. Callers list MIN, MAX, 0, 1, and (for signed
@@ -115,9 +115,9 @@ fn tc_002_evaluation_contracts_are_distinct_and_ordered() {
 
 /// `and_short_circuit`/`or_short_circuit`/`implies_short_circuit` are generic over what `right`
 /// returns (`R: From<bool>`): a plain `bool` for an ordinary generated expression, or any
-/// stop-carrying type that is `From<bool>`. `quire-contract-codegen`'s oracle renderer calls these
+/// stop-carrying type that is `From<bool>`. `filament-contract-codegen`'s oracle renderer calls these
 /// three functions by name for `BooleanOperator::ShortCircuitAnd`/`ShortCircuitOr`/`Implication`
-/// (`agent-ix/quire-contract-runtime#27`), so this crate must be able to carry a stop through them
+/// (`agent-ix/filament-contract-runtime#27`), so this crate must be able to carry a stop through them
 /// without the caller deciding it outside the connective. The kernel's `Outcome<bool>` is not
 /// `From<bool>` and the runtime cannot add the impl, so the test carries its stop in a local type.
 #[trace("TC-002", "FR-002-AC-1", "FR-002-AC-2")]

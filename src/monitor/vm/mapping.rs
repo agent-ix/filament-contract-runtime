@@ -7,7 +7,7 @@ use super::{
     ValueType,
 };
 use alloc::{boxed::Box, sync::Arc, vec::Vec};
-use quire_exact::{Charge, ChargePoint, CollectionKind, CollectionValue};
+use filament_exact::{Charge, ChargePoint, CollectionKind, CollectionValue};
 
 pub(super) struct MapState {
     expression: ExpressionId,
@@ -114,7 +114,7 @@ impl Machine {
                 .active_folds
                 .checked_sub(2)
                 .ok_or_else(|| broken(site, Broken::ValueStack))?;
-            let outcome = quire_exact::form(result_type, state.results, &mut resources.scalar);
+            let outcome = filament_exact::form(result_type, state.results, &mut resources.scalar);
             return self.computed_result(outcome, site, resources);
         }
         resources
