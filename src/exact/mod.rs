@@ -3,32 +3,32 @@
 //!
 //! Implements: FR-012, FR-143, FR-144, FR-146, FR-149, FR-273.
 //!
-//! Exact scalar values, operations, outcomes and metering belong to `quire-exact` (FR-275).
+//! Exact scalar values, operations, outcomes and metering belong to `filament-exact` (FR-275).
 //! Consumers import those directly from the kernel. This module still defines the
-//! ported QSL expression code retained under the staged exception in AD-002/AD-004
+//! ported FSL expression code retained under the staged exception in AD-002/AD-004
 //! and IR-1009. The exception expires at the usable shared no_std evaluator cutover;
 //! the full FR-275 end state remains open. It is built over shared scalars and metering.
 //!
 //! Trace: interface-001-AC-2, interface-001-AC-4
 //!
 //! ```compile_fail
-//! use quire_contract_runtime::exact::Integer;
+//! use filament_contract_runtime::exact::Integer;
 //! ```
 //!
-//! The quire-specification/FR-146 function-application surface includes
+//! The filament-specification/FR-146 function-application surface includes
 //! [`PackageDeclarations::check`] and [`CheckedPackage::call`]/
 //! [`CheckedPackage::evaluate`], ported to the boundary AD-002 sets.
 //!
 //! Node keys, definition-lock selection, owner joins, stale keys and package
 //! admission are compiler work. The runtime consumes admitted keys and
 //! profiles, and consumes the compiler's closed refusal vocabularies
-//! through `quire_semantic_value::definition` and
-//! `quire_semantic_value::semantic_node`, so a compiler refusal is reported
+//! through `filament_semantic_value::definition` and
+//! `filament_semantic_value::semantic_node`, so a compiler refusal is reported
 //! with its exact code. No host floating-point
 //! operation, panic path or ambient effect exists on any semantic path.
 //!
 //! Composite, collection, equality, key, containment and reference values
-//! are consumed directly from `quire-exact` and `quire-semantic-value`.
+//! are consumed directly from `filament-exact` and `filament-semantic-value`.
 //! [`plan_call`] and [`plan_evaluation`] use the shared object closure.
 
 mod expression;

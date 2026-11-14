@@ -5,13 +5,13 @@
 
 use std::collections::BTreeSet;
 
-use ix_trace_rs::trace;
-use quire_contract_runtime::scalar::{
+use filament_contract_runtime::scalar::{
     negotiate_ieee, negotiate_integer_division, IeeeBackendCapabilities, IeeeDisposition,
     IeeeItemRequirement, IeeeUnsupportedCause, IntegerDivisionBounds, IntegerDivisionConsumer,
     IntegerDivisionDisposition,
 };
-use quire_exact::{IeeeOperationKind, IeeeWidth, Integer, IntegerInterval, RoundingMode};
+use filament_exact::{IeeeOperationKind, IeeeWidth, Integer, IntegerInterval, RoundingMode};
+use ix_trace_rs::trace;
 
 fn int(value: i128) -> Integer {
     Integer::from(value)

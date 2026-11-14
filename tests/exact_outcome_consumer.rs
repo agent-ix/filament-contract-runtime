@@ -2,14 +2,14 @@
 //! RT consumer evidence for the kernel's closed exact outcome envelope.
 #![cfg(feature = "exact")]
 
-use ix_trace_rs::trace;
-use quire_contract_runtime::scalar::{evaluate_boolean_short_circuit, ShortCircuitConnective};
-use quire_exact::{
+use filament_contract_runtime::scalar::{evaluate_boolean_short_circuit, ShortCircuitConnective};
+use filament_exact::{
     admit_quantity_result, ChargePoint, CheckedInvariantCause, Incomplete, Integer, LimitKind,
     Meter, Outcome, Quantity, QuantityResultInterval, Rational, Refusal, ScalarLimits, Undefined,
 };
-use quire_semantic_value::unit::UnitGraph;
-use quire_specification::VALUE_ACCOUNTING_CHARGE_POINT_VECTORS;
+use filament_semantic_value::unit::UnitGraph;
+use filament_specification::VALUE_ACCOUNTING_CHARGE_POINT_VECTORS;
+use ix_trace_rs::trace;
 use std::collections::{BTreeMap, BTreeSet};
 
 fn closed_refusal(reason: &Refusal) {

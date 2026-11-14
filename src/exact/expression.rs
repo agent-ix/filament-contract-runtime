@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! Function application under exact semantics (quire-specification/FR-146,
+//! Function application under exact semantics (filament-specification/FR-146,
 //! FR-273).
 //!
 //! AD-002 controls this runtime function boundary. Generated code supplies
@@ -20,13 +20,13 @@ use alloc::vec::Vec;
 use core::cell::{Cell, RefCell};
 use core::sync::atomic::{AtomicUsize, Ordering};
 
-use quire_exact::{
+use filament_exact::{
     Charge, ChargePoint, CheckedInvariantCause, DecimalLoss, FieldValue, IeeeExactLoss, IeeeFlags,
     IllTypedCause, Integer, Meter, Outcome, Refusal, Value, ValueType,
 };
-use quire_semantic_value::declaration::{TypeCheckError, TypeEnvironment};
-use quire_semantic_value::object_closure::ObjectClosure;
-use quire_semantic_value::stop::{outcome_from_stop, Stop};
+use filament_semantic_value::declaration::{TypeCheckError, TypeEnvironment};
+use filament_semantic_value::object_closure::ObjectClosure;
+use filament_semantic_value::stop::{outcome_from_stop, Stop};
 
 use crate::scalar::{IeeeItemRequirement, IntegerDivisionConsumer};
 
@@ -507,7 +507,7 @@ pub struct Evaluation {
 }
 
 /// The events a planned call or evaluation contributes at its own root, with
-/// no charge and no body invoked. Mirrors [`quire_exact::EqualityPlan`].
+/// no charge and no body invoked. Mirrors [`filament_exact::EqualityPlan`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct CallPlan {
     call_events: Integer,

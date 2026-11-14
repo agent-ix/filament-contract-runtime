@@ -3,7 +3,7 @@ id: TC-209
 title: "Retained monitor program construction"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: verifies
 ---
 # TC-209: Retained monitor program construction
@@ -17,14 +17,14 @@ The latter remains the complete FR-276 acceptance procedure.
 ## Evidence Status
 
 **Planned: incomplete whole-case evidence.** The retained complete `monitor_program`
-run in [quire-integration PR #41](https://github.com/agent-ix/quire-integration/pull/41)
+run in [filament-integration PR #41](https://github.com/agent-ix/filament-integration/pull/41)
 reports 86 passed, zero failed and zero ignored against the coherent
-producer/reader/runtime cohort (quire-contract-runtime 0.1.0). The named controls
+producer/reader/runtime cohort (filament-contract-runtime 0.1.0). The named controls
 back the original procedures 2 through 4 and interface-002-AC-2 through AC-4. The
 cross-function source-location controls in procedure 3 and interface-002-AC-5/AC-6
 remain Planned until the RT representation change and a direct RT construction
 test land. Procedure 1 and
-interface-002-AC-1 are backed in quire-integration `tests/monitor_program.rs` by
+interface-002-AC-1 are backed in filament-integration `tests/monitor_program.rs` by
 `retained_program_outlives_preparation_and_keeps_four_entry_keys`: after the
 preparation parts are consumed and one `Rc` owner drops, it asserts the root key,
 package lock, occurrence, the original clock, admitted-order and progress
@@ -47,10 +47,10 @@ diagnostic literal arena or landing sequence supplies evidence for them.
 ## Test Procedure
 
 Run direct `Program::try_new` construction controls in RT for the source-location
-rule and the complete `monitor_program` target in `quire-integration` (IT-018 / TC-098)
-for the existing producer/reader boundary. The latter's live QSL producer and strict
+rule and the complete `monitor_program` target in `filament-integration` (IT-018 / TC-098)
+for the existing producer/reader boundary. The latter's live FSL producer and strict
 IR reader provide semantic identities and their matching declaration/unit meanings.
-The direct RT control uses original `NodeKey` values as inputs, not a copied QSL
+The direct RT control uses original `NodeKey` values as inputs, not a copied FSL
 fixture or reminted key. The derived layout-key probe and ordinary diagnostic record
 shapes test construction storage; they do not claim an emitted temporal plan or
 FR-487 activation/result schema.

@@ -3,9 +3,9 @@ id: FR-002
 title: "Evaluate safe oracle operators"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-001
+  - target: ix://agent-ix/filament-contract-runtime/FR-001
     type: depends_on
-  - target: ix://agent-ix/quire-contract-runtime/interface-001
+  - target: ix://agent-ix/filament-contract-runtime/interface-001
     type: implements
 ---
 # FR-002: Evaluate safe oracle operators

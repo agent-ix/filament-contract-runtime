@@ -1,6 +1,6 @@
 //! Point-only view of the kernel's admitted-charge records for schedule assertions.
 
-use quire_exact::{ChargePoint, Meter};
+use filament_exact::{ChargePoint, Meter};
 
 pub trait ChargePoints {
     fn admitted_charge_points(&self) -> Vec<ChargePoint>;

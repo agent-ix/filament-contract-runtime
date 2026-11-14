@@ -3,48 +3,48 @@ id: TC-200
 title: "Tick monitor boundaries, limits and faults"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-276
+  - target: ix://agent-ix/filament-contract-runtime/FR-276
     type: verifies
 ---
 # TC-200: Tick monitor boundaries, limits and faults
 
 ## Description
 
-Qualify the RT monitor against complete QSL-produced plans and independent, test-authored
+Qualify the RT monitor against complete FSL-produced plans and independent, test-authored
 expected outcomes. This complete temporal acceptance case remains Planned. The implemented
 construction and ordinary-executor controls do not establish this procedure.
 
 ## Evidence Status
 
 **Planned.** The 86/0 `monitor_program` result recorded in
-[quire-integration PR #41](https://github.com/agent-ix/quire-integration/pull/41)
+[filament-integration PR #41](https://github.com/agent-ix/filament-integration/pull/41)
 backs the component criteria identified in the monitor evidence matrix. The evaluated
 source is now published on integration main; the guarded reference scan completed
 with 161 unbacked rows and zero contradicted statuses (strict exit 1), not a passing
 global coverage result. Neither fact establishes the remaining behavior. The run does not
-execute a QSL-emitted FR-487 plan through the complete lowerer and independent
-QSL tick-reference comparison required here. The source-body provenance finding
+execute a FSL-emitted FR-487 plan through the complete lowerer and independent
+FSL tick-reference comparison required here. The source-body provenance finding
 also prevents treating the diagnostic event-position sequence as full AC-11 evidence.
 No complete temporal criterion is upgraded by the retained run, publication or reference scan.
 
 ## Test Procedure
 
-1. Obtain a QSL-produced plan for `always (holds(req) implies eventually[0 ms, 3 ms]
+1. Obtain a FSL-produced plan for `always (holds(req) implies eventually[0 ms, 3 ms]
    holds(ack))` on a 20-bit, 1 MHz counter. Observe `req` at tick 0 and first `ack` at ticks
    2998, 3000 and 3001 in separate runs; reading `k` covers the half-open `[k, k+1)`. Repeat 2998
    with 2 µs uncertainty. Compare each
    obligation's complete typed result with the independent expectations below; do not compare
    one runtime output with another runtime output as the oracle.
-2. Obtain the QSL plan for `once[0 ms, 10 ms] holds(p)` at 2 events/ms. Assert its supplied
+2. Obtain the FSL plan for `once[0 ms, 10 ms] holds(p)` at 2 events/ms. Assert its supplied
    capacity is 22 (1 MHz counter), feed 22 in-window events, then offer a 23rd while another independent
    obligation remains live. Check the event is neither silently dropped nor silently accepted
    beyond the fixed capacity, and check both obligation identities and states.
 3. Under a 16-bit counter with maximum reading gap 100, offer readings 65530 then 4, then in a
-   separate run 65530 then 65500. Request a target with maximum gap 65536 from the QSL plan
+   separate run 65530 then 65500. Request a target with maximum gap 65536 from the FSL plan
    producer and check its refusal happens before RT construction. Repeat a valid pair with a
    counter identity, unit, width, profile or admitted order changed one component at a time;
    equal-tick events with no admitted order must not gain causality from ingestion order.
-4. Admit one QSL-derived closed executable plan against an independently selected checked
+4. Admit one FSL-derived closed executable plan against an independently selected checked
    package/clause and target. Drop the driver's preparation objects, then build two RT monitors
    from that plan. Verify the plan retains subject, activation/captures, atom bodies, ordered
    implication/eventually/always topology, the `State` type and the `init`, `on_event` and
@@ -61,7 +61,7 @@ No complete temporal criterion is upgraded by the retained run, publication or r
    assertion; compare monitor state before and after each. Separately provide an admitted
    watermark, whose unwrapped history-boundary tick and scope identities RT passes to
    `on_watermark`, past a deadline and an ordinary counter poll with no watermark. Run the same admitted
-   plan against QSL's reference evaluator on the boundary cases above, reversed implication
+   plan against FSL's reference evaluator on the boundary cases above, reversed implication
    operands, false activation, and open/closed interval endpoints. Inject an executor invariant
    failure and offer one further input. Use test-authored expected subject/obligation origins and
    outcomes rather than comparing two RT outputs as the oracle.
@@ -91,9 +91,9 @@ No complete temporal criterion is upgraded by the retained run, publication or r
     `StepBudget` field one below its measured use, then refuse one allocation under the failing
     allocator; inspect the `PathArenaCapacity` mapping.
 
-12. In the linked `quire-integration` consumer PR for FR-276-AC-14, obtain valid
+12. In the linked `filament-integration` consumer PR for FR-276-AC-14, obtain valid
     `ProgramParts` identities from genuine producer-admitted checked-package values through
-    QSL's read-only lookup. Deny actual allocations inside the owner type-check walk separately
+    FSL's read-only lookup. Deny actual allocations inside the owner type-check walk separately
     at Layout, function parameter, function result and expression type validation. Check
     `Membership`, retained native allocation class, exact original request unit and amount,
     and no Program. The reused owner allocator denies one real request and then automatically
@@ -107,9 +107,9 @@ No complete temporal criterion is upgraded by the retained run, publication or r
     `Allocation` versus `Capacity` with different units and amounts. These projection controls
     do not claim real capacity exhaustion, Program construction or allocator-denial coverage.
 
-Steps 1 to 12 requiring identities run in `quire-integration` on genuine producer-admitted
+Steps 1 to 12 requiring identities run in `filament-integration` on genuine producer-admitted
 values. RT-local tests retain identity-free exact checks and private native-error projection;
-no RT-owned identity fixture or QSL/IR dependency supplies this evidence. The linked consumer
+no RT-owned identity fixture or FSL/IR dependency supplies this evidence. The linked consumer
 PR must land before the combined IR-1400 adoption is considered complete.
 
 ## Expected Results
@@ -124,7 +124,7 @@ PR must land before the combined IR-1400 adoption is considered complete.
 - Step 3 computes the wrap difference 10 in RT and passes `on_event` that delta (the entry never
   sees a raw wrapping reading), reports
   `Failed(ReadingGapExceeded{gap: 65506, max_reading_gap: 100})` for the backward-looking pair,
-  and emits no temporal verdict for that fault; RT calls `on_gap` with 65506 (not `on_event`) and each instance still open across the fault settles `Failed`. The 65536-gap target yields QSL
+  and emits no temporal verdict for that fault; RT calls `on_gap` with 65506 (not `on_event`) and each instance still open across the fault settles `Failed`. The 65536-gap target yields FSL
   `GapExceedsWidth` with no RT monitor constructed. Every foreign or incomplete binding is
   refused before it can settle an obligation; no order is inferred from equal ticks.
 - Step 4 builds two independent monitors without a verdict from initialization; a request in the
@@ -136,7 +136,7 @@ PR must land before the combined IR-1400 adoption is considered complete.
   and initialization failures yield typed `MonitorBuildFailure` with no usable monitor, not a
   false property verdict.
 - Step 6 refuses invalid event/progress input without a state change or verdict. Admitted progress
-  can settle the deadline, while a counter poll cannot. RT execution and the independent QSL
+  can settle the deadline, while a counter poll cannot. RT execution and the independent FSL
   reference evaluator agree per obligation in all named cases. Executor invariant failure yields
   `Failed` with no verdict; the monitor refuses subsequent input.
 - Step 7 passes delta 0 for the first reading with no gap check and leaves the unwrapped time at

@@ -1,41 +1,41 @@
 ---
 id: TC-198
-title: "Fail the build on a dependency from the QSL Git source"
+title: "Fail the build on a dependency from the FSL Git source"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-275
+  - target: ix://agent-ix/filament-contract-runtime/FR-275
     type: verifies
 ---
-# TC-198: Fail the build on a dependency from the QSL Git source
+# TC-198: Fail the build on a dependency from the FSL Git source
 
 ## Description
 
 Check that `deny.toml` admits only the shared crates' own Git repositories and that `make deny`
-fails with the sources diagnostic when a crate from the QSL Git repository enters the
+fails with the sources diagnostic when a crate from the FSL Git repository enters the
 dependency graph. The negative cases run in a scratch copy of the workspace that is never committed.
 
 ## Test Procedure
 
 1. Read `deny.toml`; expect `unknown-git = "deny"`, own-repository `allow-git` entries for
-   `quire-exact`, `quire-semantic-value` and `quire-canonical`, plus the dev-only first-party
+   `filament-exact`, `filament-semantic-value` and `quire-canonical`, plus the dev-only first-party
    tooling source `ix-trace-rs`. After AD-004 step 5, admit the evaluation leaf's own
-   repository if it uses Git. Never admit the QSL workspace Git source (FR-275-AC-7).
+   repository if it uses Git. Never admit the FSL workspace Git source (FR-275-AC-7).
 2. Run `make deny` on the unmodified tree; expect success.
-3. In a scratch copy, add `qsl-eval` as a normal dependency from the QSL repository; run
+3. In a scratch copy, add `fsl-eval` as a normal dependency from the FSL repository; run
    `make deny`; expect a non-zero exit that reports cargo-deny's `source-not-allowed` error for
-   the QSL Git source. A licence error alone does not satisfy this step: that source's diagnostic
+   the FSL Git source. A licence error alone does not satisfy this step: that source's diagnostic
    must be present. Repeat with
-   `qsl-replay`, `qsl-semantics` and `quire-spec-language`. Each failure is FR-275-AC-8.
+   `fsl-replay`, `fsl-semantics` and `filament-spec-language`. Each failure is FR-275-AC-8.
 4. Repeat step 3 with each of those crates as a dev dependency and as a build dependency; expect
    the same source error. `make deny-mutations` (Rust `check_deny_source`) runs steps 2 to 4
-   in scratch copies and requires the QSL source diagnostic for each case.
+   in scratch copies and requires the FSL source diagnostic for each case.
 5. Run `cargo test --locked --bin check_deny_source`. The diagnostic controls
    require a nonzero exit and the exact injected source token within its own
-   `error[source-not-allowed]` diagnostic. A similarly prefixed source or a QSL
+   `error[source-not-allowed]` diagnostic. A similarly prefixed source or a FSL
    source appearing only in a later licence error or warning must not qualify.
    These are partial discriminator controls, not execution of the dependency
    injections in steps 2 through 4.
 
 ## Expected Results
 
-Each addition fails `make deny` with the QSL Git source error; the unmodified tree passes.
+Each addition fails `make deny` with the FSL Git source error; the unmodified tree passes.

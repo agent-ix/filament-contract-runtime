@@ -3,11 +3,11 @@ id: FR-009
 title: "Dispose each I13 backend negotiation item independently"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: depends_on
-  - target: ix://agent-ix/quire-specification/FR-147
+  - target: ix://agent-ix/filament-specification/FR-147
     type: implements
-  - target: ix://agent-ix/quire-specification/FR-148
+  - target: ix://agent-ix/filament-specification/FR-148
     type: implements
 ---
 # FR-009: Dispose each I13 backend negotiation item independently
@@ -70,12 +70,12 @@ The runtime shall neither evaluate the item nor alter the item, the package or a
 
 ## Kernel ownership
 
-The negotiators and their types are runtime-owned code, not a port of QSL code: QSL deleted its own
-negotiators on purpose (as relayed, QSL FR-078). Under [FR-275](./FR-275-single-exact-kernel.md) they
+The negotiators and their types are runtime-owned code, not a port of FSL code: FSL deleted its own
+negotiators on purpose (as relayed, FSL FR-078). Under [FR-275](./FR-275-single-exact-kernel.md) they
 stay in the runtime's own source in the end state, outside QSL-358 and outside the residue that
 FR-275 lists for deletion (interface-001-AC-8).
 
 ## Dependencies
 
 - **Upstream**: [FR-006](./FR-006-exact-outcomes-and-accounting.md);
-  `ix://agent-ix/quire-specification`.
+  `ix://agent-ix/filament-specification`.

@@ -3,7 +3,7 @@ id: TC-017
 title: "Meter charges before work and deny them without effect"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: verifies
 ---
 # TC-017: Meter charges before work and deny them without effect
@@ -15,14 +15,14 @@ the public meter. The former RT-local kernel tests left with the copied implemen
 
 ## Ownership and evidence
 
-Kernel-owned after IR-349 removes the local copy. [quire-exact FR-358-AC-1](ix://agent-ix/quire-exact/FR-358) and `FR-358-AC-2` own
+Kernel-owned after IR-349 removes the local copy. [filament-exact FR-358-AC-1](ix://agent-ix/filament-exact/FR-358) and `FR-358-AC-2` own
 named denial subsets; `FR-358-AC-8` through `FR-358-AC-11` own the post-cap test-support log;
 `FR-359-AC-1` through `FR-359-AC-6` own cumulative-boundary and first-short-counter checks;
 `FR-368-AC-1` and `FR-368-AC-2` own the spelling census.
 The RT residue charge-point driver remains in `tests/exact_outcomes.rs` under TC-031.
 The exact injected record and ordinary-limit precedence now have direct owner evidence under
-[quire-exact FR-358-AC-12](ix://agent-ix/quire-exact/FR-358) and [quire-exact FR-358-AC-13](ix://agent-ix/quire-exact/FR-358);
-RT's older quire-exact dependency revision still needs a separate refresh.
+[filament-exact FR-358-AC-12](ix://agent-ix/filament-exact/FR-358) and [filament-exact FR-358-AC-13](ix://agent-ix/filament-exact/FR-358);
+RT's older filament-exact dependency revision still needs a separate refresh.
 RT's `tests/exact_accounting_consumer.rs` exercises all six procedure steps through the consumed
 public kernel API. Its vocabulary, high-water, cumulative, first-short, refusal-order and
 log-truncation tests bind FR-006-AC-3; its injected-denial tests bind FR-006-AC-4.

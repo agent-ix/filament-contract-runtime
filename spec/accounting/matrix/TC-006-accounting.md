@@ -3,7 +3,7 @@ id: TC-006
 title: "Account for campaign outcomes"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-004
+  - target: ix://agent-ix/filament-contract-runtime/FR-004
     type: verifies
 ---
 # TC-006: Account for campaign outcomes

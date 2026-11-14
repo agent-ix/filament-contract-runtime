@@ -25,7 +25,7 @@ class CoverageReferences(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
         subprocess.run(["git", "-C", str(root), "add", "."], check=True)
-        origin = f"https://github.com/agent-ix/{'quire-integration' if name == 'integration' else name}"
+        origin = f"https://github.com/agent-ix/{'filament-integration' if name == 'integration' else name}"
         subprocess.run(["git", "-C", str(root), "remote", "add", "origin", origin], check=True)
         self.commit(root)
         return root
@@ -49,7 +49,7 @@ class CoverageReferences(unittest.TestCase):
         source = coverage_refs.main_test_source(sibling)
         with coverage_refs.reference_scope(root, source) as scope:
             local = scope / "src/lib.rs"
-            external = scope / "external/quire-integration/tests/monitor_program.rs"
+            external = scope / "external/filament-integration/tests/monitor_program.rs"
             self.assertTrue(local.is_symlink())
             self.assertTrue(external.is_symlink())
             self.assertTrue(local.samefile(root / "src/lib.rs"))

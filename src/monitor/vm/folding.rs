@@ -6,7 +6,7 @@ use super::{
     Operation, Outcome, Program, Projection, Resources, Scope, Site, StepResourceStop, Value,
 };
 use alloc::{boxed::Box, sync::Arc};
-use quire_exact::{Charge, ChargePoint, CollectionKind, CollectionValue, LimitKind};
+use filament_exact::{Charge, ChargePoint, CollectionKind, CollectionValue, LimitKind};
 
 pub(super) struct FoldState {
     expression: ExpressionId,

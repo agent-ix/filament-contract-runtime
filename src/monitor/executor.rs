@@ -4,8 +4,8 @@
 use alloc::{boxed::Box, rc::Rc};
 use core::fmt;
 
-use quire_exact::{FieldValue, NodeKey, Outcome, Value};
-use quire_semantic_value::supplied_membership::{
+use filament_exact::{FieldValue, NodeKey, Outcome, Value};
+use filament_semantic_value::supplied_membership::{
     MembershipPathArena, PathArenaCapacity, SuppliedAdmissionError,
 };
 
@@ -192,7 +192,7 @@ pub struct Monitor {
     pub(super) budget: StepBudget,
     pub(super) machine: vm::Machine,
     pub(super) baseline: Option<u64>,
-    pub(super) progress: Option<quire_exact::Integer>,
+    pub(super) progress: Option<filament_exact::Integer>,
     pub(super) terminated: bool,
 }
 
@@ -273,11 +273,11 @@ pub fn build(plan: BuildPlan) -> Result<Monitor, MonitorFailure> {
 /// Each buffer may hold its capacity plus the one summary cell of an unbounded
 /// past operator; activations hold at most the activation capacity.
 pub(super) fn lengths_within_bounds<'a>(
-    mut buffers: impl Iterator<Item = (usize, &'a quire_exact::Integer)>,
-    activations: (usize, &quire_exact::Integer),
+    mut buffers: impl Iterator<Item = (usize, &'a filament_exact::Integer)>,
+    activations: (usize, &filament_exact::Integer),
 ) -> bool {
-    buffers.all(|(len, capacity)| quire_exact::Integer::from(len.saturating_sub(1)) <= *capacity)
-        && quire_exact::Integer::from(activations.0) <= *activations.1
+    buffers.all(|(len, capacity)| filament_exact::Integer::from(len.saturating_sub(1)) <= *capacity)
+        && filament_exact::Integer::from(activations.0) <= *activations.1
 }
 
 /// Read a returned State's sequence lengths against the plan capacities.
@@ -286,7 +286,7 @@ pub(super) fn lengths_within_bounds<'a>(
 /// bound violation). Entries are never interpreted.
 pub(super) fn state_within_bounds(
     buffer_plan: &[super::Buffer],
-    activation_capacity: &quire_exact::Integer,
+    activation_capacity: &filament_exact::Integer,
     state: &Value,
 ) -> Option<bool> {
     let Value::Composite(record) = state else {
@@ -434,8 +434,8 @@ pub(super) fn build_failure(program: &Rc<Program>, failure: vm::Failure) -> Moni
 #[cfg(test)]
 mod tests {
     use super::*;
+    use filament_exact::Integer;
     use ix_trace_rs::trace;
-    use quire_exact::Integer;
 
     fn within(buffer: usize, activations: usize) -> bool {
         let capacity = Integer::from(22_u64);

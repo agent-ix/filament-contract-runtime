@@ -3,9 +3,9 @@ id: FR-004
 title: "Account for every campaign outcome"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-001
+  - target: ix://agent-ix/filament-contract-runtime/FR-001
     type: depends_on
-  - target: ix://agent-ix/quire-contract-runtime/interface-001
+  - target: ix://agent-ix/filament-contract-runtime/interface-001
     type: implements
 ---
 # FR-004: Account for every campaign outcome

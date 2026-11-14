@@ -3,7 +3,7 @@ id: TC-194
 title: "Apply checked functions with explicit frames and work fuel"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-273
+  - target: ix://agent-ix/filament-contract-runtime/FR-273
     type: verifies
 ---
 # TC-194: Apply checked functions with explicit frames and work fuel
@@ -14,7 +14,7 @@ Check `CheckedPackage::call` and `CheckedPackage::evaluate` over a package `Pack
 admitted under `CheckMode::Linked`, and check every `InputRefusal` variant against a matching malformed
 call. RT evidence: `tests/exact_function_application.rs` (`--features exact`).
 The seven identity-dependent cases removed by IR-1162 run in
-`quire-integration` TC-096's `tests/producer_origin_function.rs`.
+`filament-integration` TC-096's `tests/producer_origin_function.rs`.
 
 ## Test Procedure
 
@@ -40,7 +40,7 @@ The seven identity-dependent cases removed by IR-1162 run in
    expression checked against another package returns `Ok(Evaluation)` with
    `Refused(CheckedInvariant { cause: ForeignCheckedExpression })`.
 8. For a shared-corpus function-application vector, check the outcome, refusal and charge sequence
-   against the quire-spec-language authority.
+   against the filament-spec-language authority.
 9. Inspect this requirement's corpus for `CheckMode::Kernel`: check that every applied package is
    checked under `CheckMode::Linked` and that no test applies a package checked only under
    `CheckMode::Kernel` (FR-273-AC-6).
@@ -75,8 +75,8 @@ The seven identity-dependent cases removed by IR-1162 run in
     from a running generated transition and assert `PackageReentry` before nested charge,
     so host re-entry cannot recurse the scheduler (FR-273-AC-7/8).
 15. After AD-004 step 5, invoke one admitted checked input and one CG-generated
-    resumable body through the QSL-owned leaf with `std` disabled. Run the same
-    inputs through QSL's std reference. Compare the complete outcome or typed
+    resumable body through the FSL-owned leaf with `std` disabled. Run the same
+    inputs through FSL's std reference. Compare the complete outcome or typed
     refusal, location and losses, consumed work, and ordered charge log. Include
     completed decimal rounding and IEEE loss cases with nonempty `LocatedLoss`
     entries at their producing expression locations; check their order and that
@@ -89,15 +89,15 @@ The seven identity-dependent cases removed by IR-1162 run in
     sufficient run's measured work spend `w` separately for each path. Run each
     at `w`, `w-1`, then `w` again: assert result `100000`, `Incomplete` naming
     `work_units` at the denied charge with no denied log entry, and result
-    `100000`. Compare the ordered log for every run to QSL's std reference;
+    `100000`. Compare the ordered log for every run to FSL's std reference;
     assert no depth refusal or stack overflow (FR-273-AC-13).
 
 17. For FR-273-AC-14, RT-local tests validate identity-free ordinary and nested declared
     types through both package admission and standalone-expression checking. Include nested
     populations and IEEE-bearing set/bag elements; compare semantic cause, location and
-    declaration order. The linked `quire-integration` consumer PR adds unknown-composite
+    declaration order. The linked `filament-integration` consumer PR adds unknown-composite
     controls using identities obtained from a genuine producer-admitted package, preserving
-    first-refusal order without RT-minted identity fixtures or RT dependencies on QSL or IR.
+    first-refusal order without RT-minted identity fixtures or RT dependencies on FSL or IR.
     In RT's dedicated failing-allocator binary, construct fixtures before arming denial and
     deny an actual shared type-check worklist allocation separately at the package parameter,
     package result, expression parameter and expression result calls. Assert the typed native

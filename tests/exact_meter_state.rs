@@ -3,7 +3,7 @@
 //!
 //! The cases whose subject is the kernel `Meter` or a kernel scalar operation (the charge log
 //! cap, the injected-denial occurrence counter, the scan order over integer, decimal and
-//! division counters, IEEE flag order) left with the kernel to `quire-exact` (FR-275).
+//! division counters, IEEE flag order) left with the kernel to `filament-exact` (FR-275).
 #![cfg(feature = "exact")]
 
 use std::cell::Cell;
@@ -12,11 +12,11 @@ use std::cell::Cell;
 mod charge_points;
 use charge_points::ChargePoints;
 
-use ix_trace_rs::trace;
-use quire_contract_runtime::scalar::{evaluate_boolean_short_circuit, ShortCircuitConnective};
-use quire_exact::{
+use filament_contract_runtime::scalar::{evaluate_boolean_short_circuit, ShortCircuitConnective};
+use filament_exact::{
     ChargePoint, Incomplete, Integer, LimitKind, Meter, Outcome, Refusal, ScalarLimits, Undefined,
 };
+use ix_trace_rs::trace;
 
 const UNLIMITED: ScalarLimits = limits([u64::MAX; 10]);
 
@@ -40,7 +40,7 @@ fn int(value: i128) -> Integer {
 }
 
 /// `evaluate_boolean_short_circuit` is the exact/metered subsystem's stop-carrying connective
-/// (`agent-ix/quire-contract-runtime#27`). Two halves:
+/// (`agent-ix/filament-contract-runtime#27`). Two halves:
 ///
 /// - When `left` alone decides the result (`And` with `left = false`, `Or` with `left = true`,
 ///   `Implies` with `left = false`), `right` is never called — so a stop it could have produced
@@ -56,7 +56,7 @@ fn tc_032_ac3_ac8_short_circuit_propagates_a_stop_and_retains_exactly_once() {
     let stops = [
         Outcome::Undefined(Undefined::DivisionByZero),
         Outcome::Refused(Refusal::CheckedInvariant {
-            cause: quire_exact::CheckedInvariantCause::MeterBorrowConflict,
+            cause: filament_exact::CheckedInvariantCause::MeterBorrowConflict,
         }),
         Outcome::Incomplete(Incomplete {
             limit_kind: LimitKind::WorkUnits,

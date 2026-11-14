@@ -3,7 +3,7 @@ id: TC-002
 title: "Verify Boolean operator semantics"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-002
+  - target: ix://agent-ix/filament-contract-runtime/FR-002
     type: verifies
 ---
 # TC-002: Verify Boolean operator semantics

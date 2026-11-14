@@ -27,7 +27,7 @@
 The proptest adapter is not available without its opt-in feature:
 
 ```compile_fail
-use quire_contract_runtime::proptest_adapter;
+use filament_contract_runtime::proptest_adapter;
 ```
 "#
 )]
@@ -37,11 +37,11 @@ use quire_contract_runtime::proptest_adapter;
 The allocating codec is unavailable without snapshot-json (including alloc/std alone):
 
 ~~~compile_fail
-use quire_contract_runtime::decode_campaign_snapshot;
+use filament_contract_runtime::decode_campaign_snapshot;
 ~~~
 
 ~~~compile_fail
-use quire_contract_runtime::encode_campaign_snapshot;
+use filament_contract_runtime::encode_campaign_snapshot;
 ~~~
 "#
 )]

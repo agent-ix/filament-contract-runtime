@@ -3,7 +3,7 @@ id: TC-007
 title: "Audit runtime footprint"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/NFR-001
+  - target: ix://agent-ix/filament-contract-runtime/NFR-001
     type: verifies
 ---
 # TC-007: Audit runtime footprint

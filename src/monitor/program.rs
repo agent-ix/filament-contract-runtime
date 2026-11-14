@@ -4,8 +4,8 @@
 use alloc::{boxed::Box, rc::Rc, string::String, vec::Vec};
 use core::fmt;
 
-use quire_exact::{MemberId, NodeKey, OrderingOperator, Rational, Value, ValueType, VariantId};
-use quire_semantic_value::declaration::{CheckedEquality, EnvironmentFailure, TypeEnvironment};
+use filament_exact::{MemberId, NodeKey, OrderingOperator, Rational, Value, ValueType, VariantId};
+use filament_semantic_value::declaration::{CheckedEquality, EnvironmentFailure, TypeEnvironment};
 
 /// An address in the owned expression arena, never a source identity.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -52,7 +52,7 @@ pub struct Buffer {
     /// Complete source subformula key.
     pub owner: NodeKey,
     /// Fixed maximum active element count, not a derived capacity formula.
-    pub capacity: quire_exact::Integer,
+    pub capacity: filament_exact::Integer,
 }
 
 /// Source selection, entry associations and exact premises retained by the program.
@@ -113,7 +113,7 @@ pub struct Layout {
     /// Capacity associations in the admitted subformula-key order.
     pub buffers: Vec<Buffer>,
     /// Exact nonnegative bound on live activation accumulators; zero is valid.
-    pub activation_capacity: quire_exact::Integer,
+    pub activation_capacity: filament_exact::Integer,
 }
 
 /// One ordinary closed executable expression.

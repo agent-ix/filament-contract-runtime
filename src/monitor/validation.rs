@@ -3,8 +3,8 @@
 
 use alloc::vec::Vec;
 
-use quire_exact::{CollectionKind, Integer, MemberOwner, NodeKey, Presence, ValueType};
-use quire_semantic_value::{
+use filament_exact::{CollectionKind, Integer, MemberOwner, NodeKey, Presence, ValueType};
+use filament_semantic_value::{
     declaration::{CompositeShape, EnvironmentFailure, TypeCheckError},
     quantity::QuantityUnit,
 };
@@ -837,9 +837,9 @@ fn validate_expression_graph(parts: &ProgramParts) -> Result<Vec<BindingOwner>, 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use filament_exact::{IllTyped, IllTypedCause};
+    use filament_semantic_value::declaration::{StorageRequest, StorageUnit};
     use ix_trace_rs::trace;
-    use quire_exact::{IllTyped, IllTypedCause};
-    use quire_semantic_value::declaration::{StorageRequest, StorageUnit};
 
     #[trace("TC-200", "FR-276-AC-14")]
     #[test]

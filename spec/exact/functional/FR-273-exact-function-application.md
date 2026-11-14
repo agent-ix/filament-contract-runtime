@@ -3,15 +3,15 @@ id: FR-273
 title: "Apply checked total pure functions under exact semantics"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: depends_on
-  - target: ix://agent-ix/quire-contract-runtime/FR-008
+  - target: ix://agent-ix/filament-contract-runtime/FR-008
     type: depends_on
-  - target: ix://agent-ix/quire-contract-runtime/FR-009
+  - target: ix://agent-ix/filament-contract-runtime/FR-009
     type: depends_on
-  - target: ix://agent-ix/quire-specification/FR-146
+  - target: ix://agent-ix/filament-specification/FR-146
     type: implements
-  - target: ix://agent-ix/quire-contract-codegen/FR-021
+  - target: ix://agent-ix/filament-contract-codegen/FR-021
     type: references
 ---
 # FR-273: Apply checked total pure functions under exact semantics
@@ -19,15 +19,15 @@ relationships:
 ## Description
 
 When the `exact` feature is enabled, the runtime shall apply a checked package's named function, and
-evaluate a checked standalone expression, through `quire_contract_runtime::exact::CheckedPackage::call`
+evaluate a checked standalone expression, through `filament_contract_runtime::exact::CheckedPackage::call`
 and `CheckedPackage::evaluate` against a package this crate's `PackageDeclarations::check` (`CheckMode::Linked`) admitted, a
 package whose functions the authority's `PackageDeclarations::check` proved pure, total and
 definedness-safe on every reachable path, with outcomes, refusals and
-charges equal to the quire-specification authority (FR-146) on every shared-corpus
-vector, and equal to the quire-spec-language authority that carries it. As with FR-006
+charges equal to the filament-specification authority (FR-146) on every shared-corpus
+vector, and equal to the filament-spec-language authority that carries it. As with FR-006
 through FR-008, the runtime is an implementation of that definition, not a second semantic authority:
-`quire_spec_language::value` decides every application, refusal and charge question. This
-requirement ports the call surface only, into `quire_contract_runtime::exact` under the authority's
+`filament_spec_language::value` decides every application, refusal and charge question. This
+requirement ports the call surface only, into `filament_contract_runtime::exact` under the authority's
 own names and order: admission, argument validation, `function.call` accounting and the
 `Evaluation` envelope. Admission keeps the authority's `PackageDeclarations::check` name and role
 but not its proofs: the runtime's `PackageDeclarations::check` admits only the facts a generated
@@ -58,7 +58,7 @@ calls the ported surface.
 
 - Purity, termination (by the function's `decreases` measure) and every definedness obligation on
   every reachable path are proved once, statically, by the authority's own
-  `PackageDeclarations::check` in quire-spec-language. That proof lives outside this crate and
+  `PackageDeclarations::check` in filament-spec-language. That proof lives outside this crate and
   outside its own Kani proof surface (AD-002, Risks): this crate depends on it rather than
   reproducing it. It is a precondition on the producer and code generator: the runtime trusts its
   producer to admit only bodies the authority proved. This crate's own `PackageDeclarations::check`
@@ -142,8 +142,8 @@ calls the ported surface.
   `function.call`, then bind parameters and run the body. Nested calls use the same meter in
   execution order.
 
-The existing `quire_contract_runtime::exact` names above describe the current
-ported surface. At AD-004 step 5 the accepted consumer calls the QSL-owned
+The existing `filament_contract_runtime::exact` names above describe the current
+ported surface. At AD-004 step 5 the accepted consumer calls the FSL-owned
 evaluation leaf through IR-583's shared interface with IR-590's usable
 `no_std + alloc` implementation; RT does not retain an evaluator copy or
 compatibility path. RT acceptance covers both an admitted checked input and a
@@ -164,16 +164,16 @@ stack and `work_units` fuel; it does not set a call-depth ceiling.
 | FR-273-AC-9 | For an admitted chain of `N` calls whose bodies only request the next call or return a literal, the expected charge vector is `function.call` repeated `N` times and the expected `work_units` spend is `N`. A limit of `N` completes; a limit of `N - 1` returns `Incomplete` at the Nth `function.call`, naming `work_units`, with exactly `N - 1` calls in both the counter and log, and without changing the checked package's static totality verdict. | Test (TC-194) |
 | FR-273-AC-10 | In a nested call with two argument applications and an enclosing application, the charge vector is exactly three `function.call` entries in left argument, right argument, enclosing call order; the enclosing charge precedes parameter binding and body work. With `work_units: 2`, the enclosing charge is denied, the log and counter retain exactly the first two calls, and no enclosing body work occurs. | Test (TC-194) |
 | FR-273-AC-11 | A resumable body transition returns a child-call request while its owned parent state retains live locals and the child-result destination; after the child completes, the runtime resumes that parent with the child's value and does not invoke a second body transition from within the first. A stopped child propagates without resuming the parent. | Test (TC-194) |
-| FR-273-AC-12 | After AD-004 step 5, the RT consumer invokes both an admitted checked input and a CG-generated resumable body through the same QSL-owned evaluation-leaf interface with `std` disabled; for each shared input the outcome or typed refusal, source location and loss, consumed work and ordered charge log equal QSL's std reference. Shared inputs include a completed decimal rounding with a nonempty `ValueLoss::Decimal`, a completed IEEE operation or conversion with a nonempty `ValueLoss::IeeeFlags` or `ValueLoss::IeeeExact`, and an outcome stopped at an executed expression node whose `Evaluation.location` equals that node's declaration origin and child-index path. Completed evaluations have `location: None`, and their `LocatedLoss` entries retain producing-node locations in evaluation order. A call stopped before any expression node runs has `location: None` and no losses. No RT-local evaluator body or compatibility route supplies either result. | Test (TC-194) |
-| FR-273-AC-13 | On a native thread with a 512 KiB stack, the checked decreasing `count(100000)` call through the consumed no_std evaluator and a generated-body call for the same checked input each return `100000` with work limit `w`, where `w` is that run's measured spend; each returns `Incomplete` naming `work_units` at `w-1` with no denied charge in the counter or log, then returns `100000` again at `w`. The ordered charge sequence at all three limits matches the QSL std reference, and no depth refusal or native stack overflow occurs. | Test (TC-194) |
-| FR-273-AC-14 | RT-local identity-free package function parameter/result checks and standalone-expression parameter/result checks preserve admitted types and the original semantic refusal cause, location and order through `try_check_type`. A dedicated allocator test denies actual owner worklist allocation after fixture construction at each of these four consumer positions; the result is the typed native reservation cause, retains `Allocation` with the owner's request unit and amount, publishes no checked result, and returns without aborting or allocating to project the error. An identical retry with allocation enabled succeeds. Explicit owner-error projection controls distinguish `Capacity` from `Allocation` and preserve differing units and amounts without inventing a configured limit; they do not substitute for real allocation-denial evidence. The linked `quire-integration` consumer PR supplies the unknown-composite identity-bearing controls from actual producer-admitted values; RT neither mints their identities nor depends on QSL or IR. | Test, Inspection |
+| FR-273-AC-12 | After AD-004 step 5, the RT consumer invokes both an admitted checked input and a CG-generated resumable body through the same FSL-owned evaluation-leaf interface with `std` disabled; for each shared input the outcome or typed refusal, source location and loss, consumed work and ordered charge log equal FSL's std reference. Shared inputs include a completed decimal rounding with a nonempty `ValueLoss::Decimal`, a completed IEEE operation or conversion with a nonempty `ValueLoss::IeeeFlags` or `ValueLoss::IeeeExact`, and an outcome stopped at an executed expression node whose `Evaluation.location` equals that node's declaration origin and child-index path. Completed evaluations have `location: None`, and their `LocatedLoss` entries retain producing-node locations in evaluation order. A call stopped before any expression node runs has `location: None` and no losses. No RT-local evaluator body or compatibility route supplies either result. | Test (TC-194) |
+| FR-273-AC-13 | On a native thread with a 512 KiB stack, the checked decreasing `count(100000)` call through the consumed no_std evaluator and a generated-body call for the same checked input each return `100000` with work limit `w`, where `w` is that run's measured spend; each returns `Incomplete` naming `work_units` at `w-1` with no denied charge in the counter or log, then returns `100000` again at `w`. The ordered charge sequence at all three limits matches the FSL std reference, and no depth refusal or native stack overflow occurs. | Test (TC-194) |
+| FR-273-AC-14 | RT-local identity-free package function parameter/result checks and standalone-expression parameter/result checks preserve admitted types and the original semantic refusal cause, location and order through `try_check_type`. A dedicated allocator test denies actual owner worklist allocation after fixture construction at each of these four consumer positions; the result is the typed native reservation cause, retains `Allocation` with the owner's request unit and amount, publishes no checked result, and returns without aborting or allocating to project the error. An identical retry with allocation enabled succeeds. Explicit owner-error projection controls distinguish `Capacity` from `Allocation` and preserve differing units and amounts without inventing a configured limit; they do not substitute for real allocation-denial evidence. The linked `filament-integration` consumer PR supplies the unknown-composite identity-bearing controls from actual producer-admitted values; RT neither mints their identities nor depends on FSL or IR. | Test, Inspection |
 
 ## Kernel ownership
 
 The function-application surface (`Frame`, `Body`, `CheckedPackage`, `Evaluation`, `plan_call`) is
-not in `quire-exact` today. Under [FR-275](./FR-275-single-exact-kernel.md) the runtime's copy of it
-is part of the residue: ported QSL code that is not authorized, with no exception, no expiry and no
-approval. It runs over the `quire-exact` `Value`, `Meter` and `Outcome`. It is to be deleted; QSL
+not in `filament-exact` today. Under [FR-275](./FR-275-single-exact-kernel.md) the runtime's copy of it
+is part of the residue: ported FSL code that is not authorized, with no exception, no expiry and no
+approval. It runs over the `filament-exact` `Value`, `Meter` and `Outcome`. It is to be deleted; FSL
 is to own it (QSL-358, as relayed) and the runtime is to consume it. How the runtime handles the copy until then is an open
 owner decision. The "port of the authority" wording above describes that source.
 
@@ -181,11 +181,11 @@ owner decision. The "port of the authority" wording above describes that source.
 
 - **Upstream**: [FR-006](./FR-006-exact-outcomes-and-accounting.md); [FR-008](./FR-008-composite-collection-and-equality.md);
   [FR-009](./FR-009-i13-backend-negotiation.md);
-  `ix://agent-ix/quire-specification` (FR-146, `expressions/FR-146-check-total-pure-functions.md`);
-  quire-spec-language. The quire-exact FR-369-AC-3 contract already specifies explicit frames and
+  `ix://agent-ix/filament-specification` (FR-146, `expressions/FR-146-check-total-pure-functions.md`);
+  filament-spec-language. The filament-exact FR-369-AC-3 contract already specifies explicit frames and
   fuel with no `CallDepthExceeded` producer in the final carrier; its
   `UnknownCheckedFunction`, `ForeignCheckedExpression` and `MeterBorrowConflict` obligations remain.
-- **Producer**: `ix://agent-ix/quire-contract-codegen/FR-021` owns emitted resumable body states,
+- **Producer**: `ix://agent-ix/filament-contract-codegen/FR-021` owns emitted resumable body states,
   argument order and continuation slots. Its current synchronous-closure contract requires an
   amendment to use the runtime's new stepping interface before a generated oracle can satisfy this
   requirement.

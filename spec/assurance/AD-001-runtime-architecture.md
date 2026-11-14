@@ -1,15 +1,15 @@
 ---
 id: AD-001
-title: Quire contract runtime architecture
+title: Filament contract runtime architecture
 type: ArchitectureDescription
 status: accepted
 owner: runtime-maintainers
-system: quire-contract-runtime v0.1
+system: filament-contract-runtime v0.1
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/StR-001
+  - target: ix://agent-ix/filament-contract-runtime/StR-001
     type: realizes
 ---
-# Quire contract runtime architecture
+# Filament contract runtime architecture
 
 ## System Boundary
 

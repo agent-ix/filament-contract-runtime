@@ -3,18 +3,18 @@
 //! declared-type consumers. Producer-admitted monitor controls belong to the linked integration leg.
 #![cfg(feature = "exact")]
 
-use ix_trace_rs::trace;
-use qsv_failing_allocator::{arm, disarm, FailingAllocator};
-use quire_contract_runtime::exact::{
+use filament_contract_runtime::exact::{
     Body, BodyStep, CheckCause, CheckMode, CheckedPackage, CheckingLimits, Frame,
     FunctionDeclaration, Origin, PackageDeclarations,
 };
-use quire_exact::{
+use filament_exact::{
     CollectionKind, CollectionType, FloatType, IeeeWidth, IllTypedCause, Outcome, Value, ValueType,
 };
-use quire_semantic_value::declaration::{
+use filament_semantic_value::declaration::{
     StorageRequest, StorageUnit, TypeCheckError, TypeEnvironment,
 };
+use fsv_failing_allocator::{arm, disarm, FailingAllocator};
+use ix_trace_rs::trace;
 
 #[global_allocator]
 static ALLOCATOR: FailingAllocator = FailingAllocator;

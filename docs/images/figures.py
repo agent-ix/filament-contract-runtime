@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2026 Agent-IX
-"""quire-contract-runtime's documentation figures, rendered by the docs-figures skill.
+"""filament-contract-runtime's documentation figures, rendered by the docs-figures skill.
 
 Regenerate from the repository root with the agent-ix/dev-tools skill:
 
@@ -14,7 +14,7 @@ from docs_figures import FONTS, SMALL, TITLE, Figure  # noqa: F401
 
 STYLE = "ix-docs"
 
-# One role per kind of thing, fixed across the Quire repositories.
+# One role per kind of thing, fixed across the Filament repositories.
 ROLES = [
     ("code", "authored source", "box"),
     ("logic", "compiler stage", "box"),
@@ -28,19 +28,19 @@ def hero():
     """README hero: a generated oracle calls the runtime and gets one of three verdicts."""
     f = Figure(
         "hero",
-        980,
+        1040,
         350,
-        "A generated oracle passes observed values to quire-contract-runtime, which returns one "
+        "A generated oracle passes observed values to filament-contract-runtime, which returns one "
         "of three verdicts: Passed, FailedPostcondition or RejectedPrecondition. A campaign report "
         "counts every verdict.",
     )
     f.box(0, 100, 160, 56, "ink", "observed values", "inputs and results")
-    f.box(210, 100, 220, 56, "model", "generated oracle", "from quire-contract-codegen")
-    f.box(480, 100, 190, 56, "logic", "quire-contract-runtime", "checked ops · clauses")
+    f.box(210, 100, 250, 56, "model", "generated oracle", "from filament-contract-codegen")
+    f.box(510, 100, 220, 56, "logic", "filament-contract-runtime", "checked ops · clauses")
     f.line([(160, 128), (207, 128)], "ink")
-    f.line([(430, 128), (477, 128)], "model")
-    trunk = 698
-    f.line([(670, 128), (trunk, 128)], "logic", arrow=False)
+    f.line([(460, 128), (507, 128)], "model")
+    trunk = 758
+    f.line([(730, 128), (trunk, 128)], "logic", arrow=False)
     f.line([(trunk, 28), (trunk, 180)], "logic", arrow=False)
     verdicts = [
         (0, "Passed", "all required clauses held"),
@@ -48,58 +48,58 @@ def hero():
         (152, "RejectedPrecondition", "case outside the input domain"),
     ]
     for y, name, sub in verdicts:
-        f.line([(trunk, y + 28), (717, y + 28)], "logic")
-        f.box(720, y, 260, 56, "evidence", name, sub)
-    f.line([(850, 208), (850, 257)], "evidence")
-    f.note(838, 238, "each verdict is recorded", "muted", anchor="end")
-    f.box(720, 260, 260, 56, "model", "CampaignReport", "four saturating counts")
-    f.text(480, 190, "no conversion to bool", "muted", "mono", SMALL)
+        f.line([(trunk, y + 28), (777, y + 28)], "logic")
+        f.box(780, y, 260, 56, "evidence", name, sub)
+    f.line([(910, 208), (910, 257)], "evidence")
+    f.note(898, 238, "each verdict is recorded", "muted", anchor="end")
+    f.box(780, 260, 260, 56, "model", "CampaignReport", "four saturating counts")
+    f.text(510, 190, "no conversion to bool", "muted", "mono", SMALL)
     f.legend(0, 334, [ROLES[0], ROLES[1], ROLES[2], ("evidence", "verdict", "box"), ROLES[4]])
     return f
 
 
 REPOS = [
-    (1, 0, "quire-driver", "the quire command", False),
-    (2, 0, "quire-integration", "tests the whole chain", False),
-    (3, 0, "quire-verification", "plans verification", False),
-    (0, 1, "quire-specification", "the standard", False),
-    (1, 1, "quire-spec-language", "compiler · evaluator", False),
-    (2, 1, "quire-contract-ir", "contract model", False),
-    (3, 1, "quire-contract-codegen", "code · tests · proofs", False),
-    (4, 1, "quire-contract-runtime", "runs generated checks", False),
-    (0, 2, "quire-observation", "qualified observations", False),
-    (1, 2, "quire-protocol", "protocol conformance", False),
-    (2, 2, "quire-analyze", "SMT consistency", False),
-    (0, 3, "quire-mltl", "MLTL over observations", False),
+    (1, 0, "filament-driver", "the fsl command", False),
+    (2, 0, "filament-integration", "tests the whole chain", False),
+    (3, 0, "filament-verification", "plans verification", False),
+    (0, 1, "filament-specification", "the standard", False),
+    (1, 1, "filament-spec-language", "compiler · evaluator", False),
+    (2, 1, "filament-contract-ir", "contract model", False),
+    (3, 1, "filament-contract-codegen", "code · tests · proofs", False),
+    (4, 1, "filament-contract-runtime", "runs generated checks", False),
+    (0, 2, "filament-observation", "qualified observations", False),
+    (1, 2, "filament-protocol", "protocol conformance", False),
+    (2, 2, "filament-analyze", "SMT consistency", False),
+    (0, 3, "filament-mltl", "MLTL over observations", False),
 ]
 FEEDS = [
-    ("quire-specification", "quire-spec-language"),
-    ("quire-spec-language", "quire-contract-ir"),
-    ("quire-contract-ir", "quire-contract-codegen"),
-    ("quire-contract-codegen", "quire-contract-runtime"),
-    ("quire-spec-language", "quire-protocol"),
-    ("quire-contract-ir", "quire-analyze"),
-    ("quire-observation", "quire-protocol"),
-    ("quire-observation", "quire-mltl"),
+    ("filament-specification", "filament-spec-language"),
+    ("filament-spec-language", "filament-contract-ir"),
+    ("filament-contract-ir", "filament-contract-codegen"),
+    ("filament-contract-codegen", "filament-contract-runtime"),
+    ("filament-spec-language", "filament-protocol"),
+    ("filament-contract-ir", "filament-analyze"),
+    ("filament-observation", "filament-protocol"),
+    ("filament-observation", "filament-mltl"),
 ]
-SHARED = ["quire-eval", "quire-exact", "quire-semantic-value", "quire-walk", "quire-canonical",
-          "quire-verification-contracts"]
+SHARED = ["filament-eval", "filament-exact", "filament-semantic-value", "filament-walk", "quire-canonical",
+          "filament-verification-contracts"]
 
 
-def ecosystem(here="quire-spec-language"):
-    """The Quire repositories: the main chain, its branches, and what runs and shares it."""
+def ecosystem(here="filament-spec-language"):
+    """The Filament repositories: the main chain, its branches, and what runs and shares it."""
     f = Figure(
         "ecosystem",
         980,
         476,
-        "The Quire repositories. The main chain runs from the standard, quire-specification, to "
-        "the compiler, quire-spec-language, then quire-contract-ir, quire-contract-codegen and "
-        "quire-contract-runtime. quire-spec-language also feeds quire-protocol, and "
-        "quire-contract-ir feeds quire-analyze. quire-observation feeds quire-protocol and "
-        "quire-mltl. Above the chain, quire-driver runs it, quire-integration tests it and "
-        "quire-verification plans verification. Below it, shared libraries used throughout: "
-        "quire-eval, quire-exact, quire-semantic-value, quire-walk, quire-canonical and "
-        "quire-verification-contracts.",
+        "The Filament repositories. The main chain runs from the standard, filament-specification, to "
+        "the compiler, filament-spec-language, then filament-contract-ir, filament-contract-codegen and "
+        "filament-contract-runtime. filament-spec-language also feeds filament-protocol, and "
+        "filament-contract-ir feeds filament-analyze. filament-observation feeds filament-protocol and "
+        "filament-mltl. Above the chain, filament-driver runs it, filament-integration tests it and "
+        "filament-verification plans verification. Below it, shared libraries used throughout: "
+        "filament-eval, filament-exact, filament-semantic-value, filament-walk, quire-canonical and "
+        "filament-verification-contracts.",
     )
     w, h, step = 176, 50, 201
     rows = {0: 20, 1: 120, 2: 210, 3: 290}
@@ -132,7 +132,7 @@ def ecosystem(here="quire-spec-language"):
 
 def ecosystem_here():
     """This repository's highlighted copy of the ecosystem figure."""
-    return ecosystem(here="quire-contract-runtime")
+    return ecosystem(here="filament-contract-runtime")
 
 
 FIGURES = [hero, ecosystem_here]

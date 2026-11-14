@@ -3,7 +3,7 @@
 
 use super::{MonitorFailure, MonitorFailureCode, Program};
 use alloc::rc::Rc;
-use quire_exact::{Integer, NodeKey, Value};
+use filament_exact::{Integer, NodeKey, Value};
 
 /// Original independently admitted association attached to an input.
 ///

@@ -3,17 +3,17 @@ id: FR-007
 title: "Evaluate the complete-V1 exact scalar operator families"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: depends_on
 ---
 # FR-007: Evaluate the complete-V1 exact scalar operator families
 
 ## Description
 
-When the `exact` feature is enabled, the runtime shall consume `quire-exact` for kernel-owned
+When the `exact` feature is enabled, the runtime shall consume `filament-exact` for kernel-owned
 operations in the scalar families of
-complete V1 in agent-ix/quire-specification with values and outcome kinds equal to the
-quire-spec-language authority on every shared-corpus vector, and charges equal to the QSpec
+complete V1 in agent-ix/filament-specification with values and outcome kinds equal to the
+filament-spec-language authority on every shared-corpus vector, and charges equal to the QSpec
 accounting schedule.
 
 ## Inputs
@@ -34,12 +34,12 @@ accounting schedule.
   remainder outside the consumer domain is refused without a value as `ModuloOutOfDomain`.
   Compiler admission refuses a package selecting a non-Euclidean `mod` law with
   `invalid_package` / `incompatible-definition`, as specified by
-  [quire-specification FR-147-AC-5](ix://agent-ix/quire-specification/FR-147) and QSpec TC-192 DIV-03. RT carries the
+  [filament-specification FR-147-AC-5](ix://agent-ix/filament-specification/FR-147) and QSpec TC-192 DIV-03. RT carries the
   refusal vocabulary but neither produces nor tests this admission refusal. `div`
   checks only its exposed quotient against the consumer domain; `rem` checks only its exposed
   remainder. An out-of-domain exposed member is refused without a value, while the unexposed
   member is never checked and cannot cause a refusal, as in QSpec
-  `ix://agent-ix/quire-specification/FR-147`.
+  `ix://agent-ix/filament-specification/FR-147`.
 - Decimal arithmetic, rounding and ordering follow `Decimal[..]`. Two representations are
   distinguished and each governs a different thing. *Value* comparison — `Decimal::compare` and
   `numerically_equal` — is mathematical and is computed on the normalized representation, so
@@ -51,7 +51,7 @@ accounting schedule.
   representation is kept as provenance and is never silently normalized away.
 - Decimal rounding has the six spellings `Exact`, `TowardZero`, `TowardPositive`,
   `TowardNegative`, `NearestEven` and `NearestAway`, as in QSpec
-  `ix://agent-ix/quire-specification/FR-140`. An omitted spelling is strict `Exact`, which
+  `ix://agent-ix/filament-specification/FR-140`. An omitted spelling is strict `Exact`, which
   refuses any discarded nonzero digit. On an exact tie, `NearestEven` takes the neighbour with
   the even coefficient and `NearestAway` takes the neighbour away from zero. `TowardZero` and the
   `NearestAway` tie use the sign of the exact value being rounded (for division, the exact
@@ -81,12 +81,12 @@ accounting schedule.
   units, first failure wins. `Multiply`, `Divide` and `Power` check affine-unit arithmetic only:
   their dimensions combine rather than having to match, so a dimension difference is not a fault
   there. Every one of these is `IllTyped`, reported beside the outcome with zero charges.
-- Exact quantity-to-quantity conversion (IR-818) uses `quire-semantic-value`'s
+- Exact quantity-to-quantity conversion (IR-818) uses `filament-semantic-value`'s
   `convert_quantity` over `UnitQuantity` with `QuantityTarget::Exact` at the revision in RT's
   `Cargo.lock`. There is no RT symbol or wrapper (FR-275-AC-18). The converted magnitude
   is the `ConvertedValue::Exact` rational in the `Conversion` and its unit is the target unit.
-  There is no rounding parameter because [quire-contract-ir FR-038-AC-213](ix://agent-ix/quire-contract-ir/FR-038) admits
-  only the `exact` mode for `quire.op.quantity.convert`; `Decimal` and `Integer` targets are out
+  There is no rounding parameter because [filament-contract-ir FR-038-AC-213](ix://agent-ix/filament-contract-ir/FR-038) admits
+  only the `exact` mode for `filament.op.quantity.convert`; `Decimal` and `Integer` targets are out
   of this slice. A direct conversion needs equal dimensions: two declared units must share one
   dimension node, so distinct nodes with equal base-dimension maps are refused, while a compound
   side compares normalized base-dimension maps. A compound unit as the **target** is admitted by
@@ -98,7 +98,7 @@ accounting schedule.
   root-to-target path, all before the first rational event and with no common-ancestor shortcut;
   two `unit.rational-arithmetic` events per edge (multiply then add forward, subtract then divide
   in reverse); then `unit.target-domain` with no size amount; then `unit.result-retain`. AD-004
-  step 4 removed RT's `convert_quantity` with the rest of `quantity`; consumers use QSV directly.
+  step 4 removed RT's `convert_quantity` with the rest of `quantity`; consumers use FSV directly.
 - `Rational[lo..hi; dmin..dmax]` membership is componentwise on the **reduced** form: the reduced
   numerator must lie in the numerator interval and the reduced denominator in the denominator
   interval. It is therefore not a numeric interval — a domain whose numeric span plainly contains
@@ -116,14 +116,14 @@ accounting schedule.
 - Every arithmetic, normalize, rounding, retain-upscale, unit-event and target-domain amount is
   derived from operand bit lengths and scales only and is charged before any intermediate or result
   is allocated; no charge is sized from a computed result.
-- Model domains are out of scope (agent-ix/quire-spec-language#120), as is replay (#121).
+- Model domains are out of scope (agent-ix/filament-spec-language#120), as is replay (#121).
 
 ## Acceptance Criteria
 
 | ID | Criteria | Verification |
 |----|----------|--------------|
 | FR-007-AC-8 | The six rounding spellings are `exact`, `toward-zero`, `toward-positive`, `toward-negative`, `nearest-even` and `nearest-away`, corresponding to the six named `RoundingMode` variants. For positive and negative exact ties, `NearestEven` selects the neighbour with the even coefficient, `NearestAway` selects the neighbour with greater absolute coefficient, `TowardZero` selects the neighbour nearer zero, `TowardPositive` selects the ceiling and `TowardNegative` selects the floor. An omitted spelling is `Exact` and refuses a discarded nonzero digit. | Test (TC-034) |
-| FR-007-AC-13 | The runtime's consumed QSV `CompoundUnit` Debug rendering matches a fixed expected string listing every field declared by `CompoundUnitFields`, in declaration order. | Test (TC-035) |
+| FR-007-AC-13 | The runtime's consumed FSV `CompoundUnit` Debug rendering matches a fixed expected string listing every field declared by `CompoundUnitFields`, in declaration order. | Test (TC-035) |
 | FR-007-AC-15 | Decimal division with a target coefficient interval `[-100,100]` and scale `0` under `TowardZero`: `(-1, 0) / (-3, 0)` yields coefficient `0` from exact quotient `+1/3`; `(1, 0) / (-3, 0)` yields coefficient `0` with exact value `-1/3` in its loss. Under `NearestAway`, `(-1, 0) / (-2, 0)` has exact `+1/2` and yields coefficient `+1`. | Test (TC-034) |
 | FR-007-AC-18 | With a domain admitting residues `1` and `2`, `7 mod 3 = 1`, `-7 mod 3 = 2`, `7 mod -3 = 1` and `-7 mod -3 = 2`, each satisfying `0 <= r < abs(b)` regardless of the selected `div`/`rem` law; `mod` takes no law argument. An out-of-domain `mod` remainder is refused without a value as `ModuloOutOfDomain`. | Test (TC-034) |
 | FR-007-AC-19 | Under every `div`/`rem` profile, `div` checks only its exposed quotient and `rem` checks only its exposed remainder against the consumer domain; neither refuses because the unexposed member is outside. `10 div 5` returns `2` in `Int[1,10]` although its remainder is `0`, and `-10 rem -1` returns `0` in `Int[-10,5]` although its quotient is `10`. `-10 div -1` in `Int[-10,5]` refuses without a value as `DivisionOutOfDomain` naming the Quotient member. `9 rem 10` in `Int[0,5]` refuses without a value as `DivisionOutOfDomain` naming the Remainder member although its quotient is `0`. | Test (TC-034) |
@@ -131,7 +131,7 @@ accounting schedule.
 ## Verification notes
 
 The RT-local tests for retained rounding, Euclidean `mod` and exposed division-member behavior
-are listed in TC-034. The runtime consumes `quire-exact` for exact-kernel behavior; its
+are listed in TC-034. The runtime consumes `filament-exact` for exact-kernel behavior; its
 specification is linked from the subsystem registry.
 
 ## Kernel ownership
@@ -142,4 +142,4 @@ requirement. The authoritative kernel specification is linked from the subsystem
 ## Dependencies
 
 - **Upstream**: [FR-006](./FR-006-exact-outcomes-and-accounting.md);
-  `ix://agent-ix/quire-specification`; quire-spec-language.
+  `ix://agent-ix/filament-specification`; filament-spec-language.

@@ -1,33 +1,33 @@
 ---
 id: FR-275
-title: "Consume QSL's exact kernel and hold no ported QSL code"
+title: "Consume FSL's exact kernel and hold no ported FSL code"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: depends_on
-  - target: ix://agent-ix/quire-contract-runtime/interface-001
+  - target: ix://agent-ix/filament-contract-runtime/interface-001
     type: depends_on
-  - target: ix://agent-ix/quire-contract-runtime/AD-003
+  - target: ix://agent-ix/filament-contract-runtime/AD-003
     type: references
-  - target: ix://agent-ix/quire-semantic-value/FR-124
+  - target: ix://agent-ix/filament-semantic-value/FR-124
     type: depends_on
 ---
-# FR-275: Consume QSL's exact kernel and hold no ported QSL code
+# FR-275: Consume FSL's exact kernel and hold no ported FSL code
 
 ## Description
 
 Where the `exact` feature is enabled, the runtime shall take the exact value kernel from the one
-`quire-exact` crate (the kernel crate, QSL ADR-011 X-1, now in the `agent-ix/quire-exact` repository) and shall hold no copy,
-port or re-implementation of any item `quire-exact` exports. The runtime shall remove
+`filament-exact` crate (the kernel crate, FSL ADR-011 X-1, now in the `agent-ix/filament-exact` repository) and shall hold no copy,
+port or re-implementation of any item `filament-exact` exports. The runtime shall remove
 its distinct `Value` enum, `CheckedEquality` evaluator, `planned_equality`,
-`plan_pairs` and collection membership walker; it shall consume QSV's
-`CheckedEquality::evaluate` over `quire_exact::Value` directly. The QSV evaluator shall call
-`quire_exact::planned_equality_with_plan` for its planned pair schedule. The runtime shall define
+`plan_pairs` and collection membership walker; it shall consume FSV's
+`CheckedEquality::evaluate` over `filament_exact::Value` directly. The FSV evaluator shall call
+`filament_exact::planned_equality_with_plan` for its planned pair schedule. The runtime shall define
 no conversion layer or old-`Value` re-export. The end state also holds
-no ported QSL code at all: it is reached via `quire-exact`, `quire-semantic-value` (QSL-358),
-and the QSL evaluation leaf after IR-590 target acceptance.
-The runtime has no `quire_contract_runtime::exact` module: it re-exports
-no item of those QSL-owned crates (no `pub use`, alias, wrapper, feature or compatibility layer), and
+no ported FSL code at all: it is reached via `filament-exact`, `filament-semantic-value` (QSL-358),
+and the FSL evaluation leaf after IR-590 target acceptance.
+The runtime has no `filament_contract_runtime::exact` module: it re-exports
+no item of those FSL-owned crates (no `pub use`, alias, wrapper, feature or compatibility layer), and
 generated oracles and the code generator name the owning crates' own paths. Under the `exact` feature
 the runtime's own code is only the `scalar` module: the backend negotiators and the lazy Boolean
 connective, which are runtime-owned (below; AD-004). The remaining expression port
@@ -37,24 +37,24 @@ until the owning IR-349 and IR-1009 code steps land.
 
 The end state is delivered in two steps:
 
-1. **Step 1, the `quire-exact` exports now (IR-349 part 1).** Everything `quire-exact` exports today
-   is deleted from the runtime and consumed from `quire-exact`.
-2. **Step 2, the residue.** QSL says (as relayed by the team leader, from the IR planner) that
+1. **Step 1, the `filament-exact` exports now (IR-349 part 1).** Everything `filament-exact` exports today
+   is deleted from the runtime and consumed from `filament-exact`.
+2. **Step 2, the residue.** FSL says (as relayed by the team leader, from the IR planner) that
    QSL-358 slices place checking environments, containment and unit graphs, enumeration declarations
-   and carried compiler vocabulary in `quire-semantic-value` (QSL ADR-011 layer SV); `quire-exact`
-   stays the kernel. Function application belongs to QSL's separate evaluation leaf: IR-583 defines
+   and carried compiler vocabulary in `filament-semantic-value` (FSL ADR-011 layer SV); `filament-exact`
+   stays the kernel. Function application belongs to FSL's separate evaluation leaf: IR-583 defines
    its shared `core` plus `alloc` interface and std reference seam; IR-590 supplies the usable
-   `no_std` plus `alloc` evaluator (QSL FR-262). The owner ruled FB-05 YES (relayed via the planner):
-   shared QSL leaves the runtime may depend on. The residue is about 3,365 lines of the runtime's source (as
-   relayed); about 7,670 further lines already exist in `quire-exact` in a different shape (`Rc`
+   `no_std` plus `alloc` evaluator (FSL FR-262). The owner ruled FB-05 YES (relayed via the planner):
+   shared FSL leaves the runtime may depend on. The residue is about 3,365 lines of the runtime's source (as
+   relayed); about 7,670 further lines already exist in `filament-exact` in a different shape (`Rc`
    against `Arc`, `EffectiveId` against `NodeKey`, `Quantity`), which IR-349 adapts to. The residue
-   is not runtime-owned: the runtime deletes it and consumes the QSL-owned crates. The order and
+   is not runtime-owned: the runtime deletes it and consumes the FSL-owned crates. The order and
    mechanism are tracked by QSL-358, IR-583, IR-590, IR-349 (independent AD-004 steps 1 through 4)
    and IR-1009 (AD-004 step 5 and dependent end-state closure). IR-583 alone does not authorize
    deletion of the function-application copy; IR-590's checked-input and generated-body implementation
    must pass RT's governed `no_std` target acceptance first.
-3. **The negotiators are runtime-owned, not residue.** QSL deleted its negotiators on purpose
-   (QSL FR-078, as relayed), so `negotiate_integer_division`, `negotiate_ieee` and their types are the
+3. **The negotiators are runtime-owned, not residue.** FSL deleted its negotiators on purpose
+   (FSL FR-078, as relayed), so `negotiate_integer_division`, `negotiate_ieee` and their types are the
    runtime's own code, not a port, and stay in the runtime in the end state (FR-009,
    interface-001-AC-8). QSL-358 does not move them.
 
@@ -65,36 +65,36 @@ The exception expires when the shared evaluator implementation passes RT's gover
 alone does not satisfy that condition. It permits no new copies, semantic expansion or
 compatibility layer and does not staff the deferred IR-590 work.
 
-The end state remains a runtime with no ported QSL code. This interim decision does not
+The end state remains a runtime with no ported FSL code. This interim decision does not
 amend or satisfy the acceptance criteria below. In particular, AC-13, AC-17 and AC-18
 remain unmet while the port and its temporary exception remain.
 This requirement states the end state of IR-342 (AD-016 owner decision 2) and the rule the code
 steps IR-349 and IR-1009 implement. It follows AD-003 single-owner decision. It adds no behaviour: every behaviour the
-kernel owns stays specified by FR-006 to FR-008 and FR-010 to FR-012, now as behaviour of QSL's
+kernel owns stays specified by FR-006 to FR-008 and FR-010 to FR-012, now as behaviour of FSL's
 crates that the runtime consumes.
 
 ## Inputs
 
-- The `exact` feature of `quire-contract-runtime`, and the `quire-exact` and `quire-semantic-value` crates it enables.
+- The `exact` feature of `filament-contract-runtime`, and the `filament-exact` and `filament-semantic-value` crates it enables.
 - The runtime's `Cargo.toml`, `Cargo.lock` and `deny.toml`.
 
 ## Outputs
 
-- A build graph in which `quire-exact` and `quire-semantic-value` each resolve once, and in the end state a runtime with no `exact`
+- A build graph in which `filament-exact` and `filament-semantic-value` each resolve once, and in the end state a runtime with no `exact`
   module whose `exact`-feature code defines only the runtime-owned `scalar` items and re-exports no
-  QSL-owned crate.
-- A build that rejects the QSL repository as a Git dependency source.
+  FSL-owned crate.
+- A build that rejects the FSL repository as a Git dependency source.
 
 ## Behavior
 
-- **One kernel.** `quire-exact` is the one owner of values and value types, the kernel `Outcome` and
+- **One kernel.** `filament-exact` is the one owner of values and value types, the kernel `Outcome` and
   its `Undefined`, `Refusal` and `Incomplete` reasons, `Meter` charge-before-work accounting,
   `Origin`/`Location` provenance, `NodeKey`, and the scalar and collection operations over them.
   The runtime defines none of them (interface-001-AC-3 and AC-5 state the same rule per item; AC-2 and AC-4 state that no path re-exports them).
   Deleting the runtime's definitions is deletion, not relocation: no module, re-export alias,
   feature or wrapper keeps the old definitions reachable.
 - **Shared identity and declaration owners.** The kernel has no cross-unit quantity
-  arithmetic or equality conversion table. RT consumes `quire-semantic-value`'s
+  arithmetic or equality conversion table. RT consumes `filament-semantic-value`'s
   `UnitTable::get(UnitId)` for admitted units, `TypeEnvironment::object_type(EffectiveId)`
   for object declarations, and `EnumMemberIndex::resolve(VariantId)` with
   `EnumDeclaration` for enum members and shapes. The IR-882 migration repoints
@@ -110,48 +110,48 @@ crates that the runtime consumes.
 - **The end state.** There is no `exact` module. The runtime defines under the `exact` feature only the
   runtime-owned `scalar` items (the negotiators and their types, and `evaluate_boolean_short_circuit`
   with `ShortCircuitConnective`): the rest of `src/exact` is deleted, no `pub use`, alias or wrapper
-  re-exports `quire-exact`, `quire-semantic-value` or the evaluation leaf crate (IR-583 interface,
+  re-exports `filament-exact`, `filament-semantic-value` or the evaluation leaf crate (IR-583 interface,
   IR-590 implementation), and no compatibility layer keeps the old source reachable. The runtime
   then depends on each of those crates
-  once, by the same spelling rule as `quire-exact`.
+  once, by the same spelling rule as `filament-exact`.
 - **Runtime-owned negotiators.** `negotiate_integer_division`, `negotiate_ieee` and their requirement,
   capability and disposition types are defined in the runtime's own source (interface-001-AC-8). They
   are not a port and not vendoring, and they are outside QSL-358 and the residue list. They
-  consume the QSL `Value`, `Meter` and `Outcome` types where they need one.
-- **Dependency spelling.** `quire-exact` and `quire-semantic-value` are optional Git dependencies on
+  consume the FSL `Value`, `Meter` and `Outcome` types where they need one.
+- **Dependency spelling.** `filament-exact` and `filament-semantic-value` are optional Git dependencies on
   their own repositories, enabled only by the `exact` feature (interface-001-AC-11), and spelled
   `branch = "main"` as every first-party dependency is (IR-434). It carries no `rev`, `tag` or
   `path`, and no committed `[patch]`; local development against a sibling checkout uses the
   untracked `make use-local` patch. The runtime records no version, commit or digest of
   either shared crate in its sources or specification.
-- **One copy.** `Cargo.lock` holds one entry each for `quire-exact` and `quire-semantic-value`;
+- **One copy.** `Cargo.lock` holds one entry each for `filament-exact` and `filament-semantic-value`;
   `quire-canonical` and `quire-canonical-derive` enter transitively. Inspect the committed
   `Cargo.lock` for the shared-crate entries. `make deny` runs cargo-deny's source and licence
   policy checks and the released `quire check-lock Cargo.lock` coherence command. `deny.toml` admits their three
   own-repository Git sources plus the dev-only `ix-trace-rs` tooling source, and carries scoped
   licence exceptions for the four shared crates.
-- **Guarded edges.** No normal, build or dev dependency may resolve from the QSL workspace repository.
+- **Guarded edges.** No normal, build or dev dependency may resolve from the FSL workspace repository.
   `unknown-git = "deny"` rejects that repository because `allow-git` admits only those three
   own-repository sources and the dev-only `ix-trace-rs` tooling source before AD-004 step 5;
   the evaluation leaf's own repository may be admitted after that step. `make deny-mutations`
-  adds QSL Git dependencies in scratch copies and
+  adds FSL Git dependencies in scratch copies and
   requires cargo-deny's source-rejection diagnostic for normal, build and dev dependencies. A licence
   error alone does not prove the source guard.
 - **No substitute for the copy.** The runtime keeps no test that compares its output with a second
   implementation of the kernel, no shared-corpus agreement test, no vendored vector or fixture from
   another repository, and no compatibility layer for the removed copy. With one kernel there is
-  nothing to agree with. Tests of kernel behaviour belong to the QSL repository. In step 1 the
+  nothing to agree with. Tests of kernel behaviour belong to the FSL repository. In step 1 the
   runtime keeps only the tests of the residue; when the residue is deleted it keeps none of them,
-  because the residue's tests move to QSL with the code (the dispositions are in the test matrix, "Evidence at
+  because the residue's tests move to FSL with the code (the dispositions are in the test matrix, "Evidence at
   the kernel move").
-- **`no_std` plus `alloc`.** `quire-exact` and `quire-semantic-value` are `#![no_std]` with `alloc`.
-  `quire-exact` builds for
-  `thumbv7em-none-eabi` in the QSL repository's `make ci` (QSL-357). With `exact` enabled and `std`
-  disabled the runtime builds for that target. `quire-exact` shares values through `alloc::sync::Arc`,
+- **`no_std` plus `alloc`.** `filament-exact` and `filament-semantic-value` are `#![no_std]` with `alloc`.
+  `filament-exact` builds for
+  `thumbv7em-none-eabi` in the FSL repository's `make ci` (QSL-357). With `exact` enabled and `std`
+  disabled the runtime builds for that target. `filament-exact` shares values through `alloc::sync::Arc`,
   which needs the target's atomic compare-and-swap; the runtime's only `no_std` target,
   `thumbv7em-none-eabi`, has it. The runtime's own `exact` source uses no `std`.
-- **Footprint.** The default profile resolves no `quire-exact`, `quire-semantic-value`,
-  `quire-canonical` or `quire-canonical-derive`: the `quire-contract-runtime-footprint`
+- **Footprint.** The default profile resolves no `filament-exact`, `filament-semantic-value`,
+  `quire-canonical` or `quire-canonical-derive`: the `filament-contract-runtime-footprint`
   measurement crate depends on the runtime with `default-features = false`, so NFR-001's 500 byte
   floor, 4 KiB ceiling and panic-path check measure the same code as before and `make size` is the
   check. The kernel's size is outside that budget, as the `exact` feature always was.
@@ -172,29 +172,29 @@ crates that the runtime consumes.
 
 | ID | Criteria | Verification |
 |----|----------|--------------|
-| FR-275-AC-1 | With `exact` enabled, no public item the runtime defines (in `scalar` or any other module) has the name of an item that `quire-exact` or `quire-semantic-value` exports. | Inspection (TC-197) |
-| FR-275-AC-2 | No module, alias or feature of the runtime keeps a removed kernel definition reachable; after the IR-882 value-bearing cutover, inspection finds no RT-defined second `Value`, `CheckedEquality` evaluator, pair walker or membership walker, `UnitId` resolver, `EnumShape` registry, `EffectiveId` registry, copy of `UnitTable`, `TypeEnvironment`, `EnumMemberIndex` or `EnumDeclaration`, conversion layer, adapter or old-`Value` re-export. Quantity, enum, reference and checked-equality paths use the QSV owners directly. | Inspection (TC-197) |
-| FR-275-AC-3 | `quire-exact` is an optional dependency of the runtime, enabled only by the `exact` feature. | Inspection (TC-197) |
-| FR-275-AC-4 | The optional `quire-exact` and `quire-semantic-value` dependencies use their own `agent-ix` Git repositories with `branch = "main"` and no `rev`, `tag`, `path` or committed `[patch]`. | Inspection (TC-197) |
-| FR-275-AC-5 | `Cargo.lock` holds exactly one entry each for `quire-exact`, `quire-semantic-value`, `quire-canonical` and `quire-canonical-derive`, and, after AD-004 step 5, the QSL-owned evaluation leaf. | Inspection (TC-197) |
-| FR-275-AC-7 | `deny.toml` admits only the `quire-exact`, `quire-semantic-value` and `quire-canonical` own-repository Git sources and the dev-only `ix-trace-rs` first-party tooling source before AD-004 step 5, then also the QSL-owned evaluation leaf's own-repository Git source; it keeps `unknown-git = "deny"` and never admits the QSL Git repository. | Inspection (TC-198) |
-| FR-275-AC-8 | `make deny` reports cargo-deny's `source-not-allowed` error for the QSL Git repository, and exits non-zero, when a normal, build or dev dependency resolves from it; a licence failure alone does not satisfy this. | Test (TC-198) |
+| FR-275-AC-1 | With `exact` enabled, no public item the runtime defines (in `scalar` or any other module) has the name of an item that `filament-exact` or `filament-semantic-value` exports. | Inspection (TC-197) |
+| FR-275-AC-2 | No module, alias or feature of the runtime keeps a removed kernel definition reachable; after the IR-882 value-bearing cutover, inspection finds no RT-defined second `Value`, `CheckedEquality` evaluator, pair walker or membership walker, `UnitId` resolver, `EnumShape` registry, `EffectiveId` registry, copy of `UnitTable`, `TypeEnvironment`, `EnumMemberIndex` or `EnumDeclaration`, conversion layer, adapter or old-`Value` re-export. Quantity, enum, reference and checked-equality paths use the FSV owners directly. | Inspection (TC-197) |
+| FR-275-AC-3 | `filament-exact` is an optional dependency of the runtime, enabled only by the `exact` feature. | Inspection (TC-197) |
+| FR-275-AC-4 | The optional `filament-exact` and `filament-semantic-value` dependencies use their own `agent-ix` Git repositories with `branch = "main"` and no `rev`, `tag`, `path` or committed `[patch]`. | Inspection (TC-197) |
+| FR-275-AC-5 | `Cargo.lock` holds exactly one entry each for `filament-exact`, `filament-semantic-value`, `quire-canonical` and `quire-canonical-derive`, and, after AD-004 step 5, the FSL-owned evaluation leaf. | Inspection (TC-197) |
+| FR-275-AC-7 | `deny.toml` admits only the `filament-exact`, `filament-semantic-value` and `quire-canonical` own-repository Git sources and the dev-only `ix-trace-rs` first-party tooling source before AD-004 step 5, then also the FSL-owned evaluation leaf's own-repository Git source; it keeps `unknown-git = "deny"` and never admits the FSL Git repository. | Inspection (TC-198) |
+| FR-275-AC-8 | `make deny` reports cargo-deny's `source-not-allowed` error for the FSL Git repository, and exits non-zero, when a normal, build or dev dependency resolves from it; a licence failure alone does not satisfy this. | Test (TC-198) |
 | FR-275-AC-9 | With `exact` enabled and `std` disabled, the runtime builds for `thumbv7em-none-eabi`. The row `build-exact-no-std-msrv` builds it on the root `Cargo.toml` `rust-version` floor. | Test (TC-199, `make test-features` row `build-exact-no-std-msrv`) |
-| FR-275-AC-10 | The dependency graph of `quire-contract-runtime-footprint` for `thumbv7em-none-eabi` contains no `quire-exact`, `quire-semantic-value`, `quire-canonical` or `quire-canonical-derive`, and after AD-004 step 5 contains no evaluation leaf. | Test (TC-199) |
+| FR-275-AC-10 | The dependency graph of `filament-contract-runtime-footprint` for `thumbv7em-none-eabi` contains no `filament-exact`, `filament-semantic-value`, `quire-canonical` or `quire-canonical-derive`, and after AD-004 step 5 contains no evaluation leaf. | Test (TC-199) |
 | FR-275-AC-11 | `make size` measures linked `.text` plus `.rodata` inside NFR-001-AC-3's 500 byte to 4 KiB band. | Test (TC-199, `make size`) |
-| FR-275-AC-12 | The runtime has no test that compares its output with a second implementation of the kernel or that depends on a crate from the QSL Git repository. | Inspection (TC-197) |
-| FR-275-AC-13 | The runtime contains no file copied from the QSL repository and no port of QSL code, where a port is code that keeps the QSL authority's item names and order. The residue list is not an allowance: every item on it is a violation of this criterion, which stays unmet while the list is non-empty. The runtime-owned negotiators are not ports. | Inspection (TC-197) |
+| FR-275-AC-12 | The runtime has no test that compares its output with a second implementation of the kernel or that depends on a crate from the FSL Git repository. | Inspection (TC-197) |
+| FR-275-AC-13 | The runtime contains no file copied from the FSL repository and no port of FSL code, where a port is code that keeps the FSL authority's item names and order. The residue list is not an allowance: every item on it is a violation of this criterion, which stays unmet while the list is non-empty. The runtime-owned negotiators are not ports. | Inspection (TC-197) |
 | FR-275-AC-14 | The kernel move deletes no requirement, acceptance criterion or test case. | Inspection (TC-197) |
 | FR-275-AC-15 | Every matrix row whose evidence leaves the runtime in the kernel move carries a planned status with a stated reason, because the status vocabulary has no "verified upstream" status (a planner question, no status is invented). | Inspection (TC-197) |
-| FR-275-AC-16 | The runtime has no `quire_contract_runtime::exact` module and no `pub use` of `quire-exact`, `quire-semantic-value` or the evaluation leaf crate; the only items it defines under the `exact` feature are the `scalar` items (the backend negotiators and their types, `evaluate_boolean_short_circuit` and `ShortCircuitConnective`), and no file under `src/exact` exists. | Inspection (TC-197) |
+| FR-275-AC-16 | The runtime has no `filament_contract_runtime::exact` module and no `pub use` of `filament-exact`, `filament-semantic-value` or the evaluation leaf crate; the only items it defines under the `exact` feature are the `scalar` items (the backend negotiators and their types, `evaluate_boolean_short_circuit` and `ShortCircuitConnective`), and no file under `src/exact` exists. | Inspection (TC-197) |
 | FR-275-AC-17 | Every item the runtime defines under the `exact` feature, other than the `scalar` items, is named in the residue list, and the list records no exception, expiry or approval. | Inspection (TC-197) |
 | FR-275-AC-18 | The residue list is empty. | Inspection (TC-197) |
-| FR-275-AC-19 | The runtime defines `negotiate_integer_division`, `negotiate_ieee` and their types in its own source and depends on no QSL crate for them. | Inspection (TC-197) |
+| FR-275-AC-19 | The runtime defines `negotiate_integer_division`, `negotiate_ieee` and their types in its own source and depends on no FSL crate for them. | Inspection (TC-197) |
 | FR-275-AC-20 | The runtime's root `Cargo.toml` declares one `rust-version` for all feature profiles; the MSRV and footprint gates read that field as their compiler floor without another fixed version value. | Inspection (TC-199) |
 | FR-275-AC-21 | `make msrv` and `make size` build with the root `Cargo.toml` `rust-version` compiler; changing that field changes the compiler selected by both gates, and a missing or unavailable declared compiler fails either gate. | Test (TC-199) |
-| FR-275-AC-22 | Inspection of runtime source finds no local definition or alias of QSV's `SemanticGraphCause`, `InvalidSemanticGraph`, or semantic-node term checker, including definitions emitted by macros. | Inspection (TC-205) |
-| FR-275-AC-29 | After AD-004 step 5, with `exact` enabled and `std` disabled on the root `Cargo.toml` `rust-version`, the RT consumer and a generated-body consumer of the QSL-owned evaluation leaf compile for `thumbv7em-none-eabi` using one lock entry for that leaf; neither consumer resolves the QSL workspace Git source, an RT-local evaluator copy, or a compatibility alias. A host build of the same no_std profile executes the checked-input and generated-body cases of FR-273-AC-12 and AC-13. | Test (TC-199, TC-194) |
-| FR-275-AC-30 | After AD-004 step 5, `make size` still measures the default fixed population at 500 bytes through 4 KiB linked `.text` plus `.rodata` with no evaluation leaf in its graph and no panic relocation. A separate `measurement/evaluator` no_std executable that links RT, the QSL evaluation leaf and one generated-body consumer for `thumbv7em-none-eabi` has its linked ELF path and `.text` plus `.rodata` byte sum reported from `llvm-size -A`. A solitary native FR-273-AC-13 deep-test executable has its peak resident set size reported in bytes from `/usr/bin/time -v`'s `Maximum resident set size` field, with the reported KiB multiplied by 1024. The receipt names both artifact paths and measurements separately from the default footprint; neither is compared with the default 4 KiB ceiling, and no exact-profile memory limit is inferred from this default measurement. | Test (TC-199) |
+| FR-275-AC-22 | Inspection of runtime source finds no local definition or alias of FSV's `SemanticGraphCause`, `InvalidSemanticGraph`, or semantic-node term checker, including definitions emitted by macros. | Inspection (TC-205) |
+| FR-275-AC-29 | After AD-004 step 5, with `exact` enabled and `std` disabled on the root `Cargo.toml` `rust-version`, the RT consumer and a generated-body consumer of the FSL-owned evaluation leaf compile for `thumbv7em-none-eabi` using one lock entry for that leaf; neither consumer resolves the FSL workspace Git source, an RT-local evaluator copy, or a compatibility alias. A host build of the same no_std profile executes the checked-input and generated-body cases of FR-273-AC-12 and AC-13. | Test (TC-199, TC-194) |
+| FR-275-AC-30 | After AD-004 step 5, `make size` still measures the default fixed population at 500 bytes through 4 KiB linked `.text` plus `.rodata` with no evaluation leaf in its graph and no panic relocation. A separate `measurement/evaluator` no_std executable that links RT, the FSL evaluation leaf and one generated-body consumer for `thumbv7em-none-eabi` has its linked ELF path and `.text` plus `.rodata` byte sum reported from `llvm-size -A`. A solitary native FR-273-AC-13 deep-test executable has its peak resident set size reported in bytes from `/usr/bin/time -v`'s `Maximum resident set size` field, with the reported KiB multiplied by 1024. The receipt names both artifact paths and measurements separately from the default footprint; neither is compared with the default 4 KiB ceiling, and no exact-profile memory limit is inferred from this default measurement. | Test (TC-199) |
 
 ## Lockfile and Dependency Policy
 
@@ -202,7 +202,7 @@ AC-5 retains direct inspection of the committed lockfile's shared-crate entries.
 IR-1293 carries the IR-581 residual gate: `make deny` invokes the released, owned
 `quire check-lock Cargo.lock` command before cargo-deny. RT does not restore a copied
 lock scanner or maintain a second implementation. Cargo-deny's source, licence and
-ban checks remain active under AC-7 and AC-8; TC-198 still exercises the QSL source refusal.
+ban checks remain active under AC-7 and AC-8; TC-198 still exercises the FSL source refusal.
 
 ## Residue list (to be deleted)
 
@@ -214,11 +214,11 @@ record completed removals. Runtime-owned negotiators are outside this residue li
 | Residue or disposition | Requirement | Source status |
 |---|---|---|
 | Function application: `PackageDeclarations`, `CheckedPackage`, `Frame`, `Body`, `Evaluation`, `plan_call` | FR-273 | `src/exact/expression.rs` |
-| Checking environments, composite declarations, object closure and `CheckedEquality` | FR-008 | RT's copies in `src/exact/composite.rs`, `reference.rs` and `equality.rs` were removed in the IR-882 value-bearing cutover; QSV owns these interfaces. |
-| Containment and unit graphs, enumeration declarations | FR-008, FR-007 | RT's `containment.rs`, `enumeration.rs` and `unit.rs` were removed in IR-882; QSV owns their declarations and graph behavior. |
-| Carried compiler vocabulary | FR-012 | RT's `node.rs` and `definition.rs` were deleted in IR-882. R-3 retired `RevisionMismatch`, `DigestDomainMismatch` and `ByteDigestMismatch`; RT consumes QSV's vocabulary directly, with no alias or adapter (FR-012-AC-7). |
+| Checking environments, composite declarations, object closure and `CheckedEquality` | FR-008 | RT's copies in `src/exact/composite.rs`, `reference.rs` and `equality.rs` were removed in the IR-882 value-bearing cutover; FSV owns these interfaces. |
+| Containment and unit graphs, enumeration declarations | FR-008, FR-007 | RT's `containment.rs`, `enumeration.rs` and `unit.rs` were removed in IR-882; FSV owns their declarations and graph behavior. |
+| Carried compiler vocabulary | FR-012 | RT's `node.rs` and `definition.rs` were deleted in IR-882. R-3 retired `RevisionMismatch`, `DigestDomainMismatch` and `ByteDigestMismatch`; RT consumes FSV's vocabulary directly, with no alias or adapter (FR-012-AC-7). |
 
-The list is a classification aid, not a frozen record; an item `quire-exact` exports is not residue
+The list is a classification aid, not a frozen record; an item `filament-exact` exports is not residue
 and is deleted in step 1.
 
 ## Open questions
@@ -231,11 +231,11 @@ and is deleted in step 1.
   not assigned by this decision.
 - **Status for rows whose evidence lives upstream (planner question).** The matrix has no "verified
   upstream" status; leaving rows stay "planned" with a reason (FR-275-AC-15).
-- **`quire-semantic-value`.** The owner ruled FB-05 YES (relayed via the planner): a shared `no_std`
+- **`filament-semantic-value`.** The owner ruled FB-05 YES (relayed via the planner): a shared `no_std`
   plus `alloc` leaf the runtime may depend on. The dependency spelling and direct lock-entry
   inspection above
   apply to it once it exists.
-- **Kernel shape change.** The locked `quire_exact::Value` has `Arc`-backed
+- **Kernel shape change.** The locked `filament_exact::Value` has `Arc`-backed
   option, composite and collection nodes, iterative formatting and nested-node
   drop, and direct constructors and collection operations. It is distinct from
   RT's current `Rc`-backed `Value`. IR-882 migrates RT to the kernel value
@@ -252,15 +252,15 @@ and is deleted in step 1.
   runtime-owned `scalar` items and paired CG consumers. The foundation slice (floor,
   dependency and bans; no deletion) preceded those steps. IR-1009 receives AD-004
   step 5, the ported function-application deletion and paired CG consumption, gated by
-  the IR-583 interface, IR-590 implementation and RT target acceptance (QSL FR-262),
+  the IR-583 interface, IR-590 implementation and RT target acceptance (FSL FR-262),
   together with the dependent empty-`exact` end-state closure in step 6. FR-275-AC-1,
   AC-13, AC-16, AC-18, AC-29 and AC-30 remain unchanged and planned until their full
   end-state evidence exists; this delivery split waives none of them.
-- **Routed**: the codegen repository's lock resolves two `quire-exact` copies and three
-  `quire-contract-model` revisions; that is codegen's one-copy work (its layout AD, step 1d, the
+- **Routed**: the codegen repository's lock resolves two `filament-exact` copies and three
+  `filament-contract-model` revisions; that is codegen's one-copy work (its layout AD, step 1d, the
   codegen owner) and is not a runtime requirement. This requirement covers the runtime only, so
   IR-342 stays open after it merges for the codegen part; the team leader coordinates it. Checked
-  read-only at the IR repository's main: it declares no dependency on `quire-exact` and holds no
+  read-only at the IR repository's main: it declares no dependency on `filament-exact` and holds no
   copy of the exact kernel (no `Meter`, `ScalarLimits` or kernel `Outcome` definition), so IR needs
   no requirement from this ticket.
 

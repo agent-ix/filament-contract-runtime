@@ -3,9 +3,9 @@ id: interface_011
 title: "Verified union operations and shared checked equality"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_008
+  - target: ix://agent-ix/filament-contract-runtime/interface_008
     type: references
 ---
 # [interface-011] Verified union operations and shared checked equality
@@ -14,7 +14,7 @@ relationships:
 
 ```yaml
 name: MonitorUnionsAndEquality
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Operation, ProgramParts, Program]
 operations:
@@ -33,7 +33,7 @@ invariants:
 
 ### execute_union_or_equality
 
-`Union { variant: quire_exact::VariantId, positions: Vec<ExpressionId> }`
+`Union { variant: filament_exact::VariantId, positions: Vec<ExpressionId> }`
 constructs the admitted union named by its result annotation. The native type
 environment must already seal that exact member to its verified original
 UnionMember; an unresolved or foreign binding refuses rather than synthesizing a
@@ -48,7 +48,7 @@ reads the original member's positional payload without copying a subtree. The
 source admission proves its selected branch; a mismatched evaluated member is
 an executor invariant failure, never a default payload or property verdict.
 
-`Equality { left, right, checked: Box<quire_semantic_value::declaration::CheckedEquality> }`
+`Equality { left, right, checked: Box<filament_semantic_value::declaration::CheckedEquality> }`
 retains the original shared checked equality, including its operator, conversions,
 selected unit facts and filtered enum-member metadata. Operands evaluate left
 before right, and evaluation calls that plan against the retained native type

@@ -3,7 +3,7 @@ id: TC-206
 title: "Inspect the linked exact-profile panic surface"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/NFR-002
+  - target: ix://agent-ix/filament-contract-runtime/NFR-002
     type: verifies
 ---
 # TC-206: Inspect the linked exact-profile panic surface
@@ -12,8 +12,8 @@ relationships:
 
 Exercise an exact-enabled, no-std runtime consumer separately from the
 default-footprint population. Check the retained runtime-owned objects for
-recognized Rust panic relocations, and check the QSL-owned integer division
-admission contract at the resolved `quire-exact` dependency. This finite probe
+recognized Rust panic relocations, and check the FSL-owned integer division
+admission contract at the resolved `filament-exact` dependency. This finite probe
 does not certify unretained monomorphizations or third-party object files.
 
 ## Test Procedure
@@ -28,7 +28,7 @@ does not certify unretained monomorphizations or third-party object files.
    those calls. After FR-275 removes that residue, the population contains the
    `scalar` calls and no obsolete expression call.
 2. Inspect the built archive with a tool that reports object ownership and
-   relocation targets. Select the retained `quire_contract_runtime` object
+   relocation targets. Select the retained `filament_contract_runtime` object
    files, record their names and the exact command used, and reject a zero or
    missing population. Search their relocation targets for `rust_begin_unwind`,
    `panic_bounds_check`, `core::panicking` and `slice::index::fail` (including
@@ -40,7 +40,7 @@ does not certify unretained monomorphizations or third-party object files.
    to reject its relocation. The scratch copy is removed after the control;
    it is not committed. Missing archive, missing inspection tool, unparsable
    output or absent expected RT call is a failed gate, not a pass.
-4. Against the resolved `quire-exact` crate, compile a direct caller that
+4. Against the resolved `filament-exact` crate, compile a direct caller that
    creates zero and checks `NonZeroInteger::try_from(&zero) == Err(ZeroDivisor)`.
    Compile a nonzero caller that reuses an admitted token for `exact_div`,
    `div_rem_truncating` and `div_mod_floor`. Compile-fail callers pass a plain
@@ -48,7 +48,7 @@ does not certify unretained monomorphizations or third-party object files.
    controls test the public helper boundary, independently of the higher-level
    operation's `Undefined::DivisionByZero` check. Update the runtime's resolved
    dependency before claiming this control if its current lock predates the
-   QSL-owned admission API.
+   FSL-owned admission API.
 
 ## Expected Results
 

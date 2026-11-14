@@ -3,7 +3,7 @@ id: TC-034
 title: "Pin the exact semantics the agreement corpus does not reach"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-007
+  - target: ix://agent-ix/filament-contract-runtime/FR-007
     type: verifies
 ---
 # TC-034: Pin the exact semantics the agreement corpus does not reach
@@ -17,7 +17,7 @@ Check retained rounding, quotient-sign rounding, single-member division exposure
 
 RT-local `tests/exact_semantics.rs` backs the consumed rounding behavior in AC-8, quotient-sign
 rounding and exact loss in AC-15, Euclidean `mod` in AC-18, and division exposure in AC-19.
-The exact kernel's authoritative behavior is specified by quire-exact.
+The exact kernel's authoritative behavior is specified by filament-exact.
 
 ## Test Procedure
 
@@ -41,7 +41,7 @@ The exact kernel's authoritative behavior is specified by quire-exact.
    FR-007-AC-19 if the executed value differs; never change the test to fit the criterion.
 
 Compiler admission of a non-Euclidean `mod` selection belongs to
-[quire-specification FR-147-AC-5](ix://agent-ix/quire-specification/FR-147) and QSpec TC-192 DIV-03. RT neither produces
+[filament-specification FR-147-AC-5](ix://agent-ix/filament-specification/FR-147) and QSpec TC-192 DIV-03. RT neither produces
 nor tests that admission refusal.
 
 ## Expected Results

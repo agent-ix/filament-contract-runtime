@@ -4,7 +4,7 @@ title: "Closed monitor program construction"
 type: interface
 object: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-276
+  - target: ix://agent-ix/filament-contract-runtime/FR-276
     type: references
 ---
 # [interface-002] Closed monitor program construction
@@ -13,7 +13,7 @@ relationships:
 
 ```yaml
 name: MonitorProgramConstruction
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 features:
   exact: [alloc]
 associated_types:
@@ -53,7 +53,7 @@ operations:
     semantics: checked arena lookup; inline provenance retains the source NodeKey and body path
 invariants:
   - IR and driver lower once into the runtime-owned representation
-  - RT depends on neither IR nor QSL
+  - RT depends on neither IR nor FSL
   - no host callbacks, temporal formula reconstruction, mirror value types or second plan wire
   - source keys and exact values/types are the shared leaf types
   - Rc sharing retains only immutable program data
@@ -215,6 +215,6 @@ Returns: Expression[0..1]
 
 This interface is the RT-first construction contract used by IR-721. FR-276 and
 TC-200's build/init, event/watermark/gap execution, resource-stop behavior and genuine
-QSL producer/reference differential remain required on IR-722. These criteria neither
+FSL producer/reference differential remain required on IR-722. These criteria neither
 replace nor narrow FR-276-AC-1 through AC-10. Construction-only tests are tagged to
 this interface, not claimed as qualification of the complete monitor.

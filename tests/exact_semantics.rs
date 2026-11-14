@@ -3,12 +3,12 @@
 //! IEEE exceptional, rational membership, and decimal normalization cases are kernel-owned.
 #![cfg(feature = "exact")]
 
-use ix_trace_rs::trace;
-use quire_exact::{
+use filament_exact::{
     divide, evaluate_decimal, modulo, Decimal, DecimalOperation, DecimalType, DivisionMember,
     DivisionProfile, InexactTarget, Integer, IntegerDomain, IntegerInterval, Meter, Outcome,
     Rational, Refusal, RoundingMode, ScalarLimits,
 };
+use ix_trace_rs::trace;
 
 const UNLIMITED: ScalarLimits = limits([u64::MAX; 10]);
 
@@ -47,7 +47,7 @@ fn decimal_divide(
     numerator: i128,
     denominator: i128,
     mode: RoundingMode,
-) -> Outcome<quire_exact::DecimalResult> {
+) -> Outcome<filament_exact::DecimalResult> {
     let left = Decimal::new(int(numerator), 0);
     let right = Decimal::new(int(denominator), 0);
     evaluate_decimal(

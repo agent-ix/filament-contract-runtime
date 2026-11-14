@@ -1,8 +1,8 @@
 //! Consumer controls for deeply nested kernel type metadata.
 #![cfg(feature = "exact")]
 
+use filament_exact::{CardinalityBound, CollectionKind, CollectionType, ValueType};
 use ix_trace_rs::trace;
-use quire_exact::{CardinalityBound, CollectionKind, CollectionType, ValueType};
 
 #[path = "support/deep_value_type.rs"]
 mod deep_value_type;

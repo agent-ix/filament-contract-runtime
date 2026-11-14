@@ -29,7 +29,7 @@ def sibling_checkout(root):
     common = Path(git(root, "rev-parse", "--git-common-dir"))
     if not common.is_absolute():
         common = root / common
-    return common.resolve().parent.parent / "quire-integration"
+    return common.resolve().parent.parent / "filament-integration"
 
 
 def regular_blob(checkout, reference):
@@ -43,11 +43,11 @@ def regular_blob(checkout, reference):
 def main_test_source(checkout):
     origin = git(checkout, "config", "--get", "remote.origin.url").lower().rstrip("/").removesuffix(".git")
     if origin not in {
-        "https://github.com/agent-ix/quire-integration",
-        "git@github.com:agent-ix/quire-integration",
-        "ssh://git@github.com/agent-ix/quire-integration",
+        "https://github.com/agent-ix/filament-integration",
+        "git@github.com:agent-ix/filament-integration",
+        "ssh://git@github.com/agent-ix/filament-integration",
     }:
-        raise ValueError("integration origin must identify agent-ix/quire-integration")
+        raise ValueError("integration origin must identify agent-ix/filament-integration")
     if git(checkout, "symbolic-ref", "--short", "HEAD") != "main":
         raise ValueError("the integration checkout must be on main")
     source = checkout / EXTERNAL_TEST
@@ -78,7 +78,7 @@ def reference_scope(root, external_source):
             reference = scope / relative
             reference.parent.mkdir(parents=True, exist_ok=True)
             reference.symlink_to(source)
-        reference = scope / "external/quire-integration" / EXTERNAL_TEST
+        reference = scope / "external/filament-integration" / EXTERNAL_TEST
         reference.parent.mkdir(parents=True)
         reference.symlink_to(external_source)
         yield scope

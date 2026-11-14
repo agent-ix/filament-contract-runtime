@@ -3,7 +3,7 @@ id: TC-210
 title: "Preserve trusted host tool home"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/NFR-002
+  - target: ix://agent-ix/filament-contract-runtime/NFR-002
     type: verifies
 ---
 # TC-210: Preserve trusted host tool home
@@ -16,7 +16,7 @@ an external authority; this test does not verify its contents.
 
 ## Test Procedure
 
-Run `cargo test --locked -p quire-contract-runtime-gates trusted_home_ignores_caller_home`.
+Run `cargo test --locked -p filament-contract-runtime-gates trusted_home_ignores_caller_home`.
 The parent obtains the account home and starts the same test in a subprocess with
 `HOME` pointing to a distinct temporary directory. The subprocess calls
 `trusted_home` and checks the selected cargo path. Environment changes are confined

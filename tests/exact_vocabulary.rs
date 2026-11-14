@@ -1,12 +1,12 @@
 //! FR-012 carried compiler vocabulary: node keys, refusal vocabularies, semantic-graph causes and
-//! owner types. Enum declarations use the QSV owner directly.
+//! owner types. Enum declarations use the FSV owner directly.
 #![cfg(feature = "exact")]
 
-use ix_trace_rs::trace;
-use proc_macro2::{TokenStream, TokenTree};
-use quire_semantic_value::definition::{
+use filament_semantic_value::definition::{
     PackageCause, PackageRefusal, PackageRefusalCode, SelectionRefusalCode,
 };
+use ix_trace_rs::trace;
+use proc_macro2::{TokenStream, TokenTree};
 use std::path::{Path, PathBuf};
 use syn::visit::{self, Visit};
 
@@ -54,7 +54,7 @@ fn item_attrs(item: &syn::Item) -> &[syn::Attribute] {
 fn use_exposes_key_owner(tree: &syn::UseTree, from_kernel: bool) -> bool {
     match tree {
         syn::UseTree::Path(path) => {
-            use_exposes_key_owner(&path.tree, from_kernel || path.ident == "quire_exact")
+            use_exposes_key_owner(&path.tree, from_kernel || path.ident == "filament_exact")
         }
         syn::UseTree::Name(name) => name.ident == "NodeKey" || name.ident == "NODE_KEY_DOMAIN",
         syn::UseTree::Rename(rename) => {
@@ -153,16 +153,16 @@ fn inspect_definition_macro_tokens(
     }
 }
 
-fn publicly_exposes_qsv_definition(tree: &syn::UseTree, path_state: u8) -> bool {
+fn publicly_exposes_fsv_definition(tree: &syn::UseTree, path_state: u8) -> bool {
     match tree {
         syn::UseTree::Path(path) => {
             let state = match (path_state, path.ident.to_string().as_str()) {
-                (0, "quire_semantic_value") => 1,
+                (0, "filament_semantic_value") => 1,
                 (1, "definition") => 2,
                 (2, _) => 2,
                 _ => 0,
             };
-            publicly_exposes_qsv_definition(&path.tree, state)
+            publicly_exposes_fsv_definition(&path.tree, state)
         }
         syn::UseTree::Name(name) => {
             path_state == 2 || (path_state == 1 && name.ident == "definition")
@@ -174,7 +174,7 @@ fn publicly_exposes_qsv_definition(tree: &syn::UseTree, path_state: u8) -> bool 
         syn::UseTree::Group(group) => group
             .items
             .iter()
-            .any(|item| publicly_exposes_qsv_definition(item, path_state)),
+            .any(|item| publicly_exposes_fsv_definition(item, path_state)),
     }
 }
 
@@ -191,7 +191,7 @@ impl<'ast> Visit<'ast> for ProductionDefinitionInspection {
         match item {
             syn::Item::Use(use_item) => {
                 let public = matches!(use_item.vis, syn::Visibility::Public(_));
-                if (public && publicly_exposes_qsv_definition(&use_item.tree, 0))
+                if (public && publicly_exposes_fsv_definition(&use_item.tree, 0))
                     || use_mentions_definition(&use_item.tree, !public)
                 {
                     self.findings.push("definition alias or re-export".into());
@@ -669,7 +669,7 @@ fn tc_033_package_refusal_code_as_str_is_invalid_package() {
 
 #[trace("TC-033", "FR-012-AC-7")]
 #[test]
-fn tc_033_definition_refusals_have_only_the_qsv_owner() {
+fn tc_033_definition_refusals_have_only_the_fsv_owner() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     assert!(
         !root.join("src/exact/definition.rs").exists(),
@@ -700,10 +700,10 @@ fn tc_033_definition_refusals_have_only_the_qsv_owner() {
 
     for source in [
         "pub enum ShadowPackageCause { MissingMember, ConflictingDefinition }",
-        "use quire_semantic_value::definition::PackageCause as LocalCause;",
-        "pub type RefusalAlias = quire_semantic_value::definition::PackageRefusal;",
-        "pub use quire_semantic_value::definition::*;",
-        "pub struct LocalAdapter(quire_semantic_value::definition::PackageCause);",
+        "use filament_semantic_value::definition::PackageCause as LocalCause;",
+        "pub type RefusalAlias = filament_semantic_value::definition::PackageRefusal;",
+        "pub use filament_semantic_value::definition::*;",
+        "pub struct LocalAdapter(filament_semantic_value::definition::PackageCause);",
         "macro_rules! local_copy { () => { enum Copy { ByteDigestMismatch } } }",
     ] {
         let parsed = syn::parse_file(source).unwrap();
@@ -715,7 +715,7 @@ fn tc_033_definition_refusals_have_only_the_qsv_owner() {
         );
     }
     let direct_owner_use = syn::parse_file(
-        "use quire_semantic_value::definition::PackageCause; \
+        "use filament_semantic_value::definition::PackageCause; \
          pub fn carry(cause: PackageCause) -> PackageCause { cause } \
          pub struct Holder { cause: PackageCause }",
     )
@@ -724,7 +724,7 @@ fn tc_033_definition_refusals_have_only_the_qsv_owner() {
     inspection.visit_file(&direct_owner_use);
     assert!(
         inspection.findings.is_empty(),
-        "private direct QSV use must remain allowed: {:?}",
+        "private direct FSV use must remain allowed: {:?}",
         inspection.findings
     );
 

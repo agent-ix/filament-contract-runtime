@@ -1,11 +1,11 @@
 #![cfg(feature = "proptest")]
 
-use ix_trace_rs::trace;
-use proptest::test_runner::TestCaseError;
-use quire_contract_runtime::{
+use filament_contract_runtime::{
     proptest_adapter, CampaignReport, ClauseId, ContractIdentity, ExecutionPoint, FailureDetail,
     FailureKind, RequirementId, RevisionId, Verdict, VerdictContext,
 };
+use ix_trace_rs::trace;
+use proptest::test_runner::TestCaseError;
 
 #[trace("TC-004", "FR-003-AC-1", "StR-001-VC-1")]
 #[test]

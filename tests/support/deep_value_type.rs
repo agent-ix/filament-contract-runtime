@@ -1,6 +1,6 @@
 //! Shared deep type exercise for the integration test and its child process.
 
-use quire_exact::{CardinalityBound, CollectionKind, CollectionType, ValueType};
+use filament_exact::{CardinalityBound, CollectionKind, CollectionType, ValueType};
 
 pub(crate) const CHILD_COMPLETED: &str = "deep-value-type-child-completed";
 const DEPTH: usize = 100_000;

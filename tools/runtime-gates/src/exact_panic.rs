@@ -14,7 +14,7 @@ const EXPECTED_CALLS: [&str; 5] = [
     "CheckedPackage>::evaluate",
 ];
 const GENERIC_CALL: &str =
-    "evaluate_boolean_short_circuit::<quire_contract_runtime_exact_panic::quire_runtime_exact_panic";
+    "evaluate_boolean_short_circuit::<filament_contract_runtime_exact_panic::filament_runtime_exact_panic";
 
 #[derive(Debug)]
 struct Scan {
@@ -51,12 +51,12 @@ fn members(archive: &Path) -> Result<(BTreeSet<String>, BTreeSet<String>), Strin
     let listing = text(Command::new("ar").arg("t").arg(archive), "ar t")?;
     let runtime: BTreeSet<String> = listing
         .lines()
-        .filter(|member| member.starts_with("quire_contract_runtime-"))
+        .filter(|member| member.starts_with("filament_contract_runtime-"))
         .map(str::to_owned)
         .collect();
     let probe: BTreeSet<String> = listing
         .lines()
-        .filter(|member| member.starts_with("quire_contract_runtime_exact_panic-"))
+        .filter(|member| member.starts_with("filament_contract_runtime_exact_panic-"))
         .map(str::to_owned)
         .collect();
     if runtime.is_empty() || probe.is_empty() {
@@ -308,7 +308,7 @@ fn panic_control(root: &Path, target: &Path, msrv: &str, triple: &str) -> Result
     )?;
     let mutant = target
         .join(triple)
-        .join("exact-panic/libquire_contract_runtime_exact_panic.a");
+        .join("exact-panic/libfilament_contract_runtime_exact_panic.a");
     match inspect(&mutant) {
         Err(error) if error.contains("RT-owned panic relocations:") => Ok(()),
         other => Err(format!(

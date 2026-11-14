@@ -3,9 +3,9 @@ id: interface_008
 title: "Exact scalar operations and lossless operating stops"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: references
 ---
 # [interface-008] Exact scalar operations and lossless operating stops
@@ -14,7 +14,7 @@ relationships:
 
 ```yaml
 name: MonitorScalarOperations
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Operation, StepBudget, StepResourceStop]
 operations:

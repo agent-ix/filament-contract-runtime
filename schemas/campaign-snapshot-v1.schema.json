@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://agent-ix.github.io/quire-contract-runtime/schemas/campaign-snapshot-v1.schema.json",
+  "$id": "https://agent-ix.github.io/filament-contract-runtime/schemas/campaign-snapshot-v1.schema.json",
   "title": "runtime.campaign-snapshot/v1",
   "description": "Complete structurally unqualified campaign accounting. Normative codec rules additionally enforce failed <= accepted, 4096 decoded UTF-8 bytes per identity, 65536 total input/output bytes, duplicate-key refusal and unsigned integer lexical spelling. JSON Schema alone cannot establish those conditions or authenticate execution.",
   "type": "object",

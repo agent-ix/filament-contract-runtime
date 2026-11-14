@@ -1,6 +1,6 @@
 use core::mem::size_of;
 
-use quire_contract_runtime::{
+use filament_contract_runtime::{
     CampaignCounts, CampaignReport, ContractIdentity, FailureDetail, Observation, Verdict,
     VerdictContext,
 };

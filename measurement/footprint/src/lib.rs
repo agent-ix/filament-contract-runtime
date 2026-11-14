@@ -9,7 +9,7 @@ use core::hint::black_box;
 #[cfg(all(not(test), target_os = "none"))]
 use core::panic::PanicInfo;
 
-use quire_contract_runtime::{
+use filament_contract_runtime::{
     operators, CampaignCounts, CampaignReport, ClauseId, ClauseKind, ClauseOutcome,
     ContractIdentity, ExecutionPoint, FailureDetail, FailureKind, Observation, RequirementId,
     RevisionId, Verdict, VerdictContext,
@@ -23,11 +23,11 @@ fn panic(_info: &PanicInfo<'_>) -> ! {
 
 /// Retains the representative entry point in the static-library archive.
 #[used]
-pub static FOOTPRINT_ENTRY: extern "C" fn(u32) -> u64 = quire_runtime_footprint;
+pub static FOOTPRINT_ENTRY: extern "C" fn(u32) -> u64 = filament_runtime_footprint;
 
 /// Exercises every public constructor, both accounting mutations, and every operator family.
 // Implements: NFR-001
-pub extern "C" fn quire_runtime_footprint(input: u32) -> u64 {
+pub extern "C" fn filament_runtime_footprint(input: u32) -> u64 {
     let identity = ContractIdentity::new(
         RequirementId::new("NFR-001"),
         RevisionId::new("footprint-v1"),

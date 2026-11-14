@@ -1,14 +1,14 @@
-//! The runtime function boundary consumes the QSV checker and exact values directly.
+//! The runtime function boundary consumes the FSV checker and exact values directly.
 #![cfg(feature = "exact")]
 
-use ix_trace_rs::trace;
-use quire_contract_runtime::exact::{
+use filament_contract_runtime::exact::{
     BodyStep, CheckMode, CheckedPackage, CheckingLimits, Frame, FunctionDeclaration,
     PackageDeclarations,
 };
-use quire_exact::{Meter, Outcome, ScalarLimits, Value, ValueType};
-use quire_semantic_value::declaration::TypeEnvironment;
-use quire_semantic_value::object_closure::ObjectClosure;
+use filament_exact::{Meter, Outcome, ScalarLimits, Value, ValueType};
+use filament_semantic_value::declaration::TypeEnvironment;
+use filament_semantic_value::object_closure::ObjectClosure;
+use ix_trace_rs::trace;
 
 const LIMITS: ScalarLimits = ScalarLimits {
     integer_bits: 100,
@@ -46,7 +46,7 @@ fn identity_package() -> CheckedPackage {
 
 #[trace("TC-194", "FR-273-AC-2")]
 #[test]
-fn function_application_accepts_exact_value_and_qsv_environment() {
+fn function_application_accepts_exact_value_and_fsv_environment() {
     let package = identity_package();
     let mut meter = Meter::new(LIMITS);
     let result = package

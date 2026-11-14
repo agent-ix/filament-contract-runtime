@@ -7,7 +7,7 @@ use super::{
     Value, ValueType,
 };
 use alloc::{boxed::Box, vec::Vec};
-use quire_exact::{Charge, ChargePoint, CollectionKind};
+use filament_exact::{Charge, ChargePoint, CollectionKind};
 
 impl Machine {
     fn native_charge(
@@ -127,7 +127,7 @@ impl Machine {
             .ok_or_else(|| broken(site, Broken::Address))?;
         let outcome = match (&node.operation, &node.value_type) {
             (Operation::Sequence { .. }, ValueType::Collection(value_type)) => {
-                quire_exact::form(value_type, values, &mut resources.scalar)
+                filament_exact::form(value_type, values, &mut resources.scalar)
             }
             (Operation::Union { variant, .. }, ValueType::Composite(key)) => {
                 let binding = program
@@ -135,7 +135,7 @@ impl Machine {
                     .union_member(key.clone(), variant.clone())
                     .and_then(|(_, member)| member.member())
                     .ok_or_else(|| broken(site, Broken::Projection))?;
-                quire_exact::retain_composite(
+                filament_exact::retain_composite(
                     UnionValue::from_admitted(binding.clone(), values),
                     &mut resources.scalar,
                 )
@@ -215,7 +215,7 @@ impl Machine {
                 values.push(value.clone());
             }
         }
-        let outcome = quire_exact::form(result_type, values, &mut resources.scalar);
+        let outcome = filament_exact::form(result_type, values, &mut resources.scalar);
         self.computed_result(outcome, site, resources)
     }
 }

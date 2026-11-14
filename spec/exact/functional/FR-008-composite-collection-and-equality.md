@@ -3,9 +3,9 @@ id: FR-008
 title: "Evaluate composite, collection and equality families under the same outcome and accounting contract"
 type: FR
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: depends_on
-  - target: ix://agent-ix/quire-contract-runtime/FR-007
+  - target: ix://agent-ix/filament-contract-runtime/FR-007
     type: depends_on
 ---
 # FR-008: Evaluate composite, collection and equality families under the same outcome and accounting contract
@@ -14,9 +14,9 @@ relationships:
 
 When the `exact` feature is enabled, the runtime shall construct composite and collection values,
 compare values for equality, build finite values from a containment graph, and carry terminal object
-references, with values and outcome kinds equal to the quire-spec-language authority
+references, with values and outcome kinds equal to the filament-spec-language authority
 on every shared-corpus vector, and charges equal to the QSpec accounting
-schedule. As with FR-006 and FR-007, the runtime shall use `quire_exact`'s `Value`,
+schedule. As with FR-006 and FR-007, the runtime shall use `filament_exact`'s `Value`,
 `ValueType`, collection, membership, canonical-key and equality-plan operations
 directly and shall define no second value representation or walker. RT's direct consumer controls exercise the shared checked equality path in TC-203. Collection consumer evidence remains a separate RT-owned obligation.
 
@@ -51,7 +51,7 @@ directly and shall define no second value representation or walker. RT's direct 
   object type, and a set, bag or ordered-set element type that bears an IEEE value at any depth
   (`OperatorIneligible`), through `check_type` and `contains_ieee`. Its named-declaration check
   covers composite and object-reference declarations admitted by that environment, not enum
-  declarations. The quire-spec-language checker owns enum declaration admission against its
+  declarations. The filament-spec-language checker owns enum declaration admission against its
   package scope: an authored enum type name absent from that scope is refused as a typed
   `MissingName` during type-form resolution, while `Typer::check_declared_type` refuses an enum
   shape absent from the admitted enum bindings as `IllTyped(TypeMismatch)`. The runtime consumes
@@ -73,12 +73,12 @@ directly and shall define no second value representation or walker. RT's direct 
 - Each kind's retained order is both its canonical representation and its visiting order. A sequence
   retains every occurrence in the order supplied. An ordered set retains the first occurrence of
   each distinct member, in first-occurrence order. A set retains one occurrence of each distinct
-  member, in ascending canonical-key order. Under ix://agent-ix/quire-specification/FR-144
+  member, in ascending canonical-key order. Under ix://agent-ix/filament-specification/FR-144
   and FR-144-AC-21, a bag groups equal occurrences as one member whose multiplicity is
   their number. It retains every occurrence in ascending canonical-key order by that
   multiplicity, representing each with the member's first-supplied value.
 - Every type that admits `=` has a total, type-owned canonical key: two values of that type have
-  equal keys exactly when they are ix://agent-ix/quire-specification/FR-149 equal. The key fixes set and bag canonical and visiting
+  equal keys exactly when they are ix://agent-ix/filament-specification/FR-149 equal. The key fixes set and bag canonical and visiting
   order; it is not a general ordering operator and is not exposed for any type that does not admit
   `=`. Absent orders before null, which orders before a present value
   (`Absent < Null < Present`). Comparison is iterative over an explicit task stack, so value depth
@@ -89,8 +89,8 @@ directly and shall define no second value representation or walker. RT's direct 
   comparison type — before any charge. `plan_equality` forms the occurrence-pair plan of two
   completed operands with no charge; a reference pair whose universes differ refuses as
   `ForeignReference` at plan time, never as a charged comparison. `CheckedEquality::evaluate` then
-  runs the left and right conversion charges in operand order and the selected schedule: the ix://agent-ix/quire-specification/FR-141
-  text, ix://agent-ix/quire-specification/FR-141 enum or ix://agent-ix/quire-specification/FR-142 quantity schedule for those top-level types, and otherwise
+  runs the left and right conversion charges in operand order and the selected schedule: the ix://agent-ix/filament-specification/FR-141
+  text, ix://agent-ix/filament-specification/FR-141 enum or ix://agent-ix/filament-specification/FR-142 quantity schedule for those top-level types, and otherwise
   `equality.plan-form`, `equality.plan`, one `equality.pair` per planned occurrence-path pair and
   `equality.result-retain`.
 - IR-882 changes three observable pair results at the kernel cutover: composites
@@ -107,7 +107,7 @@ directly and shall define no second value representation or walker. RT's direct 
 - A `Reference<T>` value is terminal: its kernel identity is the supplied
   `(UniverseId, EffectiveId, ObjectId)` triple. Equality never inspects referenced state, and no source form
   constructs one from a component value.
-- The value carries no structural equality; the ix://agent-ix/quire-specification/FR-149 relation reached through `plan_equality` and
+- The value carries no structural equality; the ix://agent-ix/filament-specification/FR-149 relation reached through `plan_equality` and
   `CheckedEquality::evaluate` is the only equality, because a structural comparison would be a second,
   unmetered relation and would be wrong for signed zero, NaN-bearing values, decimal values retained
   at differing scales, and reference pairs from different universes.
@@ -130,27 +130,27 @@ directly and shall define no second value representation or walker. RT's direct 
   `ConstructionRefusal`, `GraphRefusal`, `IllTyped`, the extended `Refusal` and `Undefined`) exactly
   as the authority names it; it never re-derives, renames or infers a refusal the authority does not
   already carry.
-- The `Undefined` and `Refusal` vocabularies are extended to their ix://agent-ix/quire-specification/FR-149 / ix://agent-ix/quire-specification/FR-144 complete authority
+- The `Undefined` and `Refusal` vocabularies are extended to their ix://agent-ix/filament-specification/FR-149 / ix://agent-ix/filament-specification/FR-144 complete authority
   shape: `Undefined::EmptyReduction` and `Undefined::NoneValue` (reachable only from direct kernel
   evaluation of an unlinked expression, which this crate does not yet expose — see Out of Scope);
   `Refusal::ForeignReference`; `Refusal::CardinalityOutOfBound { violation, kind, bound, count }`
   with its `BoundViolation::{BelowMinimum, AboveMaximum}`; and `Refusal::CheckedInvariant { cause }`, reachable
   only when a checked-program invariant fails and unreachable from any admitted vector. `Refusal`
-  gains a `cause()` method carrying the closed ix://agent-ix/quire-specification/FR-272 cause tag beside `code()`, populated for
+  gains a `cause()` method carrying the closed ix://agent-ix/filament-specification/FR-272 cause tag beside `code()`, populated for
   `CardinalityOutOfBound` and empty for every other variant.
 - A checked equality operand that violates its source admission, reaches a nonintegral decimal
   conversion to integer, has its quantity conversion rejected, receives a nonexact quantity
   placement, reaches no conversion arm, or fails target admission carries the corresponding
   `CheckedInvariantCause::{EqualityOperandSourceNotAdmitted, EqualityOperandNonIntegralDecimal,
   EqualityQuantityConversionRejected, EqualityQuantityNonExactPlacement,
-  EqualityConversionShapeMismatch, EqualityOperandTargetNotAdmitted}` from kernel `ix://agent-ix/quire-exact/FR-369`.
+  EqualityConversionShapeMismatch, EqualityOperandTargetNotAdmitted}` from kernel `ix://agent-ix/filament-exact/FR-369`.
   `EqualityQuantityConversionRejected` retains the conversion's `IllTypedCause` payload. These
   checked-program faults remain distinct from ordinary input refusals.
-- The `quire.value.accounting/v1` charge vocabulary gains twelve points ordered
+- The `filament.value.accounting/v1` charge vocabulary gains twelve points ordered
   `equality.plan-form`, `equality.plan`, `equality.pair`, `equality.result-retain`, `function.call`,
   `collection.element`, `collection.visit`, `collection.member-walk`, `collection.member-test`,
   `collection.bound`, `collection.result-retain`, `composite.result-retain`, within the
-  kernel-owned `ChargePoint::ALL` vocabulary of 63 points. The additional kernel point is `temporal.visit`, owned by quire-exact's temporal work. `ScalarLimitsV1` is unchanged; composite and collection construction bill
+  kernel-owned `ChargePoint::ALL` vocabulary of 63 points. The additional kernel point is `temporal.visit`, owned by filament-exact's temporal work. `ScalarLimitsV1` is unchanged; composite and collection construction bill
   `value_occurrences`, `work_units` and `result_units` only, exactly as FR-006's charge-before-work
   and high-water/cumulative rules already require.
 - The expression machine and total pure functions (`FunctionDeclaration`,
@@ -160,7 +160,7 @@ directly and shall define no second value representation or walker. RT's direct 
   requirement; [FR-273](./FR-273-exact-function-application.md) admits the application surface and the
   object environment it validates reference arguments against. `function.call` and `collection.visit`
   are ported as closed accounting vocabulary here, ahead of the operator that charges them. Temporal and
-  protocol encodings and replay are out of scope (agent-ix/quire-spec-language#121). Library
+  protocol encodings and replay are out of scope (agent-ix/filament-spec-language#121). Library
   resolution and package identity (`resolve_libraries`, `PackageId::of_preimage`, `check_migration`)
   are not this crate's work at all: recomputing a package id from a preimage is compiler work, and
   this runtime never recomputes a key it was given — a permanent boundary, not a deferral.
@@ -171,7 +171,7 @@ directly and shall define no second value representation or walker. RT's direct 
 |----|----------|--------------|
 | FR-008-AC-3 | `construct_collection` charges `collection.element` before running each deferred element and stops at the first non-completing element with no later element run; a completed element outside its declared type returns `CheckedInvariant { cause: CollectionElementNotAdmitted }`; `form_collection` refuses a type-mismatched occurrence before any charge; formation charges membership comparisons, `collection.bound` and `collection.result-retain` in that order, and a set or bag is stored in ascending canonical-key order. | Test |
 | FR-008-AC-10 | When formation coalesces occurrences, the runtime charges one `collection.member-walk` and one `collection.member-test` per membership comparison for a set, bag or ordered set, and charges neither point for a sequence. | Test |
-| FR-008-AC-11 | When a collection is retained, the runtime stores a sequence in supplied occurrence order, an ordered set as the first occurrence of each distinct member in first-occurrence order, a set as one occurrence of each distinct member in ascending canonical-key order, and a bag as every occurrence in ascending canonical-key order by multiplicity: equal occurrences are one member whose multiplicity is their number, and each is represented by that member's first-supplied value, as in ix://agent-ix/quire-specification/FR-144 and FR-144-AC-21. | Test |
+| FR-008-AC-11 | When a collection is retained, the runtime stores a sequence in supplied occurrence order, an ordered set as the first occurrence of each distinct member in first-occurrence order, a set as one occurrence of each distinct member in ascending canonical-key order, and a bag as every occurrence in ascending canonical-key order by multiplicity: equal occurrences are one member whose multiplicity is their number, and each is represented by that member's first-supplied value, as in ix://agent-ix/filament-specification/FR-144 and FR-144-AC-21. | Test |
 | FR-008-AC-12 | When a retained collection is visited by equality planning or by a further formation, the runtime visits its elements in the order it stored them, for every one of the four kinds. | Test |
 | FR-008-AC-4 | The type-owned canonical key totally orders every keyed type, ranks `Absent < Null < Present`, fixes set and bag canonical and visiting order, and is evaluated iteratively at a depth that would overflow a recursive host-stack walk. | Test |
 | FR-008-AC-13 | For an `Option`/`Collection`-nested `ValueType` whose depth exceeds a recursive host-stack walk under the admitted source-size cap, `Clone`, `PartialEq`, `Debug` and `Drop` complete on a small-stack thread and a default-stack child process without host-stack overflow; unequal leaf, collection kind and bound remain unequal, and the shallow compact and alternate `Debug` output matches the derived representation exactly. | Test (TC-024) |
@@ -179,13 +179,13 @@ directly and shall define no second value representation or walker. RT's direct 
 ## Kernel ownership
 
 The consumed kernel exposes 63 charge points, including its `temporal.visit` point.
-Quire-exact ([FR-368-AC-1](ix://agent-ix/quire-exact/FR-368) and
-[FR-368-AC-2](ix://agent-ix/quire-exact/FR-368)) tests the full vocabulary and
+Filament-exact ([FR-368-AC-1](ix://agent-ix/filament-exact/FR-368) and
+[FR-368-AC-2](ix://agent-ix/filament-exact/FR-368)) tests the full vocabulary and
 round trips. RT's TC-031 now tests the charge points it still owns; TC-203 tests
-the consumed QSV equality schedule. The other owner denial evidence and RT/QSL
-agreement remains to be reconciled with the QSV and kernel owners.
+the consumed FSV equality schedule. The other owner denial evidence and RT/FSL
+agreement remains to be reconciled with the FSV and kernel owners.
 
-The behaviour above that `quire-exact` implements (interface-001, "Exact kernel surface") is the
+The behaviour above that `filament-exact` implements (interface-001, "Exact kernel surface") is the
 behaviour of that one kernel, which the runtime consumes and does not copy ([FR-275](./FR-275-single-exact-kernel.md)).
 This requirement stays in force and binds the `exact` feature as a whole; where its evidence
 moves to the kernel's repository the matrix says so and keeps the row, without deleting any
@@ -194,4 +194,4 @@ acceptance criterion.
 ## Dependencies
 
 - **Upstream**: [FR-006](./FR-006-exact-outcomes-and-accounting.md); [FR-007](./FR-007-exact-scalar-families.md);
-  `ix://agent-ix/quire-specification` (`value-accounting.md`); quire-spec-language.
+  `ix://agent-ix/filament-specification` (`value-accounting.md`); filament-spec-language.

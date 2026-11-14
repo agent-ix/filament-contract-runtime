@@ -3,7 +3,7 @@ id: TC-015
 title: "Bound immutable campaign snapshot transport"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-004
+  - target: ix://agent-ix/filament-contract-runtime/FR-004
     type: verifies
 ---
 # TC-015: Bound immutable campaign snapshot transport

@@ -3,9 +3,9 @@ id: interface_007
 title: "Required record member reads in monitor entries"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
 ---
 # [interface-007] Required record member reads in monitor entries
@@ -14,7 +14,7 @@ relationships:
 
 ```yaml
 name: MonitorRecordProjection
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Operation, ProgramParts, Program]
 operations:
@@ -32,7 +32,7 @@ invariants:
 
 ### prepare_record_projection
 
-`RecordField { value: ExpressionId, member: quire_exact::MemberId }` reads a
+`RecordField { value: ExpressionId, member: filament_exact::MemberId }` reads a
 required field of the receiver's admitted record declaration. This capability
 carries the original node-owned member identity. Its owner must be the receiver
 annotation's record declaration; effective-model attributes and optional-field

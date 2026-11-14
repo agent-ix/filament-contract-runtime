@@ -3,9 +3,9 @@ id: interface_012
 title: "Admitted input association and atomic monitor entry dispatch"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-276
+  - target: ix://agent-ix/filament-contract-runtime/FR-276
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
 ---
 # [interface-012] Admitted input association and atomic monitor entry dispatch
@@ -14,7 +14,7 @@ relationships:
 
 ```yaml
 name: MonitorEntryDispatch
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Layout, Monitor, InputContext, Reading, Event, Watermark, MonitorStep, MonitorFailure]
 operations:

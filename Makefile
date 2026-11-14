@@ -1,5 +1,5 @@
 # =============================================================================
-# Quire Contract Runtime Makefile
+# Filament Contract Runtime Makefile
 # =============================================================================
 #
 # Native orchestration. Every target calls the toolchain that owns the job:
@@ -33,7 +33,7 @@ help:
 	@echo "  make spec             - Validate and cover the specification with Quire"
 	@echo "  make clean            - cargo clean"
 	@echo "  make deny             - cargo-deny policy and owned lock coherence"
-	@echo "  make deny-mutations   - Require QSL Git dependencies to fail cargo-deny in a scratch copy"
+	@echo "  make deny-mutations   - Require FSL Git dependencies to fail cargo-deny in a scratch copy"
 	@echo "  make use-local        - patch first-party git deps to sibling checkouts"
 	@echo "  make use-remote       - Remove the local patch file and restore Cargo.lock; build from GitHub"
 	@echo "  make kani             - Run the Kani proofs"
@@ -54,8 +54,8 @@ fmt-check:
 
 .PHONY: lint
 lint:
-	$(CARGO) clippy -p quire-contract-runtime --all-targets --all-features -- -D warnings
-	$(CARGO) clippy -p quire-contract-runtime-footprint --lib --release --target $(FOOTPRINT_TARGET) -- -D warnings
+	$(CARGO) clippy -p filament-contract-runtime --all-targets --all-features -- -D warnings
+	$(CARGO) clippy -p filament-contract-runtime-footprint --lib --release --target $(FOOTPRINT_TARGET) -- -D warnings
 
 .PHONY: test
 test:
@@ -63,7 +63,7 @@ test:
 
 .PHONY: test-features
 test-features:
-	$(CARGO) run $(LOCKED) -p quire-contract-runtime-gates -- feature-matrix
+	$(CARGO) run $(LOCKED) -p filament-contract-runtime-gates -- feature-matrix
 
 # `#[ignore]`d tests are evidence blocked on an open defect, not dropped
 # coverage: this is the only target that runs them, so a fix that clears the
@@ -74,8 +74,8 @@ test-ignored:
 
 .PHONY: doc
 doc:
-	RUSTDOCFLAGS=-Dwarnings $(CARGO) doc -p quire-contract-runtime --all-features --no-deps
-	RUSTDOCFLAGS=-Dwarnings $(CARGO) doc -p quire-contract-runtime-footprint --no-deps --target $(FOOTPRINT_TARGET)
+	RUSTDOCFLAGS=-Dwarnings $(CARGO) doc -p filament-contract-runtime --all-features --no-deps
+	RUSTDOCFLAGS=-Dwarnings $(CARGO) doc -p filament-contract-runtime-footprint --no-deps --target $(FOOTPRINT_TARGET)
 
 .PHONY: build
 build:
@@ -98,9 +98,9 @@ size: require-msrv
 	$(CARGO) run $(LOCKED) --quiet --bin check_linked_footprint --
 	@# FR-275-AC-10: the footprint graph must not resolve a shared exact dependency. The size band alone
 	@# would not catch a regression that enabled `exact` there, so the graph is checked directly.
-	@set -e; graph=$$($(CARGO) tree $(LOCKED) -p quire-contract-runtime-footprint \
+	@set -e; graph=$$($(CARGO) tree $(LOCKED) -p filament-contract-runtime-footprint \
 		--target $(FOOTPRINT_TARGET) --edges normal,build,dev --prefix none); \
-	for crate in quire-exact quire-semantic-value quire-canonical quire-canonical-derive; do \
+	for crate in filament-exact filament-semantic-value quire-canonical quire-canonical-derive; do \
 		if printf '%s\n' "$$graph" | grep -q "^$$crate "; then \
 			echo "footprint graph resolves $$crate (FR-275-AC-10)" >&2; exit 1; \
 		fi; \
@@ -117,15 +117,15 @@ spec:
 exact-panic-probe: require-msrv
 	$(CARGO) +$(MSRV) build $(LOCKED) --profile exact-panic --manifest-path measurement/exact-panic/Cargo.toml \
 		--target $(FOOTPRINT_TARGET) --target-dir $(EXACT_PANIC_TARGET_DIR)
-	$(CARGO) run $(LOCKED) --quiet -p quire-contract-runtime-gates -- exact-panic-probe \
-		$(EXACT_PANIC_TARGET_DIR)/$(FOOTPRINT_TARGET)/exact-panic/libquire_contract_runtime_exact_panic.a \
+	$(CARGO) run $(LOCKED) --quiet -p filament-contract-runtime-gates -- exact-panic-probe \
+		$(EXACT_PANIC_TARGET_DIR)/$(FOOTPRINT_TARGET)/exact-panic/libfilament_contract_runtime_exact_panic.a \
 		$(EXACT_PANIC_TARGET_DIR) $(MSRV) $(FOOTPRINT_TARGET)
 
 .PHONY: exact-panic
 exact-panic: require-msrv
 	$(CARGO) test $(LOCKED) --test exact_panic_gate
-	$(CARGO) +$(MSRV) test $(LOCKED) -p quire-contract-runtime-kernel-api-check --lib
-	$(CARGO) +$(MSRV) test $(LOCKED) -p quire-contract-runtime-kernel-api-check --doc
+	$(CARGO) +$(MSRV) test $(LOCKED) -p filament-contract-runtime-kernel-api-check --lib
+	$(CARGO) +$(MSRV) test $(LOCKED) -p filament-contract-runtime-kernel-api-check --doc
 
 .PHONY: clean
 clean:
@@ -202,8 +202,8 @@ deny:
 	$(QUIRE) check-lock Cargo.lock
 	$(CARGO) deny --workspace check licenses bans sources
 
-# Mutation check of the QSL Git source policy (FR-275-AC-8, TC-198): each scratch dependency
-# must fail `cargo deny` with the QSL source rejection diagnostic.
+# Mutation check of the FSL Git source policy (FR-275-AC-8, TC-198): each scratch dependency
+# must fail `cargo deny` with the FSL source rejection diagnostic.
 .PHONY: deny-mutations
 deny-mutations:
 	$(CARGO) run $(LOCKED) --quiet --bin check_deny_source --
@@ -232,7 +232,7 @@ kani:
 
 .PHONY: kani-mutations
 kani-mutations:
-	$(KANI_STACK) $(CARGO) run $(LOCKED) -p quire-contract-runtime-gates -- kani-mutations
+	$(KANI_STACK) $(CARGO) run $(LOCKED) -p filament-contract-runtime-gates -- kani-mutations
 
 # =============================================================================
 # Composite

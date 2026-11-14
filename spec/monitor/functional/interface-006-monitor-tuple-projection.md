@@ -3,9 +3,9 @@ id: interface_006
 title: "Canonical tuple projection in monitor entries"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
 ---
 # [interface-006] Canonical tuple projection in monitor entries
@@ -14,7 +14,7 @@ relationships:
 
 ```yaml
 name: MonitorTupleProjection
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Operation, ProgramParts, Program]
 operations:

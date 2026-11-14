@@ -3,9 +3,9 @@ id: interface_005
 title: "Ordinary Boolean operations in monitor entries"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_003
+  - target: ix://agent-ix/filament-contract-runtime/interface_003
     type: references
 ---
 # [interface-005] Ordinary Boolean operations in monitor entries
@@ -14,7 +14,7 @@ relationships:
 
 ```yaml
 name: MonitorBooleanOperations
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types: [Operation, ProgramParts, Program]
 operations:
@@ -54,7 +54,7 @@ shortages retain their original typed cause as operating stops. It introduces no
 callback, temporal opcode,
 source identity, State field, root binding or public carrier. Each expression's
 existing original key/body path identifies its operation. These capabilities
-serve Boolean expressions in the admitted ordinary QSL entry/helper closure;
+serve Boolean expressions in the admitted ordinary FSL entry/helper closure;
 passing their controls does not qualify a temporal monitor producer or result.
 
 | Param | Type | Multiplicity | Constraints |

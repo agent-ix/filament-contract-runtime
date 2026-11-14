@@ -3,9 +3,9 @@ id: interface_003
 title: "Owned monitor initializer and bounded entry machine"
 type: interface
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-276
+  - target: ix://agent-ix/filament-contract-runtime/FR-276
     type: references
-  - target: ix://agent-ix/quire-contract-runtime/interface_002
+  - target: ix://agent-ix/filament-contract-runtime/interface_002
     type: references
 ---
 # [interface-003] Owned monitor initializer and bounded entry machine
@@ -14,7 +14,7 @@ relationships:
 
 ```yaml
 name: MonitorExecutor
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 feature: exact
 associated_types:
   - BuildPlan
@@ -85,7 +85,7 @@ failures. No arbitrary allocator-OOM recovery is promised.
 Returns: Monitor[1..1]
 
 BuildPlan has exactly `program: Rc<Program>` and `budget: StepBudget`. StepBudget
-contains `work: u64`, required `scalar: quire_exact::ScalarLimits`,
+contains `work: u64`, required `scalar: filament_exact::ScalarLimits`,
 `stack_frames: usize`, `scratch_elements: usize` and `scratch_bytes: usize`;
 zero is a real zero ceiling, including each native scalar counter. The scalar
 meter is fresh per invocation and cumulative across selected operations
@@ -116,7 +116,7 @@ scan, key sort or whole-function census occurs.
 
 The initial machine executes the existing Literal, owning Argument, Call and lazy If
 operations iteratively. Recursive calls spend the same budget and cannot recurse on
-the Rust stack. Further capabilities follow the actual producer closure (QSL #2106),
+the Rust stack. Further capabilities follow the actual producer closure (FSL #2106),
 using ordinary shared operations; no append or temporal opcode fills a gap. Event,
 watermark and gap dispatch remain the rest of IR-722; this initializer slice does not
 claim the complete FR-276/TC-200 acceptance.

@@ -9,7 +9,7 @@ type: interface
 
 ```yaml
 name: GeneratedOracleRuntime
-ownership: quire-contract-runtime
+ownership: filament-contract-runtime
 features:
   default: []
   alloc: []
@@ -114,39 +114,39 @@ The interface's features in declaration order: every operation the contract abov
 The `exact` feature exposes the RT-owned `monitor` construction contract in
 [interface-002](../../monitor/functional/interface-002-monitor-program.md).
 Its immutable owner consumes shared leaf keys/values/declarations directly. It
-adds no IR/QSL dependency or callback-based body route. Monitor execution and
+adds no IR/FSL dependency or callback-based body route. Monitor execution and
 real-producer qualification remain the obligations of FR-276. The bounded initializer
 and operating-budget API are specified in
 [interface-003](../../monitor/functional/interface-003-monitor-executor.md).
 
 ## Exact kernel surface
 
-Today generated oracles and `quire-contract-codegen` reach exact semantic values through
-`quire_contract_runtime::exact`. The target end state (FR-275; IR-349 steps 1–4 and IR-1009 closure) is that they reach them
-through the owning crates' own paths (`quire_exact::`, `quire_semantic_value::`), which generated source
-names directly; the runtime then defines no `quire_contract_runtime::exact` module and re-exports nothing
+Today generated oracles and `filament-contract-codegen` reach exact semantic values through
+`filament_contract_runtime::exact`. The target end state (FR-275; IR-349 steps 1–4 and IR-1009 closure) is that they reach them
+through the owning crates' own paths (`filament_exact::`, `filament_semantic_value::`), which generated source
+names directly; the runtime then defines no `filament_contract_runtime::exact` module and re-exports nothing
 from those crates. Its own kept items now live in `scalar`.
-`quire-contract-codegen` also depends on `quire-exact` directly (ADR-011 X-1). The runtime operators
+`filament-contract-codegen` also depends on `filament-exact` directly (ADR-011 X-1). The runtime operators
 that generated code and the code generator call are the IR build-plan seam S4 (runtime operators). That
 name is unrelated to ADR-011's stage-DAG entry S4 (Linked checked package) or
 its migration path SEAM-4. This section fixes which items the seam carries, who owns each one, and
 which way the crate dependencies point. Replacing the runtime's own kernel implementation with the
-upstream `quire-exact` crate leaves the seam's items and their ownership as stated here and moves the
+upstream `filament-exact` crate leaves the seam's items and their ownership as stated here and moves the
 paths consumers name to the owning crates.
 
-Ownership follows QSL ADR-013 O-13 and O-16 and ADR-011 X-1. `quire-exact` is the one owner of the
+Ownership follows FSL ADR-013 O-13 and O-16 and ADR-011 X-1. `filament-exact` is the one owner of the
 exact value kernel: values and value types, the kernel evaluation `Outcome` with its `Undefined`,
 `Refusal` and `Incomplete` reasons, charge-before-work `Meter` accounting, `Origin`/`Location`
 provenance, the checked `NodeKey`, and the scalar and collection operations over them. The kernel
 does not define, today, the function-application boundary (`Frame`, `Body`, `CheckedPackage`,
 `Evaluation`, `plan_call`), the static checking environments generated oracles build before they
-evaluate. QSL-358 places checking vocabulary in `quire-semantic-value`; QSL FR-262 assigns the
+evaluate. QSL-358 places checking vocabulary in `filament-semantic-value`; FSL FR-262 assigns the
 function-application mechanism to its separate evaluation leaf. IR-583 supplies the shared `core`
 plus `alloc` interface and std reference seam; IR-590 supplies the usable `no_std` evaluator. RT
 deletes its copy only after that implementation passes its governed `no_std` target acceptance for
 checked-input and generated-body evaluation. These items are not runtime-owned in the end state: the
 runtime's copy of them is not authorized: [FR-275](../../exact/functional/FR-275-single-exact-kernel.md)
-records it as residue to delete, with no exception, no expiry and no approval. The negotiation predicates are different: they are runtime-owned code, not a QSL port, and
+records it as residue to delete, with no exception, no expiry and no approval. The negotiation predicates are different: they are runtime-owned code, not a FSL port, and
 stay (interface-001-AC-8). The `runtime_owned` block holds only those negotiation items and the lazy Boolean connective (neither shared crate has it); the
 `residue` block lists the rest, which is not runtime-owned (interface-001-AC-7 and AC-9 below
 concern it). The runtime's verdict,
@@ -154,7 +154,7 @@ observation and campaign types lie outside `exact` and are never kernel types: a
 reports what one evaluation produced, and a `Verdict` reports what an execution point established
 about a contract.
 
-For the IR-882 value cutover, RT consumes `quire-semantic-value`'s `UnitTable::get(UnitId)`,
+For the IR-882 value cutover, RT consumes `filament-semantic-value`'s `UnitTable::get(UnitId)`,
 `TypeEnvironment::object_type(EffectiveId)`, `EnumMemberIndex::resolve(VariantId)` and
 `EnumDeclaration` directly. It owns no second unit, enum or object-type registry and adds no
 adapter for those owner types.
@@ -162,26 +162,26 @@ adapter for those owner types.
 A generated oracle proving a kernel operation, or a runtime operation that calls one, may not call
 that same operation to compute its own expectation — only an operation that is not the one under
 proof may be called this way. The expectation for a kernel operation instead comes from the QSpec
-operation vectors or a checked-in specification model that calls no `quire-exact` operation
+operation vectors or a checked-in specification model that calls no `filament-exact` operation
 (ADR-013 O-13; ADR-011 §2.3 rule 8).
 
 Classification is by rule, not by a frozen list, because the upstream kernel is still converging
 (QSL-131 redesigns `Value`, `ValueType` and the enum and quantity shapes). An item is a kernel item
-exactly when the upstream `quire-exact` crate exports an item of that name; every other `exact` item
+exactly when the upstream `filament-exact` crate exports an item of that name; every other `exact` item
 is residue (not authorized, to be deleted, see above). When an item moves from the runtime to the kernel the runtime keeps no path for it:
 consumers name the kernel's own path and adopt its shape; the owner does not move again.
 The `consumed` lists below record what generated code and the code generator call today, classified
-against what the upstream `quire-exact` crate exports; they illustrate the rule and do not replace it.
+against what the upstream `filament-exact` crate exports; they illustrate the rule and do not replace it.
 
 ```yaml
 exact:
   module: none  # target end state (FR-275; IR-1009 closure): no exact module; IR-349 step 3 moves the kept items to scalar
   feature: exact
-  consumers: [generated oracle source, quire-contract-codegen host code]
+  consumers: [generated oracle source, filament-contract-codegen host code]
   kernel:
-    owner: quire-exact
-    rule: every exact item whose name the upstream quire-exact crate exports
-    runtime_role: no runtime definition and no re-export; consumers name quire-exact's own path
+    owner: filament-exact
+    rule: every exact item whose name the upstream filament-exact crate exports
+    runtime_role: no runtime definition and no re-export; consumers name filament-exact's own path
     named_kernel_types: [Value, ValueType, Outcome, Refusal, Undefined, BoundViolation, Meter, ChargePoint, Incomplete, ScalarLimits, NodeKey, Origin, Location]
     oracle_restriction: a generated oracle proving a kernel operation, or a runtime operation that calls one, may not call that operation for its own expectation (ADR-013 O-13; ADR-011 §2.3 rule 8)
     consumed:
@@ -197,9 +197,9 @@ exact:
       text: [Text, TextPayload, TextProfile, TextType, admit_text]
       quantity: [Quantity]
   residue:
-    owner: QSL (`quire-semantic-value` for checking vocabulary; evaluation leaf for function application, QSL FR-262); not runtime-owned
+    owner: FSL (`filament-semantic-value` for checking vocabulary; evaluation leaf for function application, FSL FR-262); not runtime-owned
     status: not authorized; vendored code to be deleted; no exception, no expiry, no approval (FR-275)
-    rule: every exact item the upstream quire-exact crate does not export, other than the runtime_owned items
+    rule: every exact item the upstream filament-exact crate does not export, other than the runtime_owned items
     consumed:
       function_application: [PackageDeclarations, FunctionDeclaration, CheckedPackage, CheckMode, CheckingLimits, CheckRefusal, InputRefusal, Frame, Body, BodyState, BodyStep, Evaluation, plan_call]
       checking: [TypeEnvironment, CompositeDeclaration, CompositeShape, ObjectTypeDeclaration, RecursionEdges, DeclarationCause, InvalidDeclaration, ObjectEnvironment]
@@ -207,7 +207,7 @@ exact:
       enumeration: [EnumValue]
       quantity: [QuantityOperation, QuantityTarget, QuantityUnit, Conversion, evaluate_quantity, convert_quantity]
   runtime_owned:
-    owner: quire-contract-runtime
+    owner: filament-contract-runtime
     module: scalar  # implemented: the 11 runtime-owned items live here; the exact expression residue remains separate
     rule: only the negotiation items and the lazy Boolean connective below
     always_runtime: [negotiate_integer_division, negotiate_ieee]
@@ -221,47 +221,47 @@ exact:
       consumed: none; the code generator's own negotiate_* functions are codegen-owned and outside this seam
   core_items: [Verdict, VerdictKind, Observation, ClauseOutcome, FailureDetail, CampaignReport]  # core modules, never kernel types
   dependencies:
-    - quire-contract-runtime -> quire-exact (normal, optional, enabled only by the exact feature)
-    - quire-contract-runtime -> quire-semantic-value (normal, optional, enabled only by the exact feature)
-    - quire-contract-runtime -> QSL evaluation leaf (target after IR-590 implementation passes RT no_std acceptance; not an IR-583-only deletion trigger)
-    - quire-semantic-value -> quire-exact and quire-canonical (own-repository Git dependencies)
-    - quire-exact -> no quire-contract-runtime, quire-contract-codegen, quire-contract-ir or quire-spec-language crate (leaf)
-    - quire-contract-codegen and generated oracles -> quire_exact and quire_semantic_value, by their own paths (no quire_contract_runtime::exact)
-    - quire-contract-codegen -> quire-exact (normal; ADR-011 X-1)
+    - filament-contract-runtime -> filament-exact (normal, optional, enabled only by the exact feature)
+    - filament-contract-runtime -> filament-semantic-value (normal, optional, enabled only by the exact feature)
+    - filament-contract-runtime -> FSL evaluation leaf (target after IR-590 implementation passes RT no_std acceptance; not an IR-583-only deletion trigger)
+    - filament-semantic-value -> filament-exact and quire-canonical (own-repository Git dependencies)
+    - filament-exact -> no filament-contract-runtime, filament-contract-codegen, filament-contract-ir or filament-spec-language crate (leaf)
+    - filament-contract-codegen and generated oracles -> filament_exact and filament_semantic_value, by their own paths (no filament_contract_runtime::exact)
+    - filament-contract-codegen -> filament-exact (normal; ADR-011 X-1)
 ```
 
 The table below records, for every residue `exact` operation that evaluates a
-`quire-exact`-exported counterpart today, which `quire-exact` operation it calls
+`filament-exact`-exported counterpart today, which `filament-exact` operation it calls
 (interface-001-AC-9):
 
-| Residue `exact` operation | `quire-exact` operation it calls |
+| Residue `exact` operation | `filament-exact` operation it calls |
 | --- | --- |
 | `evaluate_quantity` | `evaluate_quantity_arithmetic` |
 
-**Open issue.** The upstream `quire-exact` crate is now `#![no_std]` plus `alloc` and builds for
+**Open issue.** The upstream `filament-exact` crate is now `#![no_std]` plus `alloc` and builds for
 `thumbv7em-none-eabi` in its own repository's gate (QSL-357), so the `no_std` half of the earlier
 conflict is resolved. The root `Cargo.toml` `rust-version` declares one compiler floor for all
-features, and `compatibility.msrv` refers to that field. The end state (no ported QSL code in the runtime) and the `deny.toml` guard on QSL crates are
+features, and `compatibility.msrv` refers to that field. The end state (no ported FSL code in the runtime) and the `deny.toml` guard on FSL crates are
 [FR-275](../../exact/functional/FR-275-single-exact-kernel.md).
 
 ### Acceptance criteria
 
 | ID | Criteria | Verification |
 | --- | --- | --- |
-| interface-001-AC-1 | The runtime shall define no `quire_contract_runtime::exact` module. | Inspection |
-| interface-001-AC-2 | The runtime shall not re-export, by `pub use`, alias, wrapper or feature, any item that `quire-exact`, `quire-semantic-value` or the evaluation leaf crate exports. | Inspection |
-| interface-001-AC-3 | Where the upstream `quire-exact` crate exports an item name, the runtime shall contain no public item definition with that name. | Inspection |
-| interface-001-AC-4 | The runtime shall expose no item named in the `kernel.consumed` lists of the `exact` contract block at any `quire_contract_runtime` path, whether defined or re-exported there. | Inspection |
+| interface-001-AC-1 | The runtime shall define no `filament_contract_runtime::exact` module. | Inspection |
+| interface-001-AC-2 | The runtime shall not re-export, by `pub use`, alias, wrapper or feature, any item that `filament-exact`, `filament-semantic-value` or the evaluation leaf crate exports. | Inspection |
+| interface-001-AC-3 | Where the upstream `filament-exact` crate exports an item name, the runtime shall contain no public item definition with that name. | Inspection |
+| interface-001-AC-4 | The runtime shall expose no item named in the `kernel.consumed` lists of the `exact` contract block at any `filament_contract_runtime` path, whether defined or re-exported there. | Inspection |
 | interface-001-AC-5 | The runtime shall define none of `Value`, `ValueType`, `Outcome`, `Refusal`, `Undefined`, `BoundViolation`, `Meter`, `ChargePoint`, `Incomplete`, `ScalarLimits`, `NodeKey`, `Origin` or `Location` (the `named_kernel_types` list): an explicit per-type instance of interface-001-AC-3. | Inspection |
 | interface-001-AC-6 | The runtime's library source shall not call a `NodeKey` constructor. | Inspection |
 | interface-001-AC-7 | The runtime shall not define `Frame`, `Body`, `CheckedPackage`, `Evaluation` or `plan_call` in its own source (FR-275; no exception, no expiry). | Inspection |
 | interface-001-AC-8 | The runtime shall define the `negotiate_*` predicates AD-016 WP7 selects (today: `negotiate_integer_division`, `negotiate_ieee`) and the requirement, capability and disposition types they take and return in its own source. | Inspection |
-| interface-001-AC-9 | While a residue `exact` operation exists in the runtime, an operation the correspondence table above maps to a `quire-exact` operation shall call the `quire-exact` operation the table maps it to. | Inspection |
+| interface-001-AC-9 | While a residue `exact` operation exists in the runtime, an operation the correspondence table above maps to a `filament-exact` operation shall call the `filament-exact` operation the table maps it to. | Inspection |
 | interface-001-AC-10 | The runtime shall define every item the `core_items` list names in its `verdict`, `observation` and `accounting` modules. | Inspection |
-| interface-001-AC-11 | The runtime shall depend on `quire-exact` and `quire-semantic-value` only through the `exact` feature. | Inspection |
+| interface-001-AC-11 | The runtime shall depend on `filament-exact` and `filament-semantic-value` only through the `exact` feature. | Inspection |
 | interface-001-AC-13 | While the `exact` feature is enabled and the `std` feature is disabled, the runtime shall build for `thumbv7em-none-eabi` at the Rust version that `compatibility.msrv` declares. | Test (feature matrix row `build-exact-no-std-msrv`) |
-| interface-001-AC-14 | The runtime's normal, build and dev dependency graphs shall include no crate from the `agent-ix/quire-spec-language` Git repository. | Inspection |
-| interface-001-AC-15 | Where the `exact` feature is disabled, the runtime's `cfg(kani)` verification module shall reference no `quire_exact` item, so that a default-feature dependent compiles under Kani; the `quire_exact`-dependent IEEE harness and its imports are compiled only under `exact`. | Test (TC-208) |
+| interface-001-AC-14 | The runtime's normal, build and dev dependency graphs shall include no crate from the `agent-ix/filament-spec-language` Git repository. | Inspection |
+| interface-001-AC-15 | Where the `exact` feature is disabled, the runtime's `cfg(kani)` verification module shall reference no `filament_exact` item, so that a default-feature dependent compiles under Kani; the `filament_exact`-dependent IEEE harness and its imports are compiled only under `exact`. | Test (TC-208) |
 
 Ordinary function-qualified lexical slots extend that same arena through
 [interface-004](../../monitor/functional/interface-004-monitor-lexical-bindings.md).

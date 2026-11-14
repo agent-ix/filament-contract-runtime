@@ -3,7 +3,7 @@ id: TC-016
 title: "Inspect the exact outcome envelope and vocabulary"
 type: TC
 relationships:
-  - target: ix://agent-ix/quire-contract-runtime/FR-006
+  - target: ix://agent-ix/filament-contract-runtime/FR-006
     type: verifies
 ---
 # TC-016: Inspect the exact outcome envelope and vocabulary
@@ -18,7 +18,7 @@ surface. The former RT-local kernel tests left with the copied implementation.
 Kernel-owned after IR-349 removes the local copy. RT `tests/exact_outcome_consumer.rs` binds
 FR-006-AC-1 through the runtime's Boolean evaluator and exhaustively matches the consumed
 kernel reason enums. Kernel refusal code and cause spellings
-are tested by [quire-exact FR-096-AC-8](ix://agent-ix/quire-exact/FR-096); public scalar outcome stops by
+are tested by [filament-exact FR-096-AC-8](ix://agent-ix/filament-exact/FR-096); public scalar outcome stops by
 `FR-362-AC-11`; charge and limit spellings by `FR-368-AC-1` and `FR-368-AC-2`.
 FR-006-AC-6 is an ownership inspection, not a TC-016 test criterion. The two retired
 four-code tests and their stale tags were removed with the local kernel tests. Owner tests
@@ -36,7 +36,7 @@ Both consumer tests bind FR-006-AC-3.
    Confirm the runtime exposes no separate reason carrier. Do not infer the kernel
    code/cause census from the retired local four-code tests.
 3. Compare every `ChargePoint` and `LimitKind` spelling with the complete QSpec
-   `quire.value.accounting/v1` vocabulary. Round-trip each declared spelling through its enum
+   `filament.value.accounting/v1` vocabulary. Round-trip each declared spelling through its enum
    value and back, reject undeclared spellings, and check that `equality.plan-form` round-trips as
    its own charge point, distinct from `equality.plan`.
 

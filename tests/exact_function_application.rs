@@ -1,4 +1,4 @@
-//! Function application under exact semantics (quire-specification/FR-146,
+//! Function application under exact semantics (filament-specification/FR-146,
 //! FR-273), through the public `exact` surface.
 #![cfg(feature = "exact")]
 
@@ -9,21 +9,21 @@ use std::rc::Rc;
 mod charge_points;
 use charge_points::ChargePoints;
 
-use ix_trace_rs::trace;
-use quire_contract_runtime::exact::{
+use filament_contract_runtime::exact::{
     plan_call, plan_evaluation, Body, BodyStep, CheckCause, CheckMode, CheckRefusal,
     CheckedPackage, CheckingLimits, Frame, FunctionDeclaration, InputRefusal, Location, Origin,
     PackageDeclarations,
 };
-use quire_contract_runtime::scalar::{
+use filament_contract_runtime::scalar::{
     negotiate_ieee, negotiate_integer_division, IeeeBackendCapabilities, IeeeDisposition,
     IeeeItemRequirement, IeeeUnsupportedCause, IntegerDivisionConsumer, IntegerDivisionDisposition,
 };
-use quire_exact::{
+use filament_exact::{
     ChargePoint, CheckedInvariantCause, IeeeOperationKind, IeeeWidth, Incomplete, Integer,
     LimitKind, Meter, Outcome, Refusal, RoundingMode, ScalarLimits, Undefined, Value, ValueType,
 };
-use quire_semantic_value::object_closure::ObjectClosure;
+use filament_semantic_value::object_closure::ObjectClosure;
+use ix_trace_rs::trace;
 
 /// `CheckedPackage` (the `Ok` side) holds host closures and so has no
 /// `Debug`, which rules out `Result::unwrap_err`. This is the substitute:
@@ -134,7 +134,7 @@ fn tc_194_arity_mismatch_refuses_before_any_charge() {
     assert_eq!(refusal.code(), "invalid_runtime_input");
     assert_eq!(refusal.cause(), "wrong-value-kind");
     assert!(meter.admitted_charges().is_empty());
-    assert_eq!(meter.consumed(quire_exact::LimitKind::WorkUnits), 0);
+    assert_eq!(meter.consumed(filament_exact::LimitKind::WorkUnits), 0);
 }
 
 #[trace("TC-194", "FR-273-AC-2", "FR-273-AC-3")]
@@ -340,7 +340,7 @@ fn tc_194_incomplete_function_call_charge_stops_before_the_body() {
     .check(CheckMode::Linked, CheckingLimits::default())
     .unwrap();
     let objects = ObjectClosure::default();
-    let mut meter = Meter::new(UNLIMITED).with_injected_denial(quire_exact::InjectedDenial {
+    let mut meter = Meter::new(UNLIMITED).with_injected_denial(filament_exact::InjectedDenial {
         point: ChargePoint::FunctionCall,
         occurrence: std::num::NonZeroU64::MIN,
     });
