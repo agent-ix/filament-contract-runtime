@@ -15,10 +15,10 @@ use std::{
 const FSL_GIT: &str = "https://github.com/agent-ix/filament-spec-language";
 const FSL_SOURCE: &str = "git+https://github.com/agent-ix/filament-spec-language?branch=main";
 const DEFAULT_CRATES: [&str; 4] = [
-    "qsl-eval",
-    "qsl-replay",
-    "qsl-semantics",
-    "quire-spec-language",
+    "fsl-eval",
+    "fsl-replay",
+    "fsl-semantics",
+    "filament-spec-language",
 ];
 
 #[derive(Debug)]
