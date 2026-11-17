@@ -555,8 +555,9 @@ fn validate_arguments(
                 }
                 Value::Union(union) => pending.extend(union.payload()),
                 Value::Collection(collection) => pending.extend(collection.elements()),
-                Value::Map(map) => pending
-                    .extend(map.entries().iter().flat_map(|(key, value)| [key, value])),
+                Value::Map(map) => {
+                    pending.extend(map.entries().iter().flat_map(|(key, value)| [key, value]))
+                }
                 Value::Boolean(_)
                 | Value::Integer(_)
                 | Value::Rational(_)
@@ -564,6 +565,8 @@ fn validate_arguments(
                 | Value::Float(_)
                 | Value::Quantity(_)
                 | Value::Text(_)
+                | Value::Bytes(_)
+                | Value::JsonObject(_)
                 | Value::String(_)
                 | Value::Uuid(_)
                 | Value::Timestamp(_)

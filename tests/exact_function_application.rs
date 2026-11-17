@@ -421,6 +421,34 @@ fn tc_194_call_plan_predicts_the_admitted_function_call_charge_count() {
     assert_eq!(Integer::from(admitted_calls as i64), *plan.call_events());
 }
 
+/// Bytes have no nested references, so call planning accepts them as scalar leaves.
+#[trace("TC-194", "FR-273-AC-2")]
+#[test]
+fn tc_194_plan_call_accepts_bytes_as_a_reference_free_scalar_leaf() {
+    let package = PackageDeclarations {
+        types: Default::default(),
+        functions: vec![FunctionDeclaration {
+            name: "bytes".to_string(),
+            parameters: vec![("payload".to_string(), ValueType::Bytes)],
+            result: ValueType::Boolean,
+            ieee_requirements: Vec::new(),
+            integer_division_consumers: Vec::new(),
+            measure_discharged: true,
+            body: one_step(|_frame, _arguments| Outcome::Completed(Value::Boolean(true))),
+        }],
+    }
+    .check(CheckMode::Linked, CheckingLimits::default())
+    .unwrap();
+
+    let plan = plan_call(
+        &package,
+        "bytes",
+        &[Value::Bytes(vec![1, 2, 3])],
+        &ObjectClosure::default(),
+    );
+    assert!(plan.is_ok());
+}
+
 /// `plan_evaluation` alone reproduces every `EvaluationRefusal` with no
 /// `Meter` in scope at all: the same three `InputRefusal` variants
 /// `plan_call` shares (there is no `UnknownFunction` here — `evaluate` takes
