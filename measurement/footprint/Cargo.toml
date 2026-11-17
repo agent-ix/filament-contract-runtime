@@ -12,4 +12,4 @@ crate-type = ["staticlib"]
 filament-contract-runtime = { path = "../..", default-features = false }
 
 [dev-dependencies]
-ix-trace-rs = { version = "=0.1.0", git = "https://github.com/agent-ix/ix-trace-rs", branch = "main" }
+ix-trace-rs = { version = "0.1", git = "https://github.com/agent-ix/ix-trace-rs", tag = "v0.1.2" }
