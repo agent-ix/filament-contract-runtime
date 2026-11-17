@@ -570,9 +570,7 @@ fn validate_arguments(
                 | Value::String(_)
                 | Value::Uuid(_)
                 | Value::Timestamp(_)
-                | Value::Enum(_)
-                | Value::Bytes(_)
-                | Value::JsonObject(_) => {}
+                | Value::Enum(_) => {}
                 Value::Population(_) => {}
             }
         }

@@ -55,8 +55,7 @@ fn closed_limit_kind(kind: LimitKind) {
         | LimitKind::ValueOccurrences
         | LimitKind::LiveOccurrences
         | LimitKind::WorkUnits
-        | LimitKind::ResultUnits
-        | LimitKind::LiveOccurrences => {}
+        | LimitKind::ResultUnits => {}
     }
 }
 
