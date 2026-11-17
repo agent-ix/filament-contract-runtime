@@ -6,7 +6,7 @@ license = "AGPL-3.0-or-later"
 publish = false
 
 [dependencies]
-filament-exact = { git = "https://github.com/agent-ix/filament-exact", tag = "v0.2.0", default-features = false }
+filament-exact = { git = "https://github.com/agent-ix/filament-exact", tag = "v0.3.0", default-features = false }
 
 [dev-dependencies]
 ix-trace-rs = { version = "0.1", git = "https://github.com/agent-ix/ix-trace-rs", tag = "v0.1.2" }

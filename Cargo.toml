@@ -1,6 +1,6 @@
 [package]
 name = "filament-contract-runtime"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.98.1"
 description = "Small no_std runtime support for generated contract oracles and harness verdicts."
@@ -34,18 +34,18 @@ exact = ["alloc", "dep:filament-exact", "dep:filament-semantic-value"]
 [dependencies]
 # FR-275: the shared exact and semantic-value crates. Optional and enabled only by
 # `exact`; spelled by release tag like every first-party dependency (QSL-2379).
-filament-exact = { git = "https://github.com/agent-ix/filament-exact", tag = "v0.2.0", optional = true, default-features = false }
-filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", tag = "v0.1.2", optional = true, default-features = false }
+filament-exact = { git = "https://github.com/agent-ix/filament-exact", tag = "v0.3.0", optional = true, default-features = false }
+filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", tag = "v0.1.5", optional = true, default-features = false }
 proptest = { version = "1.5.0", optional = true, default-features = false, features = ["std"] }
 serde = { version = "1.0.228", optional = true, default-features = false, features = ["alloc"] }
 serde_json = { version = "1.0.151", optional = true, default-features = false, features = ["alloc"] }
 
 [dev-dependencies]
-fsv-failing-allocator = { git = "https://github.com/agent-ix/filament-semantic-value", tag = "v0.1.2" }
+fsv-failing-allocator = { git = "https://github.com/agent-ix/filament-semantic-value", tag = "v0.1.5" }
 # The kernel's ordered charge log (`Meter::admitted_charges`) exists only under its
 # `test-support` feature, which only a dev dependency may enable: the residue tests assert the
 # charge sequences of the operations the runtime still defines.
-filament-exact = { git = "https://github.com/agent-ix/filament-exact", tag = "v0.2.0", default-features = false, features = ["test-support"] }
+filament-exact = { git = "https://github.com/agent-ix/filament-exact", tag = "v0.3.0", default-features = false, features = ["test-support"] }
 proptest = { version = "1.5.0", default-features = false, features = ["std"] }
 serde_json = "1.0.151"
 ix-trace-rs = { version = "0.1", git = "https://github.com/agent-ix/ix-trace-rs", tag = "v0.1.2" }
