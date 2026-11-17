@@ -38,8 +38,8 @@ fn closed_undefined(reason: &Undefined) {
         | Undefined::IeeeNotFinite
         | Undefined::EmptyReduction
         | Undefined::NoneValue
-        | Undefined::SumOutOfDomain
-        | Undefined::NoElement => {}
+        | Undefined::NoElement
+        | Undefined::SumOutOfDomain => {}
     }
 }
 
@@ -53,6 +53,7 @@ fn closed_limit_kind(kind: LimitKind) {
         | LimitKind::NormalizedScalars
         | LimitKind::UnitEdges
         | LimitKind::ValueOccurrences
+        | LimitKind::LiveOccurrences
         | LimitKind::WorkUnits
         | LimitKind::ResultUnits
         | LimitKind::LiveOccurrences => {}
