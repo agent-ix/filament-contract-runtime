@@ -34,13 +34,13 @@ exact = ["alloc", "dep:filament-exact", "dep:filament-semantic-value"]
 [dependencies]
 # These packages exchange types; matching exact revisions preserve shared type identity.
 filament-exact = { git = "https://github.com/agent-ix/filament-exact", rev = "b26a8e4c592503fccdc4a0e3d2cce23dd8487616", optional = true, default-features = false }
-filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "1df71c27e6db56c8118cf017689aa7fab6156cde", optional = true, default-features = false }
+filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "f5c913bd4fc8880b45e02e3918e02360c530320c", optional = true, default-features = false }
 proptest = { version = "1.5.0", optional = true, default-features = false, features = ["std"] }
 serde = { version = "1.0.228", optional = true, default-features = false, features = ["alloc"] }
 serde_json = { version = "1.0.151", optional = true, default-features = false, features = ["alloc"] }
 
 [dev-dependencies]
-fsv-failing-allocator = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "1df71c27e6db56c8118cf017689aa7fab6156cde" }
+fsv-failing-allocator = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "f5c913bd4fc8880b45e02e3918e02360c530320c" }
 # The kernel's ordered charge log (`Meter::admitted_charges`) exists only under its
 # `test-support` feature, which only a dev dependency may enable: the residue tests assert the
 # charge sequences of the operations the runtime still defines.
