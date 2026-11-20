@@ -97,7 +97,7 @@ name = "filament-contract-runtime"
 version = "0.1.1"
 dependencies = [
  "filament-exact",
- "filament-semantic-value",
+ "filament-semantic-value 0.1.5 (git+https://github.com/agent-ix/filament-semantic-value?rev=f5c913bd4fc8880b45e02e3918e02360c530320c)",
  "filament-specification-qualification",
  "fsv-failing-allocator",
  "ix-trace-rs",
@@ -114,7 +114,7 @@ version = "0.0.0"
 dependencies = [
  "filament-contract-runtime",
  "filament-exact",
- "filament-semantic-value",
+ "filament-semantic-value 0.1.5 (git+https://github.com/agent-ix/filament-semantic-value?rev=1df71c27e6db56c8118cf017689aa7fab6156cde)",
 ]
 
 [[package]]
@@ -164,7 +164,17 @@ dependencies = [
 [[package]]
 name = "filament-semantic-value"
 version = "0.1.5"
-source = "git+https://github.com/agent-ix/filament-semantic-value?rev=1df71c27e6db56c8118cf017689aa7fab6156cde#1df71c27e6db56c8118cf017689aa7fab6156cde"
+source = "git+https://github.com/agent-ix/filament-semantic-value?rev=1df71c27e6db56c8118cf017689aa7fab6156cde#f5c913bd4fc8880b45e02e3918e02360c530320c"
+dependencies = [
+ "filament-exact",
+ "quire-canonical",
+ "thiserror",
+]
+
+[[package]]
+name = "filament-semantic-value"
+version = "0.1.5"
+source = "git+https://github.com/agent-ix/filament-semantic-value?rev=f5c913bd4fc8880b45e02e3918e02360c530320c#f5c913bd4fc8880b45e02e3918e02360c530320c"
 dependencies = [
  "filament-exact",
  "quire-canonical",
@@ -179,7 +189,7 @@ source = "git+https://github.com/agent-ix/filament-specification?tag=v0.1.0#6046
 [[package]]
 name = "fsv-failing-allocator"
 version = "0.0.0"
-source = "git+https://github.com/agent-ix/filament-semantic-value?rev=1df71c27e6db56c8118cf017689aa7fab6156cde#1df71c27e6db56c8118cf017689aa7fab6156cde"
+source = "git+https://github.com/agent-ix/filament-semantic-value?rev=f5c913bd4fc8880b45e02e3918e02360c530320c#f5c913bd4fc8880b45e02e3918e02360c530320c"
 
 [[package]]
 name = "generic-array"
