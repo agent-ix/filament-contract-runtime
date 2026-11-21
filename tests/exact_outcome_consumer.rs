@@ -39,7 +39,8 @@ fn closed_undefined(reason: &Undefined) {
         | Undefined::EmptyReduction
         | Undefined::NoneValue
         | Undefined::NoElement
-        | Undefined::SumOutOfDomain => {}
+        | Undefined::SumOutOfDomain
+        | Undefined::MalformedNumber => {}
     }
 }
 
