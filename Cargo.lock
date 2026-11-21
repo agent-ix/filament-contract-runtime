@@ -173,8 +173,8 @@ dependencies = [
 
 [[package]]
 name = "filament-specification-qualification"
-version = "0.1.0"
-source = "git+https://github.com/agent-ix/filament-specification?tag=v0.1.0#60465fc8f6018dd5bc683b7b131640ab60c82d23"
+version = "0.1.1"
+source = "git+https://github.com/agent-ix/filament-specification?rev=ac130b973b1815221cc01a86723f79f0007fd11d#ac130b973b1815221cc01a86723f79f0007fd11d"
 
 [[package]]
 name = "fsv-failing-allocator"
