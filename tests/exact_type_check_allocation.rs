@@ -246,21 +246,14 @@ fn nested_declared_types_and_ieee_sets_and_bags_keep_semantic_parity() {
         )
         .is_ok());
 
-    for refused in [
-        (
-            ValueType::option(sequence(ValueType::Population(None))),
-            IllTypedCause::OperatorIneligible,
-        ),
-        (
-            ieee_collection(CollectionKind::Set),
-            IllTypedCause::OperatorIneligible,
-        ),
-        (
-            ieee_collection(CollectionKind::Bag),
-            IllTypedCause::OperatorIneligible,
-        ),
+    // Standard FR-149 admits IEEE leaves under every collection kind;
+    // filament-semantic-value PR #105 implements that membership boundary.
+    for kind in [
+        CollectionKind::Set,
+        CollectionKind::Bag,
+        CollectionKind::OrderedSet,
     ] {
-        let (value_type, expected) = refused;
+        let value_type = ieee_collection(kind);
         for parameter in [true, false] {
             let mut input = declarations(parameter);
             if parameter {
@@ -268,39 +261,59 @@ fn nested_declared_types_and_ieee_sets_and_bags_keep_semantic_parity() {
             } else {
                 input.functions[0].result = value_type.clone();
             }
-            let refusals = match input.check(CheckMode::Linked, CheckingLimits::default()) {
-                Err(refusals) => refusals,
-                Ok(_) => panic!("ineligible nested type admitted"),
-            };
-            assert_eq!(refusals.len(), 1);
-            assert_eq!(refusals[0].cause, CheckCause::IllTyped(expected));
-            assert_eq!(
-                refusals[0].location.origin,
-                Origin::Body {
-                    function: "identity".into(),
-                    index: 0
-                }
-            );
-            assert!(refusals[0].location.path.is_empty());
+            assert!(input
+                .check(CheckMode::Linked, CheckingLimits::default())
+                .is_ok());
             let (parameters, result) = if parameter {
-                (vec![("nested".into(), value_type.clone())], nested.clone())
+                (vec![("ieee".into(), value_type.clone())], nested.clone())
             } else {
                 (vec![("nested".into(), nested.clone())], value_type.clone())
             };
-            let refusal = match package.check_expression(parameters, result, body()) {
-                Err(refusal) => refusal,
-                Ok(_) => panic!("ineligible nested expression type admitted"),
-            };
-            assert_eq!(refusal.cause, CheckCause::IllTyped(expected));
-            assert_eq!(refusal.location.origin, Origin::Expression);
-            assert!(refusal.location.path.is_empty());
+            assert!(package.check_expression(parameters, result, body()).is_ok());
         }
+    }
+
+    let value_type = ValueType::option(sequence(ValueType::Population(None)));
+    let expected = IllTypedCause::OperatorIneligible;
+    for parameter in [true, false] {
+        let mut input = declarations(parameter);
+        if parameter {
+            input.functions[0].parameters[0].1 = value_type.clone();
+        } else {
+            input.functions[0].result = value_type.clone();
+        }
+        let refusals = match input.check(CheckMode::Linked, CheckingLimits::default()) {
+            Err(refusals) => refusals,
+            Ok(_) => panic!("ineligible nested type admitted"),
+        };
+        assert_eq!(refusals.len(), 1);
+        assert_eq!(refusals[0].cause, CheckCause::IllTyped(expected));
+        assert_eq!(
+            refusals[0].location.origin,
+            Origin::Body {
+                function: "identity".into(),
+                index: 0
+            }
+        );
+        assert!(refusals[0].location.path.is_empty());
+        let (parameters, result) = if parameter {
+            (vec![("nested".into(), value_type.clone())], nested.clone())
+        } else {
+            (vec![("nested".into(), nested.clone())], value_type.clone())
+        };
+        let refusal = match package.check_expression(parameters, result, body()) {
+            Err(refusal) => refusal,
+            Ok(_) => panic!("ineligible nested expression type admitted"),
+        };
+        assert_eq!(refusal.cause, CheckCause::IllTyped(expected));
+        assert_eq!(refusal.location.origin, Origin::Expression);
+        assert!(refusal.location.path.is_empty());
     }
 }
 
 #[trace("TC-194", "FR-273-AC-14")]
 #[test]
-fn nested_and_ieee_refusals_keep_parameter_before_result_order() {
+fn nested_population_refusals_keep_order_among_admitted_ieee_types() {
     let population = ValueType::option(sequence(ValueType::Population(None)));
     let set = ieee_collection(CollectionKind::Set);
     let bag = ieee_collection(CollectionKind::Bag);
@@ -319,8 +332,6 @@ fn nested_and_ieee_refusals_keep_parameter_before_result_order() {
         refusals.iter().map(|r| r.cause.clone()).collect::<Vec<_>>(),
         vec![
             CheckCause::IllTyped(IllTypedCause::OperatorIneligible),
-            CheckCause::IllTyped(IllTypedCause::OperatorIneligible),
-            CheckCause::IllTyped(IllTypedCause::OperatorIneligible),
             CheckCause::UndischargedMeasure
         ]
     );
@@ -338,7 +349,7 @@ fn nested_and_ieee_refusals_keep_parameter_before_result_order() {
     for (parameters, result, expected) in [
         (
             vec![
-                ("population".into(), population),
+                ("population".into(), population.clone()),
                 ("ieee".into(), set.clone()),
             ],
             bag.clone(),
@@ -346,7 +357,7 @@ fn nested_and_ieee_refusals_keep_parameter_before_result_order() {
         ),
         (
             vec![("ieee".into(), set)],
-            bag,
+            population,
             IllTypedCause::OperatorIneligible,
         ),
     ] {
