@@ -7,6 +7,8 @@ publish = false
 
 [lib]
 crate-type = ["staticlib"]
+test = false
+bench = false
 
 [dependencies]
 filament-contract-runtime = { path = "../..", default-features = false, features = ["exact"] }
