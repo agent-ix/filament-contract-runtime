@@ -126,7 +126,8 @@ fn closed_charge_point(point: ChargePoint) {
         | ChargePoint::ModelNavigate
         | ChargePoint::TemporalVisit
         | ChargePoint::FrameWrite
-        | ChargePoint::FrameRedefinesLink => {}
+        | ChargePoint::FrameRedefinesLink
+        | ChargePoint::ModelCandidate => {}
     }
 }
 
