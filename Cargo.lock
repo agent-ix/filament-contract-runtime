@@ -164,7 +164,7 @@ dependencies = [
 [[package]]
 name = "filament-semantic-value"
 version = "0.1.5"
-source = "git+https://github.com/agent-ix/filament-semantic-value?rev=6e809434d5fd7bde4c5b88ec40cd809efcca595d#6e809434d5fd7bde4c5b88ec40cd809efcca595d"
+source = "git+https://github.com/agent-ix/filament-semantic-value?rev=fa5e78aa71fcea5418492b67f13a33124af84459#fa5e78aa71fcea5418492b67f13a33124af84459"
 dependencies = [
  "filament-exact",
  "quire-canonical",
@@ -179,7 +179,7 @@ source = "git+https://github.com/agent-ix/filament-specification?tag=v0.1.0#6046
 [[package]]
 name = "fsv-failing-allocator"
 version = "0.0.0"
-source = "git+https://github.com/agent-ix/filament-semantic-value?rev=6e809434d5fd7bde4c5b88ec40cd809efcca595d#6e809434d5fd7bde4c5b88ec40cd809efcca595d"
+source = "git+https://github.com/agent-ix/filament-semantic-value?rev=fa5e78aa71fcea5418492b67f13a33124af84459#fa5e78aa71fcea5418492b67f13a33124af84459"
 
 [[package]]
 name = "generic-array"
