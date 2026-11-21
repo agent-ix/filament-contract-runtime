@@ -11,4 +11,4 @@ crate-type = ["staticlib"]
 [dependencies]
 filament-contract-runtime = { path = "../..", default-features = false, features = ["exact"] }
 filament-exact = { git = "https://github.com/agent-ix/filament-exact", rev = "b26a8e4c592503fccdc4a0e3d2cce23dd8487616", default-features = false }
-filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "6e809434d5fd7bde4c5b88ec40cd809efcca595d", default-features = false }
+filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "fa5e78aa71fcea5418492b67f13a33124af84459", default-features = false }
