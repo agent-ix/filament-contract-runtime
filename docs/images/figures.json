@@ -1,0 +1,31 @@
+{
+  "figures": [
+    {
+      "id": "hero",
+      "width": 1040, "height": 350,
+      "label": "A generated oracle passes observed values to filament-contract-runtime, which returns one of three verdicts: Passed, FailedPostcondition or RejectedPrecondition. A campaign report counts every verdict.",
+      "items": [
+        {"k":"box","at":[0,100,160,56],"role":"ink","title":"observed values","subs":["inputs and results"]},
+        {"k":"box","at":[210,100,250,56],"role":"model","title":"generated oracle","subs":["from filament-contract-codegen"]},
+        {"k":"box","at":[510,100,220,56],"role":"logic","title":"filament-contract-runtime","subs":["checked ops · clauses"]},
+        {"k":"line","points":[[160,128],[207,128]]},
+        {"k":"line","points":[[460,128],[507,128]],"role":"model"},
+        {"k":"line","points":[[730,128],[758,128]],"role":"logic","arrow":false},
+        {"k":"line","points":[[758,28],[758,180]],"role":"logic","arrow":false},
+        {"k":"line","points":[[758,28],[777,28]],"role":"logic"},
+        {"k":"box","at":[780,0,260,56],"role":"evidence","title":"Passed","subs":["all required clauses held"]},
+        {"k":"line","points":[[758,104],[777,104]],"role":"logic"},
+        {"k":"box","at":[780,76,260,56],"role":"evidence","title":"FailedPostcondition","subs":["accepted, postcondition false"]},
+        {"k":"line","points":[[758,180],[777,180]],"role":"logic"},
+        {"k":"box","at":[780,152,260,56],"role":"evidence","title":"RejectedPrecondition","subs":["case outside the input domain"]},
+        {"k":"line","points":[[910,208],[910,257]],"role":"evidence"},
+        {"k":"note","at":[898,238],"text":"each verdict is recorded","role":"muted","anchor":"end"},
+        {"k":"box","at":[780,260,260,56],"role":"model","title":"CampaignReport","subs":["four saturating counts"]},
+        {"k":"text","at":[510,190],"text":"no conversion to bool","role":"muted","size":12},
+        {"k":"legend","at":[0,334],"entries":[["code","authored source","box"],["logic","compiler stage","box"],["model","checked package / IR","box"],["evidence","verdict","box"],["ink","input","box"]]}
+      ]
+    },
+    {"id":"ecosystem","construct":{"name":"ecosystem","here":"filament-contract-runtime"}}
+  ]
+}
+
