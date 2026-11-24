@@ -12,5 +12,5 @@ bench = false
 
 [dependencies]
 filament-contract-runtime = { path = "../..", default-features = false, features = ["exact"] }
-filament-exact = { git = "https://github.com/agent-ix/filament-exact", rev = "a58474cc105a86f3307a11def3fc001e2459679f", default-features = false }
-filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "31d807ccb8ffd5a88beb0b1a570b80acb099f5e9", default-features = false }
+filament-exact = { git = "https://github.com/agent-ix/filament-exact", rev = "08a5a1763ef4bd1ea7d1147717c959af5a3522cc", default-features = false }
+filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "4274b4eb4abeae4ccd457a6de681625acb8fc57d", default-features = false }
