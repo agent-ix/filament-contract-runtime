@@ -1,0 +1,12 @@
+/Users/peter/dev/worktrees/hop-exact-pins/.target/debug/deps/uzers-3c799eb4a505011a.d: /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/lib.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/base.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/cache.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/mock.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/switch.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/traits.rs
+
+/Users/peter/dev/worktrees/hop-exact-pins/.target/debug/deps/libuzers-3c799eb4a505011a.rlib: /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/lib.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/base.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/cache.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/mock.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/switch.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/traits.rs
+
+/Users/peter/dev/worktrees/hop-exact-pins/.target/debug/deps/libuzers-3c799eb4a505011a.rmeta: /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/lib.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/base.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/cache.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/mock.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/switch.rs /Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/traits.rs
+
+/Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/lib.rs:
+/Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/base.rs:
+/Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/cache.rs:
+/Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/mock.rs:
+/Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/switch.rs:
+/Users/peter/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uzers-0.12.2/src/traits.rs:

@@ -570,7 +570,8 @@ fn validate_arguments(
                 | Value::String(_)
                 | Value::Uuid(_)
                 | Value::Timestamp(_)
-                | Value::Enum(_) => {}
+                | Value::Enum(_)
+                | Value::ClockReference(_) => {}
                 Value::Population(_) => {}
             }
         }
