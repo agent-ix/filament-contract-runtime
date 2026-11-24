@@ -34,7 +34,7 @@ exact = ["alloc", "dep:filament-exact", "dep:filament-semantic-value"]
 [dependencies]
 # These packages exchange types; matching exact revisions preserve shared type identity.
 filament-exact = { git = "https://github.com/agent-ix/filament-exact", rev = "08a5a1763ef4bd1ea7d1147717c959af5a3522cc", optional = true, default-features = false }
-filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "4274b4eb4abeae4ccd457a6de681625acb8fc57d", optional = true, default-features = false }
+filament-semantic-value = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "689f259eab592b62cb362f5e649dba16adf874f7", optional = true, default-features = false }
 proptest = { version = "1.5.0", optional = true, default-features = false, features = ["std"] }
 serde = { version = "1.0.228", optional = true, default-features = false, features = ["alloc"] }
 serde_json = { version = "1.0.151", optional = true, default-features = false, features = ["alloc"] }
