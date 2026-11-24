@@ -40,7 +40,7 @@ serde = { version = "1.0.228", optional = true, default-features = false, featur
 serde_json = { version = "1.0.151", optional = true, default-features = false, features = ["alloc"] }
 
 [dev-dependencies]
-fsv-failing-allocator = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "4274b4eb4abeae4ccd457a6de681625acb8fc57d" }
+fsv-failing-allocator = { git = "https://github.com/agent-ix/filament-semantic-value", rev = "f5c913bd4fc8880b45e02e3918e02360c530320c" }
 # The kernel's ordered charge log (`Meter::admitted_charges`) exists only under its
 # `test-support` feature, which only a dev dependency may enable: the residue tests assert the
 # charge sequences of the operations the runtime still defines.

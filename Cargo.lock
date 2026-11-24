@@ -179,7 +179,7 @@ source = "git+https://github.com/agent-ix/filament-specification?rev=ac130b973b1
 [[package]]
 name = "fsv-failing-allocator"
 version = "0.0.0"
-source = "git+https://github.com/agent-ix/filament-semantic-value?rev=4274b4eb4abeae4ccd457a6de681625acb8fc57d#4274b4eb4abeae4ccd457a6de681625acb8fc57d"
+source = "git+https://github.com/agent-ix/filament-semantic-value?rev=f5c913bd4fc8880b45e02e3918e02360c530320c#f5c913bd4fc8880b45e02e3918e02360c530320c"
 
 [[package]]
 name = "generic-array"
