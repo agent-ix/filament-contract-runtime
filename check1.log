@@ -1,0 +1,61 @@
+    Updating git repository `https://github.com/agent-ix/filament-semantic-value`
+     Locking 1 package to latest compatible version
+      Adding filament-semantic-value v0.1.5 (https://github.com/agent-ix/filament-semantic-value?rev=689f259eab592b62cb362f5e649dba16adf874f7#689f259e)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling version_check v0.9.5
+    Checking cfg-if v1.0.4
+   Compiling libc v0.2.189
+   Compiling autocfg v1.5.1
+   Compiling generic-array v0.14.7
+   Compiling libm v0.2.16
+    Checking typenum v1.20.1
+   Compiling num-traits v0.2.19
+   Compiling syn v3.0.6
+   Compiling zerocopy v0.8.56
+   Compiling serde_core v1.0.228
+    Checking getrandom v0.2.17
+   Compiling thiserror v2.0.20
+    Checking rand_core v0.6.4
+    Checking crypto-common v0.1.7
+    Checking block-buffer v0.10.4
+   Compiling syn v2.0.119
+   Compiling serde v1.0.228
+    Checking num-integer v0.1.47
+   Compiling thiserror-impl v2.0.20
+    Checking digest v0.10.7
+    Checking cpufeatures v0.2.17
+    Checking tinyvec v1.13.3
+   Compiling zmij v1.0.23
+   Compiling serde_derive v1.0.228
+    Checking unicode-normalization v0.1.25
+    Checking sha2 v0.10.9
+    Checking num-bigint v0.4.8
+   Compiling quire-canonical-derive v0.3.0 (https://github.com/agent-ix/quire-canonical?tag=v0.3.2#f00840e4)
+    Checking allocator-api2 v0.2.21
+    Checking ppv-lite86 v0.2.21
+    Checking once_cell v1.21.4
+    Checking spin v0.9.9
+   Compiling serde_json v1.0.151
+    Checking triomphe v0.1.17
+    Checking arrayvec v0.7.8
+    Checking ryu-js v1.0.3
+    Checking filament-exact v0.3.0 (https://github.com/agent-ix/filament-exact?rev=08a5a1763ef4bd1ea7d1147717c959af5a3522cc#08a5a176)
+    Checking rand_xorshift v0.3.0
+    Checking unarray v0.1.4
+    Checking rand_chacha v0.3.1
+    Checking lazy_static v1.5.0
+    Checking rand v0.8.8
+    Checking regex-syntax v0.8.11
+    Checking bitflags v2.13.1
+    Checking itoa v1.0.18
+    Checking memchr v2.8.3
+    Checking proptest v1.5.0
+    Checking quire-canonical v0.3.2 (https://github.com/agent-ix/quire-canonical?tag=v0.3.2#f00840e4)
+   Compiling filament-specification-qualification v0.1.1 (https://github.com/agent-ix/filament-specification?rev=ac130b973b1815221cc01a86723f79f0007fd11d#ac130b97)
+    Checking filament-semantic-value v0.1.5 (https://github.com/agent-ix/filament-semantic-value?rev=689f259eab592b62cb362f5e649dba16adf874f7#689f259e)
+   Compiling ix-trace-rs v0.1.2 (https://github.com/agent-ix/ix-trace-rs?tag=v0.1.2#e29cc07f)
+    Checking fsv-failing-allocator v0.0.0 (https://github.com/agent-ix/filament-semantic-value?rev=f5c913bd4fc8880b45e02e3918e02360c530320c#f5c913bd)
+    Checking filament-contract-runtime v0.1.1 (/home/peter/dev/worktrees/runtime-pinhop)
+    Finished `dev` profile [unoptimized] target(s) in 1m 00s
