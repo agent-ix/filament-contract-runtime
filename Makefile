@@ -12,6 +12,7 @@ LOCKED ?= $(if $(wildcard .cargo/config.toml),,--locked)
 QUIRE ?= quire
 
 MSRV := $(shell python3 -c 'import tomllib; print(tomllib.load(open("Cargo.toml", "rb"))["package"]["rust-version"])' 2>/dev/null)
+TOOLCHAIN := $(shell python3 -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])' 2>/dev/null)
 FOOTPRINT_TARGET := thumbv7em-none-eabi
 FOOTPRINT_TARGET_DIR := target/footprint-msrv
 EXACT_PANIC_TARGET_DIR := $(FOOTPRINT_TARGET_DIR)
@@ -29,7 +30,7 @@ help:
 	@echo "  make test-ignored     - run #[ignore]d tests, to re-detect a cleared blocker"
 	@echo "  make doc              - warning-denied docs for runtime and footprint"
 	@echo "  make build            - Release build"
-	@echo "  make msrv             - Check all targets and features with Rust $(MSRV)"
+	@echo "  make msrv             - Check all targets and features with Rust $(TOOLCHAIN) (declared floor $(MSRV))"
 	@echo "  make size             - Measure the linked $(FOOTPRINT_TARGET) footprint"
 	@echo "  make exact-panic      - Inspect retained exact-profile RT panic relocations"
 	@echo "  make spec             - Validate and cover the specification with Quire"
@@ -86,16 +87,17 @@ build:
 .PHONY: require-msrv
 require-msrv:
 	@test -n "$(MSRV)" || { echo "root Cargo.toml has no package rust-version" >&2; exit 1; }
-	@rustup run "$(MSRV)" rustc --version >/dev/null || { echo "declared MSRV $(MSRV) is unavailable" >&2; exit 1; }
+	@test -n "$(TOOLCHAIN)" || { echo "rust-toolchain.toml has no toolchain channel" >&2; exit 1; }
+	@rustup run "$(TOOLCHAIN)" rustc --version >/dev/null || { echo "selected compiler $(TOOLCHAIN) is unavailable" >&2; exit 1; }
 
 .PHONY: msrv
 msrv: require-msrv
-	rustup run $(MSRV) $(CARGO) check $(LOCKED) --all-targets --all-features
+	rustup run $(TOOLCHAIN) $(CARGO) check $(LOCKED) --all-targets --all-features
 
-# Link the footprint staticlib on the MSRV compiler, then measure it.
+# Link the footprint staticlib on the selected compiler, then measure it.
 .PHONY: size
 size: require-msrv
-	$(CARGO) +$(MSRV) build $(LOCKED) --release --manifest-path measurement/footprint/Cargo.toml \
+	$(CARGO) +$(TOOLCHAIN) build $(LOCKED) --release --manifest-path measurement/footprint/Cargo.toml \
 		--target $(FOOTPRINT_TARGET) --target-dir $(FOOTPRINT_TARGET_DIR)
 	$(CARGO) run $(LOCKED) --quiet --bin check_linked_footprint --
 	@# FR-275-AC-10: the footprint graph must not resolve a shared exact dependency. The size band alone
@@ -117,17 +119,17 @@ spec:
 
 .PHONY: exact-panic-probe
 exact-panic-probe: require-msrv
-	$(CARGO) +$(MSRV) build $(LOCKED) --profile exact-panic --manifest-path measurement/exact-panic/Cargo.toml \
+	$(CARGO) +$(TOOLCHAIN) build $(LOCKED) --profile exact-panic --manifest-path measurement/exact-panic/Cargo.toml \
 		--target $(FOOTPRINT_TARGET) --target-dir $(EXACT_PANIC_TARGET_DIR)
 	$(CARGO) run $(LOCKED) --quiet -p filament-contract-runtime-gates -- exact-panic-probe \
 		$(EXACT_PANIC_TARGET_DIR)/$(FOOTPRINT_TARGET)/exact-panic/libfilament_contract_runtime_exact_panic.a \
-		$(EXACT_PANIC_TARGET_DIR) $(MSRV) $(FOOTPRINT_TARGET)
+		$(EXACT_PANIC_TARGET_DIR) $(TOOLCHAIN) $(FOOTPRINT_TARGET)
 
 .PHONY: exact-panic
 exact-panic: require-msrv
 	$(CARGO) test $(LOCKED) --test exact_panic_gate
-	$(CARGO) +$(MSRV) test $(LOCKED) -p filament-contract-runtime-kernel-api-check --lib
-	$(CARGO) +$(MSRV) test $(LOCKED) -p filament-contract-runtime-kernel-api-check --doc
+	$(CARGO) +$(TOOLCHAIN) test $(LOCKED) -p filament-contract-runtime-kernel-api-check --lib
+	$(CARGO) +$(TOOLCHAIN) test $(LOCKED) -p filament-contract-runtime-kernel-api-check --doc
 
 .PHONY: clean
 clean:

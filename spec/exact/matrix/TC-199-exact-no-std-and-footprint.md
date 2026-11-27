@@ -16,15 +16,15 @@ do not resolve either shared crate or transitive `quire-canonical` crates.
 
 ## Test Procedure
 
-0. Read the root package's declared `rust-version` in `Cargo.toml` as the sole MSRV
-   authority (FR-275-AC-20). Inspect the feature and footprint gate recipes: each
-   obtains its compiler selection from that field, without a second fixed version.
+0. Read the root package's declared `rust-version` in `Cargo.toml` as the compatibility
+   floor (FR-275-AC-20). Inspect the feature and footprint gate recipes: each obtains
+   its build compiler from `rust-toolchain.toml`.
 1. Run the `make test-features` row `build-exact-no-std-msrv` (`exact`, no `std`, target
-   `thumbv7em-none-eabi`) at that MSRV; expect success (FR-006-AC-8, FR-275-AC-9). Run `make msrv` and
-   expect it to use the same manifest-declared MSRV (FR-275-AC-21). In a scratch copy,
-   set `rust-version` to a different available compiler and observe both `make msrv`
-   and `make size` select the changed compiler. Set it to an unavailable compiler and
-   observe both fail rather than silently using another compiler.
+   `thumbv7em-none-eabi`) with the selected compiler; expect success (FR-006-AC-8,
+   FR-275-AC-9). Run `make msrv` and expect the same selection (FR-275-AC-21).
+   In a scratch copy, change `rust-version` to another supported floor and observe
+   both `make msrv` and `make size` retain the selected compiler. Remove the floor
+   or toolchain channel, or select an unavailable compiler, and observe both fail.
 2. Run `make size`: after the build it lists the footprint graph with `cargo tree -p
    filament-contract-runtime-footprint --target thumbv7em-none-eabi` and fails when `filament-exact`,
    `filament-semantic-value`, `quire-canonical` or `quire-canonical-derive` is in it; expect it to
@@ -39,7 +39,7 @@ do not resolve either shared crate or transitive `quire-canonical` crates.
    bytes nor panic references. The retained-panic and both size-bound controls
    must also pass. These parser controls are partial evidence for this step;
    they do not establish the target build, compiler selection or dependency graph.
-4. After AD-004 step 5, repeat the no-std MSRV target build with the shared
+4. After AD-004 step 5, repeat the no-std target build on the selected compiler with the shared
    evaluation leaf and one generated-body consumer. Check the lock has one
    evaluation-leaf entry, and neither target graph resolves the FSL workspace
    source, an RT-local evaluator, or a compatibility alias. Run TC-194's
