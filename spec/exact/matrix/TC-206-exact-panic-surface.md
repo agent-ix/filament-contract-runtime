@@ -18,7 +18,7 @@ does not certify unretained monomorphizations or third-party object files.
 
 ## Test Procedure
 
-1. On the manifest-declared MSRV, build a static-library consumer for
+1. On the root `rust-toolchain.toml` compiler, build a static-library consumer for
    `thumbv7em-none-eabi` with `exact` enabled and `std` disabled. Its exported
    entry takes opaque inputs and retains calls into each runtime-owned `scalar`
    family: integer-division negotiation, IEEE negotiation, and the lazy Boolean

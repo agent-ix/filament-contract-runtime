@@ -157,14 +157,14 @@ crates that the runtime consumes.
   check. The kernel's size is outside that budget, as the `exact` feature always was.
   After AD-004 step 5 the default graph also resolves no evaluation leaf. The
   governed default linked `.text` plus `.rodata` band remains 500 bytes to
-  4 KiB on `thumbv7em-none-eabi` at the root `Cargo.toml` `rust-version`; the deep exact-profile
+  4 KiB on `thumbv7em-none-eabi` at the root `rust-toolchain.toml` compiler; the deep exact-profile
   acceptance instead caps the native thread stack at 512 KiB. No linked-size
   or peak-heap ceiling for the `exact` profile has been approved. Its linked
   bytes and native peak memory are reported by the acceptance run, separately from
   the default footprint, without claiming the 4 KiB ceiling for them.
 - **Toolchain.** The root `Cargo.toml` `rust-version` is the single declared compiler floor for
-  all features and the footprint measurement. `make msrv`, the exact no-std feature row, and
-  `make size` use that declared floor; acceptance checks reject a different compiler version.
+  all features and the footprint measurement. `rust-toolchain.toml` selects Rust 1.100.0 for `make msrv`, the exact no-std feature row,
+  and `make size`; the Cargo field remains the compatibility floor.
 - **Nothing is lost.** No requirement, acceptance criterion or test case is deleted by this move.
   A row whose evidence leaves the runtime stays in the matrix as planned, with the reason stated.
 
@@ -179,7 +179,7 @@ crates that the runtime consumes.
 | FR-275-AC-5 | `Cargo.lock` holds exactly one entry each for `filament-exact`, `filament-semantic-value`, `quire-canonical` and `quire-canonical-derive`, and, after AD-004 step 5, the FSL-owned evaluation leaf. | Inspection (TC-197) |
 | FR-275-AC-7 | `deny.toml` admits only the `filament-exact`, `filament-semantic-value` and `quire-canonical` own-repository Git sources and the dev-only `ix-trace-rs` first-party tooling source before AD-004 step 5, then also the FSL-owned evaluation leaf's own-repository Git source; it keeps `unknown-git = "deny"` and never admits the FSL Git repository. | Inspection (TC-198) |
 | FR-275-AC-8 | `make deny` reports cargo-deny's `source-not-allowed` error for the FSL Git repository, and exits non-zero, when a normal, build or dev dependency resolves from it; a licence failure alone does not satisfy this. | Test (TC-198) |
-| FR-275-AC-9 | With `exact` enabled and `std` disabled, the runtime builds for `thumbv7em-none-eabi`. The row `build-exact-no-std-msrv` builds it on the root `Cargo.toml` `rust-version` floor. | Test (TC-199, `make test-features` row `build-exact-no-std-msrv`) |
+| FR-275-AC-9 | With `exact` enabled and `std` disabled, the runtime builds for `thumbv7em-none-eabi`. The row `build-exact-no-std-msrv` builds it on the root `rust-toolchain.toml` compiler. | Test (TC-199, `make test-features` row `build-exact-no-std-msrv`) |
 | FR-275-AC-10 | The dependency graph of `filament-contract-runtime-footprint` for `thumbv7em-none-eabi` contains no `filament-exact`, `filament-semantic-value`, `quire-canonical` or `quire-canonical-derive`, and after AD-004 step 5 contains no evaluation leaf. | Test (TC-199) |
 | FR-275-AC-11 | `make size` measures linked `.text` plus `.rodata` inside NFR-001-AC-3's 500 byte to 4 KiB band. | Test (TC-199, `make size`) |
 | FR-275-AC-12 | The runtime has no test that compares its output with a second implementation of the kernel or that depends on a crate from the FSL Git repository. | Inspection (TC-197) |
@@ -190,10 +190,10 @@ crates that the runtime consumes.
 | FR-275-AC-17 | Every item the runtime defines under the `exact` feature, other than the `scalar` items, is named in the residue list, and the list records no exception, expiry or approval. | Inspection (TC-197) |
 | FR-275-AC-18 | The residue list is empty. | Inspection (TC-197) |
 | FR-275-AC-19 | The runtime defines `negotiate_integer_division`, `negotiate_ieee` and their types in its own source and depends on no FSL crate for them. | Inspection (TC-197) |
-| FR-275-AC-20 | The runtime's root `Cargo.toml` declares one `rust-version` for all feature profiles; the MSRV and footprint gates read that field as their compiler floor without another fixed version value. | Inspection (TC-199) |
-| FR-275-AC-21 | `make msrv` and `make size` build with the root `Cargo.toml` `rust-version` compiler; changing that field changes the compiler selected by both gates, and a missing or unavailable declared compiler fails either gate. | Test (TC-199) |
+| FR-275-AC-20 | The runtime's root `Cargo.toml` declares one `rust-version` for all feature profiles; the MSRV and footprint gates read the exact build compiler from `rust-toolchain.toml`, retaining that field as the compatibility floor. | Inspection (TC-199) |
+| FR-275-AC-21 | `make msrv` and `make size` build with the root `rust-toolchain.toml` compiler; changing the declared floor preserves that selection, and a missing floor, missing toolchain channel or unavailable selected compiler fails either gate. | Test (TC-199) |
 | FR-275-AC-22 | Inspection of runtime source finds no local definition or alias of FSV's `SemanticGraphCause`, `InvalidSemanticGraph`, or semantic-node term checker, including definitions emitted by macros. | Inspection (TC-205) |
-| FR-275-AC-29 | After AD-004 step 5, with `exact` enabled and `std` disabled on the root `Cargo.toml` `rust-version`, the RT consumer and a generated-body consumer of the FSL-owned evaluation leaf compile for `thumbv7em-none-eabi` using one lock entry for that leaf; neither consumer resolves the FSL workspace Git source, an RT-local evaluator copy, or a compatibility alias. A host build of the same no_std profile executes the checked-input and generated-body cases of FR-273-AC-12 and AC-13. | Test (TC-199, TC-194) |
+| FR-275-AC-29 | After AD-004 step 5, with `exact` enabled and `std` disabled on the root `rust-toolchain.toml` compiler, the RT consumer and a generated-body consumer of the FSL-owned evaluation leaf compile for `thumbv7em-none-eabi` using one lock entry for that leaf; neither consumer resolves the FSL workspace Git source, an RT-local evaluator copy, or a compatibility alias. A host build of the same no_std profile executes the checked-input and generated-body cases of FR-273-AC-12 and AC-13. | Test (TC-199, TC-194) |
 | FR-275-AC-30 | After AD-004 step 5, `make size` still measures the default fixed population at 500 bytes through 4 KiB linked `.text` plus `.rodata` with no evaluation leaf in its graph and no panic relocation. A separate `measurement/evaluator` no_std executable that links RT, the FSL evaluation leaf and one generated-body consumer for `thumbv7em-none-eabi` has its linked ELF path and `.text` plus `.rodata` byte sum reported from `llvm-size -A`. A solitary native FR-273-AC-13 deep-test executable has its peak resident set size reported in bytes from `/usr/bin/time -v`'s `Maximum resident set size` field, with the reported KiB multiplied by 1024. The receipt names both artifact paths and measurements separately from the default footprint; neither is compared with the default 4 KiB ceiling, and no exact-profile memory limit is inferred from this default measurement. | Test (TC-199) |
 
 ## Lockfile and Dependency Policy
