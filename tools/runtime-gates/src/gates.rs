@@ -5,6 +5,7 @@ use std::io;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+use ix_trace_rs::implements;
 use uzers::os::unix::UserExt;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -405,6 +406,7 @@ fn spec(home: &Path, root: &Path, target: &Path, args: &[&str]) -> CommandSpec {
     }
 }
 
+#[implements("FR-275-AC-20")]
 fn selected_toolchain(root: &Path) -> Result<String, String> {
     let manifest = fs::read_to_string(root.join("Cargo.toml"))
         .map_err(|error| format!("cannot read root Cargo.toml: {error}"))?;
@@ -432,6 +434,7 @@ fn selected_toolchain(root: &Path) -> Result<String, String> {
         .ok_or_else(|| "rust-toolchain.toml has no toolchain channel".into())
 }
 
+#[implements("FR-275-AC-9", "FR-275-AC-20")]
 pub fn collect_features<R: CommandRunner>(runner: &mut R, root: &Path, home: &Path) -> Vec<Row> {
     let available = cargo(home).is_file();
     let target = root.join("target");

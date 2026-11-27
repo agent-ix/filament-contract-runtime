@@ -11,5 +11,4 @@ tempfile = "3"
 toml = "0.8"
 uzers = "0.12"
 
-[dev-dependencies]
 ix-trace-rs = { version = "0.1", git = "https://github.com/agent-ix/ix-trace-rs", tag = "v0.1.2" }
