@@ -4,6 +4,7 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 use std::process::Command;
+
 use uzers::os::unix::UserExt;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -404,7 +405,7 @@ fn spec(home: &Path, root: &Path, target: &Path, args: &[&str]) -> CommandSpec {
     }
 }
 
-fn declared_msrv(root: &Path) -> Result<String, String> {
+fn selected_toolchain(root: &Path) -> Result<String, String> {
     let manifest = fs::read_to_string(root.join("Cargo.toml"))
         .map_err(|error| format!("cannot read root Cargo.toml: {error}"))?;
     let manifest: toml::Value = manifest
@@ -416,7 +417,19 @@ fn declared_msrv(root: &Path) -> Result<String, String> {
         .and_then(toml::Value::as_str)
         .filter(|version| !version.is_empty())
         .map(str::to_owned)
-        .ok_or_else(|| "root Cargo.toml has no package rust-version".into())
+        .ok_or_else(|| "root Cargo.toml has no package rust-version".to_owned())?;
+    let toolchain = fs::read_to_string(root.join("rust-toolchain.toml"))
+        .map_err(|error| format!("cannot read rust-toolchain.toml: {error}"))?;
+    let toolchain: toml::Value = toolchain
+        .parse()
+        .map_err(|error| format!("cannot parse rust-toolchain.toml: {error}"))?;
+    toolchain
+        .get("toolchain")
+        .and_then(|toolchain| toolchain.get("channel"))
+        .and_then(toml::Value::as_str)
+        .filter(|channel| !channel.is_empty())
+        .map(str::to_owned)
+        .ok_or_else(|| "rust-toolchain.toml has no toolchain channel".into())
 }
 
 pub fn collect_features<R: CommandRunner>(runner: &mut R, root: &Path, home: &Path) -> Vec<Row> {
@@ -455,7 +468,7 @@ pub fn collect_features<R: CommandRunner>(runner: &mut R, root: &Path, home: &Pa
             .with_trace_ids(feature.trace_ids),
         );
     }
-    let msrv = declared_msrv(root);
+    let toolchain = selected_toolchain(root);
     for build in NO_STD_BUILDS {
         if !available {
             rows.push(
@@ -469,7 +482,7 @@ pub fn collect_features<R: CommandRunner>(runner: &mut R, root: &Path, home: &Pa
             );
             continue;
         }
-        let version = match &msrv {
+        let version = match &toolchain {
             Ok(version) => version,
             Err(reason) => {
                 rows.push(
@@ -867,6 +880,11 @@ mod tests {
         let root = tempfile::tempdir().expect("root");
         let home = tempfile::tempdir().expect("home");
         fs::write(
+            root.path().join("rust-toolchain.toml"),
+            include_str!("../../../rust-toolchain.toml"),
+        )
+        .expect("toolchain");
+        fs::write(
             root.path().join("Cargo.toml"),
             "[package]\nname = \"filament-contract-runtime\"\nrust-version = \"1.70.0\"\n",
         )
@@ -902,7 +920,7 @@ mod tests {
         let no_std = runner
             .0
             .iter()
-            .filter(|command| command.args.first().is_some_and(|arg| arg == "+1.70.0"))
+            .filter(|command| command.args.first().is_some_and(|arg| arg == "+1.100.0"))
             .collect::<Vec<_>>();
         assert_eq!(no_std.len(), 2);
         for command in no_std {
@@ -928,7 +946,7 @@ mod tests {
             changed_runner
                 .0
                 .iter()
-                .filter(|command| command.args.first().is_some_and(|arg| arg == "+1.71.0"))
+                .filter(|command| command.args.first().is_some_and(|arg| arg == "+1.100.0"))
                 .count(),
             2
         );
@@ -955,7 +973,7 @@ mod tests {
         struct UnavailableRunner;
         impl CommandRunner for UnavailableRunner {
             fn run(&mut self, command: &CommandSpec) -> io::Result<CommandOutput> {
-                if command.args.first().is_some_and(|arg| arg == "+1.71.0") {
+                if command.args.first().is_some_and(|arg| arg == "+1.100.0") {
                     Err(io::Error::new(
                         io::ErrorKind::NotFound,
                         "declared compiler unavailable",
@@ -975,10 +993,15 @@ mod tests {
 
     #[test]
     #[trace("TC-199", "FR-275-AC-20", "FR-275-AC-21")]
-    fn make_msrv_and_size_select_manifest_floor_and_fail_closed() {
+    fn make_msrv_and_size_select_toolchain_and_fail_closed() {
         use std::os::unix::fs::PermissionsExt;
 
         let root = tempfile::tempdir().expect("scratch root");
+        fs::write(
+            root.path().join("rust-toolchain.toml"),
+            include_str!("../../../rust-toolchain.toml"),
+        )
+        .expect("toolchain");
         let manifest = root.path().join("Cargo.toml");
         let makefile = Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("../..")
@@ -1013,13 +1036,11 @@ mod tests {
             assert!(output.status.success(), "make dry run failed: {output:?}");
             let stdout = String::from_utf8(output.stdout).expect("make stdout");
             assert!(stdout.lines().any(|line| {
-                line.starts_with(&format!("rustup run {version} "))
+                line.starts_with("rustup run 1.100.0 ")
                     && line.ends_with(" check --locked --all-targets --all-features")
             }));
             assert!(stdout.lines().any(|line| {
-                line.contains(&format!(
-                    "+{version} build --locked --release --manifest-path measurement/footprint/Cargo.toml"
-                ))
+                line.contains("+1.100.0 build --locked --release --manifest-path measurement/footprint/Cargo.toml")
             }));
         }
 
@@ -1039,6 +1060,22 @@ mod tests {
             "[package]\nname = \"scratch\"\nrust-version = \"1.71.0\"\n",
         )
         .expect("unavailable floor manifest");
+        fs::write(root.path().join("rust-toolchain.toml"), "[toolchain]\n")
+            .expect("missing channel");
+        for target in ["msrv", "size"] {
+            let output = run(&[target], None);
+            assert!(
+                !output.status.success(),
+                "{target} accepted a missing channel"
+            );
+            assert!(String::from_utf8_lossy(&output.stderr)
+                .contains("rust-toolchain.toml has no toolchain channel"));
+        }
+        fs::write(
+            root.path().join("rust-toolchain.toml"),
+            include_str!("../../../rust-toolchain.toml"),
+        )
+        .expect("restore toolchain");
         let bin = root.path().join("bin");
         fs::create_dir(&bin).expect("scratch bin");
         let rustup = bin.join("rustup");
@@ -1051,7 +1088,7 @@ mod tests {
                 "{target} accepted an unavailable floor"
             );
             assert!(String::from_utf8_lossy(&output.stderr)
-                .contains("declared MSRV 1.71.0 is unavailable"));
+                .contains("selected compiler 1.100.0 is unavailable"));
         }
     }
 }
